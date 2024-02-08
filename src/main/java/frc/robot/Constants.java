@@ -55,6 +55,8 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
+    
+    // Drive Section
     public static final int kFrontLeftDrivingCanId = 11; //
     public static final int kRearLeftDrivingCanId = 13; //
     public static final int kFrontRightDrivingCanId = 15; // 
@@ -64,6 +66,11 @@ public final class Constants {
     public static final int kRearLeftTurningCanId = 12; //
     public static final int kFrontRightTurningCanId = 14; //
     public static final int kRearRightTurningCanId = 16; //
+
+    // Arm Motors
+    public static final int kTopRollerCanId = 20; //
+    public static final int kBottomRollerCanId = 21; //
+    public static final int kIntakePivotCanId = 22; //
 
     public static final boolean kGyroReversed = false;
   }
