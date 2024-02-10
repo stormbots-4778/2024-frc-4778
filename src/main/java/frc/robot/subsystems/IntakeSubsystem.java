@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.XboxController;
 import com.revrobotics.CANSparkMax;
@@ -20,9 +22,16 @@ public class IntakeSubsystem extends SubsystemBase {
 
 
     // Roller commands
-    public void in() {
-            TopRoller.set(0.25);
-            BottomRoller.set(0.25);
+    public Command in() {
+        return new InstantCommand(
+            ()-> {
+                TopRoller.set(0.25);
+                BottomRoller.set(0.25);
+            }, 
+            this).unless(() -> {
+                // light sensor sees the game piece
+                return false;
+            }));
     }
 
     public void out() {
