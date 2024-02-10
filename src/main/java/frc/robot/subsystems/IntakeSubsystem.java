@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.XboxController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
     // private CANSparkMax TopRoller, BottomRoller, PivotMotor;
@@ -12,9 +13,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public IntakeSubsystem() {
  //       this.controller = controller;
-        TopRoller = new CANSparkMax(20, MotorType.kBrushless);
-        BottomRoller = new CANSparkMax(21, MotorType.kBrushless);
-         PivotMotor = new CANSparkMax(22, MotorType.kBrushless);
+        TopRoller = new CANSparkMax(Constants.kTopRollerCanId, MotorType.kBrushless);
+        BottomRoller = new CANSparkMax(Constants.kBottomRollerCanId, MotorType.kBrushless);
+         PivotMotor = new CANSparkMax(Constants.kIntakePivotCanId, MotorType.kBrushless);
     }
 
 
