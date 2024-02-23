@@ -98,6 +98,9 @@ public final class Constants {
     public static final double deployPivot = 0.5;
     public static final double stowPivot = -0.5;
     public static final double ampPivot = 0.25;
+
+    // Intake/outtake times
+    public static final double outtakeTime = 3.0;
   }
 
     

@@ -107,19 +107,17 @@ public class RobotContainer {
             
     new JoystickButton(m_driverController, Button.kA.value)
                //.whileTrue(m_intake.in());
-             .onTrue(m_intake.in());
+             .whileTrue(m_intake.in());
           
 
      new JoystickButton(m_driverController, Button.kY.value)
             //.whileTrue(m_intake.in());
-            .onFalse(m_intake.stop());
+            .onTrue(m_intake.shoot());
 
  
 
     new JoystickButton(m_driverController, Button.kB.value)
-            .whileTrue(new InstantCommand(
-            ()->m_intake.out(),
-            m_intake));    
+            .whileTrue(m_intake.out());
   }
 
   /**

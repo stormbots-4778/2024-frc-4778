@@ -20,44 +20,37 @@ public class IntakeSubsystem extends SubsystemBase {
         PivotMotor = new CANSparkMax(IntakeConstants.kIntakePivotCanId, MotorType.kBrushless);
     }
 
-
     // Roller commands
-    // public Command in() {
-    //     return new InstantCommand(
-    //         ()-> {
-    //             //TopRoller.set(0.25);
-    //             //BottomRoller.set(0.25);
-    //             TopRoller.setVoltage(0.1);
-    //             BottomRoller.setVoltage(-0.1);
-    //         }, 
-    //         this).unless(() -> {
-    //             // light sensor sees the game piece
-    //             return false;
-    //         });
-    // }
-
     public Command in() {
         return new InstantCommand(
             ()-> {
-                TopRoller.set(0.25);
-                BottomRoller.set(0.25);
+                TopRoller.set(IntakeConstants.intakeSpeed);
+                BottomRoller.set(IntakeConstants.intakeSpeed);
             }, 
             this).unless(() -> {
                 // light sensor sees the game piece
                 return false;
-            }));
+            });
     }
 
-    public void out() {
-            TopRoller.set(IntakeConstants.outtakeSpeed);
-            BottomRoller.set(IntakeConstants.outtakeSpeed);      
+    public Command out() {
+            return new InstantCommand(
+                ()-> {
+                    TopRoller.set(IntakeConstants.outtakeSpeed);
+                    BottomRoller.set(IntakeConstants.outtakeSpeed);
+                }, 
+                this).withTimeout(IntakeConstants.outtakeTime);
         }
 
-    public void shoot() {
-            if (true){      // Add a check if the pivot is in the stowed or amp scoring position
+    public Command shoot() {
+        return new InstantCommand(
+            ()-> {
             TopRoller.set(IntakeConstants.shootSpeed);
             BottomRoller.set(IntakeConstants.shootSpeed);        
-            }
+            },
+            this).unless(() -> {
+                // light sensor sees the game piece
+                return false;} );
         }
 
     // public void stopRollers() {
