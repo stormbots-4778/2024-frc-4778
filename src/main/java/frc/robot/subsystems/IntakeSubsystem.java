@@ -22,16 +22,37 @@ public class IntakeSubsystem extends SubsystemBase {
 
 
     // Roller commands
+    // public Command in() {
+    //     return new InstantCommand(
+    //         ()-> {
+    //             //TopRoller.set(0.25);
+    //             //BottomRoller.set(0.25);
+    //             TopRoller.setVoltage(0.1);
+    //             BottomRoller.setVoltage(-0.1);
+    //         }, 
+    //         this).unless(() -> {
+    //             // light sensor sees the game piece
+    //             return false;
+    //         });
+    // }
+
     public Command in() {
         return new InstantCommand(
             ()-> {
-                TopRoller.set(0.25);
-                BottomRoller.set(0.25);
-            }, 
-            this).unless(() -> {
-                // light sensor sees the game piece
-                return false;
-            }));
+                //TopRoller.set(0.25);
+                //BottomRoller.set(0.25);
+                TopRoller.setVoltage(0.1);
+                BottomRoller.setVoltage(-0.1);
+            });
+            
+    }
+
+    public Command stop() {
+        return new InstantCommand(
+            ()-> {
+                TopRoller.set(0);
+                BottomRoller.set(0);
+            });
     }
 
     public void out() {
@@ -46,10 +67,10 @@ public class IntakeSubsystem extends SubsystemBase {
             }
         }
 
-    public void stopRollers() {
-            TopRoller.set(0);
-            BottomRoller.set(0);
-        }
+    // public void stopRollers() {
+    //         TopRoller.set(0);
+    //         BottomRoller.set(0);
+    //     }
 
     // Arm commands
 

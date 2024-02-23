@@ -100,13 +100,21 @@ public class RobotContainer {
             ()->m_intake.ampPos(),
             m_intake));
 
-    new JoystickButton(m_driverController, Button.kA.value)
+    new JoystickButton(m_driverController, Button.kY.value)
             .whileTrue(new InstantCommand(
             ()->m_intake.shoot(),
             m_intake));
             
-    new JoystickButton(m_driverController, Button.kY.value)
-            .whileTrue(m_intake.in());
+    new JoystickButton(m_driverController, Button.kA.value)
+               //.whileTrue(m_intake.in());
+             .onTrue(m_intake.in());
+          
+
+     new JoystickButton(m_driverController, Button.kY.value)
+            //.whileTrue(m_intake.in());
+            .onFalse(m_intake.stop());
+
+ 
 
     new JoystickButton(m_driverController, Button.kB.value)
             .whileTrue(new InstantCommand(
