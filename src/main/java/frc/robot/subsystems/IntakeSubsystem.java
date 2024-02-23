@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.XboxController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     // private CANSparkMax TopRoller, BottomRoller, PivotMotor;
@@ -15,9 +15,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public IntakeSubsystem() {
  //       this.controller = controller;
-        TopRoller = new CANSparkMax(Constants.kTopRollerCanId, MotorType.kBrushless);
-        BottomRoller = new CANSparkMax(Constants.kBottomRollerCanId, MotorType.kBrushless);
-         PivotMotor = new CANSparkMax(Constants.kIntakePivotCanId, MotorType.kBrushless);
+        TopRoller = new CANSparkMax(IntakeConstants.kTopRollerCanId, MotorType.kBrushless);
+        BottomRoller = new CANSparkMax(IntakeConstants.kBottomRollerCanId, MotorType.kBrushless);
+        PivotMotor = new CANSparkMax(IntakeConstants.kIntakePivotCanId, MotorType.kBrushless);
     }
 
 
@@ -39,31 +39,24 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command in() {
         return new InstantCommand(
             ()-> {
-                //TopRoller.set(0.25);
-                //BottomRoller.set(0.25);
-                TopRoller.setVoltage(0.1);
-                BottomRoller.setVoltage(-0.1);
-            });
-            
-    }
-
-    public Command stop() {
-        return new InstantCommand(
-            ()-> {
-                TopRoller.set(0);
-                BottomRoller.set(0);
-            });
+                TopRoller.set(0.25);
+                BottomRoller.set(0.25);
+            }, 
+            this).unless(() -> {
+                // light sensor sees the game piece
+                return false;
+            }));
     }
 
     public void out() {
-            TopRoller.set(-0.25);
-            BottomRoller.set(-0.25);      
+            TopRoller.set(IntakeConstants.outtakeSpeed);
+            BottomRoller.set(IntakeConstants.outtakeSpeed);      
         }
 
     public void shoot() {
             if (true){      // Add a check if the pivot is in the stowed or amp scoring position
-            TopRoller.set(-0.5);
-            BottomRoller.set(-0.5);        
+            TopRoller.set(IntakeConstants.shootSpeed);
+            BottomRoller.set(IntakeConstants.shootSpeed);        
             }
         }
 
@@ -75,15 +68,15 @@ public class IntakeSubsystem extends SubsystemBase {
     // Arm commands
 
     public void deployPos() {
-        PivotMotor.set(0.5);
+        PivotMotor.set(IntakeConstants.deployPivot);
     }
 
     public void stowPos() {
-        PivotMotor.set(-0.5);
+        PivotMotor.set(IntakeConstants.stowPivot);
     }
 
     public void ampPos() {
-        PivotMotor.set(0.25);
+        PivotMotor.set(IntakeConstants.ampPivot);
     }
 
 }

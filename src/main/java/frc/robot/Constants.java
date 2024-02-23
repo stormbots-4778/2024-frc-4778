@@ -19,9 +19,11 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
   public static final class DriveConstants {
     public static double spdLimitFast = .25;
     public static double turnLimitFast = .8;
@@ -72,12 +74,35 @@ public final class Constants {
     public static final boolean kGyroReversed = false;
   }
 
+  public static final class ShooterConstants {
+    public static final int kleftShooterCanId = 23; //
+    public static final int kRightShooterCanId = 24; //
+
+    public static final int shooterKp = 1;
+    public static final int shooterKi = 0;
+    public static final int shooterKd = 0;
+
+    public static final double shootSpeed = .5;
+  }
+
+  public static final class IntakeConstants {
     // Arm Motors
     public static final int kTopRollerCanId = 20; //
     public static final int kBottomRollerCanId = 21; //
     public static final int kIntakePivotCanId = 22; //
 
-    public static final class ModuleConstants {
+    public static final double intakeSpeed = 0.25;
+    public static final double outtakeSpeed = -0.25;
+    public static final double shootSpeed = -0.5;
+
+    public static final double deployPivot = 0.5;
+    public static final double stowPivot = -0.5;
+    public static final double ampPivot = 0.25;
+  }
+
+    
+
+  public static final class ModuleConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
     // This changes the drive speed of the module (a pinion gear with more teeth will result in a
     // robot that drives faster).
