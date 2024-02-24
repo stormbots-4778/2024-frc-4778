@@ -14,6 +14,16 @@ public class LiftSubsystem extends SubsystemBase {
         liftMotor = new CANSparkMax(25, MotorType.kBrushless);
     }
 
+    leftShooter.restoreFactoryDefaults();
+        leftShooter.setIdleMode(ShooterConstants.kShootingMotorIdleMode);
+        leftShooter.setSmartCurrentLimit(ShooterConstants.kShootingMotorCurrentLimit);
+
+        leftShoooterPIDController = leftShooter.getPIDController();
+        leftShoooterPIDController.setP(ShooterConstants.shooterKp);
+
+        leftShooter.burnFlash();
+        
+
     @Override
     public void periodic() {
         int dpadAngle = controller.getPOV();
