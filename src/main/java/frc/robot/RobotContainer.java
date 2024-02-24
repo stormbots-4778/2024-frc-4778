@@ -100,7 +100,9 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, Button.kX.value)
             .whileTrue(new InstantCommand(
-            ()->m_intake.ampPos(),
+            ()-> {
+              m_intake.ampPos();
+            },
             m_intake));
             
     new JoystickButton(m_driverController, Button.kA.value)
