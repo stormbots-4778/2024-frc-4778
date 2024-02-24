@@ -4,11 +4,39 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public final class Autos {
+  // TODO: This might be useful as a starting point for starting to build up an auto routine
+  public static Command duluthAuto(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem) {
+    return Commands.sequence(
+      // 1. We start with a note loaded and in shooting position.. shoot it?
+      Commands.print("Starting auto routine"),
+      Commands.print("Confirm speaker position"),
+      intakeSubsystem.speakerPosition(),  // Confirm we are in shooting position and start the launcher motors
+      Commands.waitSeconds(1.0),  // Wait for launcher to spin up
+      Commands.print("shoot!"),
+      intakeSubsystem.outtake(),          // Shoot!
+      Commands.waitSeconds(2.0),  // Wait for note to fire
+
+      // 2. Lower to intake position and start the intake motors
+      Commands.print("Intake position"),
+      intakeSubsystem.intake(),
+      intakeSubsystem.stopIntake(), // TODO: Need to detect if a note has been picked up and automatically stop the intake motors
+
+      // 3. Go somewhere?
+      Commands.print("Let's drive"),
+      Commands.runOnce(() -> driveSubsystem.drive(0.5, 0.5, 0.0, false, false), driveSubsystem),
+      Commands.waitSeconds(3.0),
+      Commands.runOnce(() -> driveSubsystem.stopModules(), driveSubsystem),
+      Commands.print("Stopped")
+    );  
+  }
+
   /** Example static factory for an autonomous command. */
   public static Command exampleAuto(ExampleSubsystem subsystem) {
     return Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));

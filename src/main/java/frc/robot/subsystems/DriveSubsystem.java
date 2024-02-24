@@ -81,9 +81,6 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getPosition()
       });
 
-
-
-
   @Override
   public void periodic() {
     // Update the odometry in the periodic block

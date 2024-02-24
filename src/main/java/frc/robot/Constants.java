@@ -89,7 +89,7 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    // Arm Motors
+    // Intake Motors
     public static final int kTopRollerCanId = 20; //
     public static final int kBottomRollerCanId = 21; //
     public static final int kIntakePivotCanId = 22; //
@@ -97,10 +97,6 @@ public final class Constants {
     public static final double intakeSpeed = 0.5;
     public static final double outtakeSpeed = -0.5;
     public static final double shootSpeed = -0.5;
-
-    public static final double deployPivot = 0.5;
-    public static final double stowPivot = -0.5;
-    public static final double ampPivot = 0.25;
 
     public static final double intakeKp = 0.02;
     public static final double intakeKi = 0;
@@ -111,9 +107,31 @@ public final class Constants {
 
     // Intake/outtake times
     public static final double outtakeTime = 3.0;
-  }
 
-    
+    // Pivot motor configuration
+    public static final double kPivotEncoderPositionFactor = (2 * Math.PI); // radians
+    public static final double kPivotEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
+
+    public static final double kPivotEncoderPositionPIDMinInput = 0; // radians
+    public static final double kPivotEncoderPositionPIDMaxInput = kPivotEncoderPositionFactor; // radians
+
+    // TODO: Tune PID gains
+    public static final double kPivotP = 0.02;
+    public static final double kPivotI = 0;
+    public static final double kPivotD = 0;
+    public static final double kPivotFF = 0;
+    public static final double kPivotMinOutput = -1;
+    public static final double kPivotMaxOutput = 1;
+
+    // TODO: Tune angles for each pivot position
+    public static final double kPivotAngleIntake = 0.0;
+    public static final double kPivotAngleAmp = Math.PI / 4.0;
+    public static final double kPivotAngleSpeaker = Math.PI / 2.0;
+
+    public static final double deployPivot = 0.5;
+    public static final double stowPivot = -0.5;
+    public static final double ampPivot = 0.25;
+  }
 
   public static final class ModuleConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
