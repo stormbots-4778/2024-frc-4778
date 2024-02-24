@@ -3,87 +3,132 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.XboxController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.ShooterConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-    private CANSparkMax TopRoller, BottomRoller, PivotMotor;
-    private final SparkMaxPIDController TopRollerPIDController;
-    private final SparkMaxPIDController BottomRollerPIDController;
+    private final LauncherSubsystem launcherSubsystem;
 
-    public IntakeSubsystem() {
-        TopRoller = new CANSparkMax(IntakeConstants.kTopRollerCanId, MotorType.kBrushless);
-        BottomRoller = new CANSparkMax(IntakeConstants.kBottomRollerCanId, MotorType.kBrushless);
-        PivotMotor = new CANSparkMax(IntakeConstants.kIntakePivotCanId, MotorType.kBrushless);
+    private final CANSparkMax topRoller;
+    private final SparkPIDController topRollerPIDController;
 
-            
-            TopRoller.restoreFactoryDefaults();
-            TopRoller.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
-            TopRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+    private final CANSparkMax bottomRoller;
+    private final SparkPIDController bottomRollerPIDController;
     
-            TopRollerPIDController = TopRoller.getPIDController();
-            TopRollerPIDController.setP(IntakeConstants.intakeKp);
+    private final CANSparkMax pivotMotor;
+    private final SparkPIDController pivotPIDController;
+    private final RelativeEncoder pivotEncoder;
+
+    public IntakeSubsystem(LauncherSubsystem launcherSubsystem) {
+        this.launcherSubsystem = launcherSubsystem;
+
+        topRoller = new CANSparkMax(IntakeConstants.kTopRollerCanId, MotorType.kBrushless);
+        bottomRoller = new CANSparkMax(IntakeConstants.kBottomRollerCanId, MotorType.kBrushless);
+        pivotMotor = new CANSparkMax(IntakeConstants.kIntakePivotCanId, MotorType.kBrushless);
+
+        // Reset motors to known starting point            
+        topRoller.restoreFactoryDefaults();
+        bottomRoller.restoreFactoryDefaults();
+        pivotMotor.restoreFactoryDefaults();
+
+        topRoller.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
+        topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+
+        topRollerPIDController = topRoller.getPIDController();
+        topRollerPIDController.setP(IntakeConstants.intakeKp);
+        
+        bottomRoller.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
+        bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+        
+        bottomRollerPIDController = bottomRoller.getPIDController();
+        bottomRollerPIDController.setP(IntakeConstants.intakeKp);
+
+        pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
+        pivotMotor.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+       
+        pivotEncoder = pivotMotor.getEncoder(); 
+        // TODO: Confirm if we should be using the RelativeEncoder (above) or AbsoluteEncoder for this motor
+        //pivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
+        pivotEncoder.setPositionConversionFactor(IntakeConstants.kPivotEncoderPositionFactor);
+        pivotEncoder.setVelocityConversionFactor(IntakeConstants.kPivotEncoderVelocityFactor);
+
+        pivotPIDController = pivotMotor.getPIDController();
+        pivotPIDController.setFeedbackDevice(pivotEncoder);
+        pivotPIDController.setPositionPIDWrappingEnabled(false);
+        pivotPIDController.setPositionPIDWrappingMinInput(IntakeConstants.kPivotEncoderPositionPIDMinInput);
+        pivotPIDController.setPositionPIDWrappingMaxInput(IntakeConstants.kPivotEncoderPositionPIDMaxInput);
+        pivotPIDController.setP(IntakeConstants.kPivotP);
+        pivotPIDController.setI(IntakeConstants.kPivotI);
+        pivotPIDController.setD(IntakeConstants.kPivotD);
+        pivotPIDController.setFF(IntakeConstants.kPivotFF);
+        pivotPIDController.setOutputRange(IntakeConstants.kPivotMinOutput, IntakeConstants.kPivotMaxOutput);
     
-            TopRoller.burnFlash();
-            
-            
-            BottomRoller.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
-            BottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
-            
-            BottomRollerPIDController = BottomRoller.getPIDController();
-            BottomRollerPIDController.setP(ShooterConstants.shooterKp);
-            
-            BottomRoller.burnFlash();
-        }
+        // Save motor configuration
+        topRoller.burnFlash();
+        bottomRoller.burnFlash();
+        pivotMotor.burnFlash();
+    }
     
+    // State machine
+    public Command intake() {
+        return new InstantCommand(() -> {
+            // 1. Move the pivot to the intake position
+            pivotPIDController.setReference(IntakeConstants.kPivotAngleIntake, ControlType.kPosition);
 
-    // Roller commands
-    public Command in() {
-        return new InstantCommand(
-                () -> {
-                    TopRoller.set(IntakeConstants.intakeSpeed);
-                    BottomRoller.set(IntakeConstants.intakeSpeed);
-                },
-                this).unless(() -> {
-                    // light sensor sees the game piece
-                    return false;
-                });
+            // 2. Run the intake motors until a note is loaded
+            topRoller.set(IntakeConstants.intakeSpeed);
+            bottomRoller.set(IntakeConstants.intakeSpeed);
+
+            // 3. Stop the launcher if it is running
+            launcherSubsystem.stop();
+        }, this, launcherSubsystem);
+    }
+    
+    public Command outtake() {
+        return runOnce(() -> {
+            // 1. Run the intake motors in reverse
+            topRoller.set(IntakeConstants.outtakeSpeed);
+            bottomRoller.set(IntakeConstants.outtakeSpeed);
+
+            // If we are in the speaker position, the launcher should already be running
+        });
     }
 
-    public Command out() {
-        return new InstantCommand(
-                () -> {
-                    TopRoller.set(IntakeConstants.outtakeSpeed);
-                    BottomRoller.set(IntakeConstants.outtakeSpeed);
-                },
-                this).withTimeout(IntakeConstants.outtakeTime);
+    public Command ampPosition() {
+        return new InstantCommand(() -> {
+            // 1. Move the pivot to the amp position
+            pivotPIDController.setReference(IntakeConstants.kPivotAngleAmp, ControlType.kPosition);
+
+            // 2. Stop the launcher if it is running
+            launcherSubsystem.stop();
+        }, this, launcherSubsystem);
     }
 
-    public Command stop() {
-        return new InstantCommand(
-                () -> {
-                    TopRoller.set(0.0);
-                    BottomRoller.set(0.0);
-                },
-                this);
+    public Command speakerPosition() {
+        return new InstantCommand(() -> {  // Should this be run(..) or runOnce(..)? Try and see
+                // 1. Move the pivot to the speaker position
+                pivotPIDController.setReference(IntakeConstants.kPivotAngleSpeaker, ControlType.kPosition);
+
+                // 2. Start the launcher
+                launcherSubsystem.shoot();
+            }, this, launcherSubsystem);
     }
 
-    // Arm commands
-
-    public void deployPos() {
-        PivotMotor.set(IntakeConstants.deployPivot);
+    public Command stopIntake() {
+        return runOnce(() -> {
+            topRoller.set(0.0);
+            bottomRoller.set(0.0);
+        });
     }
 
-    public void stowPos() {
-        PivotMotor.set(IntakeConstants.stowPivot);
+    public Command stopPivot() {
+        return runOnce(() -> {
+            pivotMotor.set(0.0);
+        });
     }
-
-    public void ampPos() {
-        PivotMotor.set(IntakeConstants.ampPivot);
-    }
-
 }

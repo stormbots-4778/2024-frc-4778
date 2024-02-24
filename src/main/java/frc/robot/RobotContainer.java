@@ -9,21 +9,16 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.StadiaController.Button;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -34,10 +29,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  public final IntakeSubsystem m_intake = new IntakeSubsystem();
+  public final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem();
+  public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem);
   public final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  public final LauncherSubsystem m_LauncherSubsystem = new LauncherSubsystem();
 
   // Replace with CommandXboxController or CommandJoystick if needed
   public final XboxController m_driverController = 
@@ -51,20 +45,20 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-      m_robotDrive.setDefaultCommand(
-          new RunCommand(
-          () -> m_robotDrive.drive(
-              -MathUtil.applyDeadband(
-                  Math.pow(m_driverController.getLeftY(), 2) * Math.signum(m_driverController.getLeftY()) * spdLimit,
-                  OIConstants.kDriveDeadband),
-              -MathUtil.applyDeadband(
-                  Math.pow(m_driverController.getLeftX(), 2) * Math.signum(m_driverController.getLeftX()) * spdLimit,
-                  OIConstants.kDriveDeadband),
-              -MathUtil.applyDeadband(
-                  Math.pow(m_driverController.getRightX(), 2) * Math.signum(m_driverController.getRightX()) * turnLimit,
-                  OIConstants.kDriveDeadband),
-              fieldCentric, true),
-          m_robotDrive));
+    m_robotDrive.setDefaultCommand(
+        Commands.run(() -> 
+          m_robotDrive.drive(
+            -MathUtil.applyDeadband(
+                Math.pow(m_driverController.getLeftY(), 2) * Math.signum(m_driverController.getLeftY()) * spdLimit,
+                OIConstants.kDriveDeadband),
+            -MathUtil.applyDeadband(
+                Math.pow(m_driverController.getLeftX(), 2) * Math.signum(m_driverController.getLeftX()) * spdLimit,
+                OIConstants.kDriveDeadband),
+            -MathUtil.applyDeadband(
+                Math.pow(m_driverController.getRightX(), 2) * Math.signum(m_driverController.getRightX()) * turnLimit,
+                OIConstants.kDriveDeadband),
+            fieldCentric, true),
+        m_robotDrive));
   }
 
   /**
@@ -80,40 +74,30 @@ public class RobotContainer {
     // // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // new Trigger(m_exampleSubsystem::exampleCondition)
     //     .onTrue(new ExampleCommand(m_exampleSubsystem));
-
     
-    // m_driverController.a()
-    //     .onTrue(new InstantCommand(() -> m_intake.in(), m_intake))
-    //     .onFalse(new InstantCommand(() -> m_intake.out(), m_intake));
-    
-    // Trigger xButton = m_driverController.x();
+    // new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    //         .whileTrue(new InstantCommand(
+    //         ()->m_intake.stowPos(),
+    //         m_intake));     
 
-    new JoystickButton(m_driverController, Button.kLeftBumper.value)
-            .whileTrue(new InstantCommand(
-            ()->m_intake.stowPos(),
-            m_intake));     
-
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
-            .whileTrue(new InstantCommand(
-            ()->m_intake.deployPos(),
-            m_intake));
+    // new JoystickButton(m_driverController, Button.kRightBumper.value)
+    //         .whileTrue(new InstantCommand(
+    //         ()->m_intake.deployPos(),
+    //         m_intake));
 
     new JoystickButton(m_driverController, Button.kX.value)
-            .whileTrue(new InstantCommand(
-            ()->m_intake.ampPos(),
-            m_intake));
+            .onTrue(m_intake.ampPosition());
             
-    new JoystickButton(m_driverController, Button.kA.value)
-             .whileTrue(m_intake.in())
-             .onFalse(m_intake.stop());
+    new JoystickButton(m_driverController, Button.kY.value)
+             .onTrue(m_intake.intake())
+             .onFalse(m_intake.stopIntake());
           
-     new JoystickButton(m_driverController, Button.kY.value)
-            .onTrue(m_LauncherSubsystem.shoot())
-            .onFalse(m_LauncherSubsystem.stop());
-
     new JoystickButton(m_driverController, Button.kB.value)
-            .whileTrue(m_intake.out())
-            .onFalse(m_intake.stop());
+            .onTrue(m_intake.speakerPosition());
+
+    new JoystickButton(m_driverController, Button.kA.value)
+            .onTrue(m_intake.outtake())
+            .onFalse(m_intake.stopIntake());
   }
 
   /**
@@ -122,7 +106,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return Autos.duluthAuto(m_robotDrive, m_intake);
   }
 }
