@@ -207,8 +207,8 @@ public class DriveSubsystem extends SubsystemBase {
         double yawCalculated = (Math.signum(m_gyro.getYaw()) * Math.PI) - (Math.toRadians(m_gyro.getYaw()));
         
         double kpTurn = 0.25;
-        float KpStrafe = 0.01f;
-        
+        float KpStrafe = 0.0f;
+        //  float KpStrafe = 0.01f;       
         if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
          //rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
          ySpeed = -(KpStrafe * xError);

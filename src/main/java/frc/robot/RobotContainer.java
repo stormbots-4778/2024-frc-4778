@@ -13,6 +13,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LauncherSubsystem;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.StadiaController.Button;
@@ -34,10 +35,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  public final  IntakeSubsystem m_intake = new IntakeSubsystem();
+  public final IntakeSubsystem m_intake = new IntakeSubsystem();
   public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final LauncherSubsystem m_LauncherSubsystem = new LauncherSubsystem();
+
   // Replace with CommandXboxController or CommandJoystick if needed
-  public final XboxController m_driverController =
+  public final XboxController m_driverController = 
       new XboxController(OperatorConstants.kDriverControllerPort);
     public double spdLimit = DriveConstants.spdLimitFast;
     public double turnLimit = DriveConstants.turnLimitFast;
@@ -99,25 +102,18 @@ public class RobotContainer {
             .whileTrue(new InstantCommand(
             ()->m_intake.ampPos(),
             m_intake));
-
-    new JoystickButton(m_driverController, Button.kY.value)
-            .whileTrue(new InstantCommand(
-            ()->m_intake.shoot(),
-            m_intake));
             
     new JoystickButton(m_driverController, Button.kA.value)
-               //.whileTrue(m_intake.in());
-             .whileTrue(m_intake.in());
+             .whileTrue(m_intake.in())
+             .onFalse(m_intake.stop());
           
-
      new JoystickButton(m_driverController, Button.kY.value)
-            //.whileTrue(m_intake.in());
-            .onTrue(m_intake.shoot());
-
- 
+            .onTrue(m_LauncherSubsystem.shoot())
+            .onFalse(m_LauncherSubsystem.stop());
 
     new JoystickButton(m_driverController, Button.kB.value)
-            .whileTrue(m_intake.out());
+            .whileTrue(m_intake.out())
+            .onFalse(m_intake.stop());
   }
 
   /**
