@@ -88,6 +88,20 @@ public final class Constants {
     public static int kShootingMotorCurrentLimit = 50; // amps
   }
 
+  public static final class LiftConstants {
+    public static final int kLiftMotorCanId = 25; //
+  //
+
+    public static final double liftKp = 0.04;
+    public static final double liftKi = 0;
+    public static final double liftKd = 0;
+
+    public static final double liftMotorSpeed = 1.0;
+
+    public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
+    public static int kLiftMotorCurrentLimit = 50; // amps
+  }
+
   public static final class IntakeConstants {
     // Intake Motors
     public static final int kTopRollerCanId = 20; //
