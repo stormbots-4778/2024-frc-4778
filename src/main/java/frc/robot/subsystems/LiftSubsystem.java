@@ -12,16 +12,18 @@ public class LiftSubsystem extends SubsystemBase {
     public LiftSubsystem(XboxController controller) {
         this.controller = controller;
         liftMotor = new CANSparkMax(25, MotorType.kBrushless);
+
+        liftMotor.restoreFactoryDefaults();
+        liftMotor.setIdleMode(liftConstants.kLiftMotorIdleMode);
+        liftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
+
+        liftPIDController = leftShooter.getPIDController();
+        liftPIDController.setP(LiftConstants.liftKp);
+
+        liftMotor.burnFlash();
     }
 
-    leftShooter.restoreFactoryDefaults();
-        leftShooter.setIdleMode(ShooterConstants.kShootingMotorIdleMode);
-        leftShooter.setSmartCurrentLimit(ShooterConstants.kShootingMotorCurrentLimit);
-
-        leftShoooterPIDController = leftShooter.getPIDController();
-        leftShoooterPIDController.setP(ShooterConstants.shooterKp);
-
-        leftShooter.burnFlash();
+  
         
 
     @Override
