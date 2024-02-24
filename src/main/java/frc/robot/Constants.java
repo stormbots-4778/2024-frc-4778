@@ -95,7 +95,7 @@ public final class Constants {
     public static final int kIntakePivotCanId = 22; //
 
     public static final double intakeSpeed = 0.5;
-    public static final double outtakeSpeed = -0.5;
+    public static final double outtakeSpeed = -1.0;
     public static final double shootSpeed = -0.5;
 
     public static final double deployPivot = 0.5;

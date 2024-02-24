@@ -18,7 +18,7 @@ public class LauncherSubsystem extends SubsystemBase {
     public LauncherSubsystem() {
         leftShooter = new CANSparkMax(ShooterConstants.kleftShooterCanId, MotorType.kBrushless);
         leftShooter.restoreFactoryDefaults();
-        leftShooter.setIdleMode(ShooterConstants.kShootingMotorIdleMode);
+        //leftShooter.setIdleMode(ShooterConstants.kShootingMotorIdleMode);
         leftShooter.setSmartCurrentLimit(ShooterConstants.kShootingMotorCurrentLimit);
 
         leftShoooterPIDController = leftShooter.getPIDController();
@@ -27,7 +27,7 @@ public class LauncherSubsystem extends SubsystemBase {
         leftShooter.burnFlash();
         
         rightShooter = new CANSparkMax(ShooterConstants.kRightShooterCanId, MotorType.kBrushless);
-        rightShooter.setIdleMode(ShooterConstants.kShootingMotorIdleMode);
+        //rightShooter.setIdleMode(ShooterConstants.kShootingMotorIdleMode);
         rightShooter.setSmartCurrentLimit(ShooterConstants.kShootingMotorCurrentLimit);
         
         rightShoooterPIDController = rightShooter.getPIDController();
