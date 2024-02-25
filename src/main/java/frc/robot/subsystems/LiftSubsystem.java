@@ -1,40 +1,43 @@
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID;
+package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LiftConstants;
 
 public class LiftSubsystem extends SubsystemBase {
-    private final CANSparkMax liftMotor;
-    private final XboxController controller;
+    private CANSparkMax LiftMotor;
+    private final SparkPIDController LiftPIDController;
+   
 
-    public LiftSubsystem(XboxController controller) {
-        this.controller = controller;
-        liftMotor = new CANSparkMax(25, MotorType.kBrushless);
+    public LiftSubsystem() {
+        LiftMotor = new CANSparkMax(LiftConstants.kLiftMotorCanId, MotorType.kBrushless);
+        LiftMotor.restoreFactoryDefaults();
+        //leftShooter.setIdleMode(ShooterConstants.kShootingMotorIdleMode);
+        LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
 
-        liftMotor.restoreFactoryDefaults();
-        liftMotor.setIdleMode(liftConstants.kLiftMotorIdleMode);
-        liftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
+        LiftPIDController = LiftMotor.getPIDController();
+        LiftPIDController.setP(LiftConstants.liftKp);
 
-        liftPIDController = leftShooter.getPIDController();
-        liftPIDController.setP(LiftConstants.liftKp);
-
-        liftMotor.burnFlash();
-    }
-
-  
+        LiftMotor.burnFlash();
         
-
-    @Override
-    public void periodic() {
-        int dpadAngle = controller.getPOV();
-        if (dpadAngle == 0) { // dpad up
-            liftMotor.set(1.0);
-        } else if (dpadAngle == 180) { // dpad down
-            liftMotor.set(-1.0);
-        } else {
-            liftMotor.set(0.0);
-        }
+        
     }
+
+    // public Command shoot() {
+    //     return runOnce(()-> {
+    //         leftShooter.set(ShooterConstants.leftShootSpeed);
+    //         rightShooter.set(ShooterConstants.rightShootSpeed);
+    //     });
+    // }
+
+    // public Command () {
+    //     return runOnce(()-> {
+    //         leftShooter.set(0.0);
+    //         rightShooter.set(0.0);        
+    //     });
+    // }
 }
