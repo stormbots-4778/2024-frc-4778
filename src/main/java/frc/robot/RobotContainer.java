@@ -98,6 +98,10 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kA.value)
             .onTrue(m_intake.outtake())
             .onFalse(m_intake.stopIntake());
+
+new JoystickButton(m_driverController, Button.kRightBumper.value)
+            .onTrue(m_launcherSubsystem.shoot())
+            .onFalse(m_launcherSubsystem.stop());
   }
 
   /**

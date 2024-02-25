@@ -25,8 +25,8 @@ public final class Constants {
   }
 
   public static final class DriveConstants {
-    public static double spdLimitFast = .25;
-    public static double turnLimitFast = .8;
+    public static double spdLimitFast = .6;
+    public static double turnLimitFast = .5;
 
     public static double spdLimitSlow = .25;
     public static double turnLimitSlow = .25;
@@ -88,6 +88,20 @@ public final class Constants {
     public static int kShootingMotorCurrentLimit = 50; // amps
   }
 
+  public static final class ClimberConstants {
+    public static final int kClimberCanId = 25; //
+   
+
+    public static final double climberKp = 0.04;
+    public static final double climberKi = 0;
+    public static final double climberKd = 0;
+
+    public static final double climberSpeed = 1.0;
+
+    public static IdleMode kClimberMotorIdleMode = IdleMode.kBrake;
+    public static int kClimberMotorCurrentLimit = 50; // amps
+  }
+
   public static final class IntakeConstants {
     // Intake Motors
     public static final int kTopRollerCanId = 20; //
@@ -95,7 +109,7 @@ public final class Constants {
     public static final int kIntakePivotCanId = 22; //
 
     public static final double intakeSpeed = 0.5;
-    public static final double outtakeSpeed = -1.0;
+    public static final double outtakeSpeed = -0.65;
     public static final double shootSpeed = -0.5;
 
     public static final double intakeKp = 0.02;
@@ -103,7 +117,7 @@ public final class Constants {
     public static final double intakeKd = 0;
 
     public static IdleMode kIntakeMotorIdleMode = IdleMode.kBrake;
-    public static int kIntakeMotorCurrentLimit = 50; // amps
+    public static int kIntakeMotorCurrentLimit = 40; // amps
 
     // Intake/outtake times
     public static final double outtakeTime = 3.0;
@@ -116,7 +130,7 @@ public final class Constants {
     public static final double kPivotEncoderPositionPIDMaxInput = kPivotEncoderPositionFactor; // radians
 
     // TODO: Tune PID gains
-    public static final double kPivotP = 0.02;
+    public static final double kPivotP = 0.01;
     public static final double kPivotI = 0;
     public static final double kPivotD = 0;
     public static final double kPivotFF = 0;
@@ -124,13 +138,13 @@ public final class Constants {
     public static final double kPivotMaxOutput = 1;
 
     // TODO: Tune angles for each pivot position
-    public static final double kPivotAngleIntake = 0.0;
-    public static final double kPivotAngleAmp = Math.PI / 4.0;
-    public static final double kPivotAngleSpeaker = Math.PI / 2.0;
+    public static final double kPivotAngleIntake = -(Math.PI * 22);
+    public static final double kPivotAngleAmp = -(Math.PI * 8);
+    public static final double kPivotAngleSpeaker = 0.0;
 
-    public static final double deployPivot = 0.5;
-    public static final double stowPivot = -0.5;
-    public static final double ampPivot = 0.25;
+  
+
+    public static final int kPivotMotorCurrentLimit = 20;
   }
 
   public static final class ModuleConstants {
