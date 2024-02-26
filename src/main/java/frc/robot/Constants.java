@@ -95,11 +95,24 @@ public final class Constants {
     public static final double liftKp = 0.04;
     public static final double liftKi = 0;
     public static final double liftKd = 0;
+    
+    public static final double liftKFF = 0;
+    public static final double kLiftMinOutput = -1;
+    public static final double kLiftMaxOutput = 1;
 
-    public static final double liftMotorSpeed = 1.0;
+    public static final double kLiftEncoderPositionFactor = (2 * Math.PI); // radians
+    public static final double kLiftEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
+
+    public static final double kLiftEncoderPositionPIDMinInput = 0; // radians
+    public static final double kLiftEncoderPositionPIDMaxInput = kLiftEncoderPositionFactor; // radians
+    
+
+    public static final double liftMotorSpeed = 0.2;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
-    public static int kLiftMotorCurrentLimit = 50; // amps
+    public static int kLiftMotorCurrentLimit = 30; // amps
+   
+
   }
 
   public static final class IntakeConstants {
@@ -109,7 +122,7 @@ public final class Constants {
     public static final int kIntakePivotCanId = 22; //
 
     public static final double intakeSpeed = 0.5;
-    public static final double outtakeSpeed = -0.65;
+    public static final double outtakeSpeed = -1.0;
     public static final double shootSpeed = -0.5;
 
     public static final double intakeKp = 0.02;

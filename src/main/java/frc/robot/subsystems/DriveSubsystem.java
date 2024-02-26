@@ -1,24 +1,33 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -35,7 +44,28 @@ public class DriveSubsystem extends SubsystemBase {
     // m_gyro = new AHRS(SerialPort.Port.kUSB1);
     // m_gyro.enableLogging(true);
     // m_gyro.calibrate();
+
+        AutoBuilder.configureHolonomic(
+            this::getPose,
+             this::zeroPose,
+              this::getChassisSpeeds,
+               this::setChassisSpeeds,
+                new HolonomicPathFollowerConfig(
+                    new PIDConstants(4,0,0), 
+                    new PIDConstants(1,0,0), 4.5, 0.39, new ReplanningConfig() 
+                    ),
+                 () -> {
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                 },
+                  this
+        );
   }
+
+ 
 
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
@@ -106,6 +136,25 @@ public class DriveSubsystem extends SubsystemBase {
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
+
+  public void zeroPose(Pose2d pose) {
+    // swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d());
+    m_odometry.resetPosition(getGyroYaw(), null, pose);
+}
+
+
+
+
+
+public Rotation2d getGyroYaw() {
+  return Rotation2d.fromDegrees(m_gyro.getYaw());
+}
+
+
+
+
+
+
 
   /**
    * Resets the odometry to the specified pose.
@@ -187,7 +236,7 @@ public class DriveSubsystem extends SubsystemBase {
         } else {
           inputTranslationMag = (gyroPitchRad + gyroRollRad) / 2.75;
         }
-        fieldRelative = false;
+        fieldRelative = true;
         rot = 0;
       } else {
         inputTranslationDir = 0;
@@ -195,21 +244,21 @@ public class DriveSubsystem extends SubsystemBase {
       }
       
         rateLimit = true;
-    } else if (LimelightConstants.limelightToggle){
-      fieldRelative = false;
+    // } else if (LimelightConstants.limelightToggle){
+    //   fieldRelative = false;
 
-        double xError = LimelightConstants.x;
-        double yError = -LimelightConstants.y;
+    //     double xError = LimelightConstants.x;
+    //     double yError = -LimelightConstants.y;
         
-        double yawCalculated = (Math.signum(m_gyro.getYaw()) * Math.PI) - (Math.toRadians(m_gyro.getYaw()));
+    //     double yawCalculated = (Math.signum(m_gyro.getYaw()) * Math.PI) - (Math.toRadians(m_gyro.getYaw()));
         
-        double kpTurn = 0.25;
-        float KpStrafe = 0.0f;
-        //  float KpStrafe = 0.01f;       
-        if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
-         //rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
-         ySpeed = -(KpStrafe * xError);
-        }
+    //     double kpTurn = 0.25;
+    //     float KpStrafe = 0.0f;
+    //     //  float KpStrafe = 0.01f;       
+    //     if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
+    //      //rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
+    //      ySpeed = -(KpStrafe * xError);
+    //     }
 
         // if (Math.abs(yError) >  0.25 ){
         //  xSpeed = (KpStrafe * yError);
@@ -230,10 +279,9 @@ public class DriveSubsystem extends SubsystemBase {
         }
       }
 
-    if(!autoBalanceToggle && lastCentric && !fieldRelative){
-      lastCentric = false;
+   
       fieldRelative = true;
-    }
+    
 
 
     double xSpeedCommanded;

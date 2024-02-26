@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.DriveConstants;
@@ -13,13 +16,21 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.CloseShoot;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,6 +43,10 @@ public class RobotContainer {
   public final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem();
   public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem);
   public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final LiftSubsystem m_lift = new LiftSubsystem();
+
+  public final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  public SendableChooser<Command> otherChooser = new SendableChooser<>();
 
   // Replace with CommandXboxController or CommandJoystick if needed
   public final XboxController m_driverController = 
@@ -59,7 +74,14 @@ public class RobotContainer {
                 OIConstants.kDriveDeadband),
             fieldCentric, true),
         m_robotDrive));
+
+        NamedCommands.registerCommand("Close Shoot", new CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
+
+        otherChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Chooser", otherChooser);
   }
+
+ 
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -99,9 +121,19 @@ public class RobotContainer {
             .onTrue(m_intake.outtake())
             .onFalse(m_intake.stopIntake());
 
-new JoystickButton(m_driverController, Button.kRightBumper.value)
-            .onTrue(m_launcherSubsystem.shoot())
-            .onFalse(m_launcherSubsystem.stop());
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+            .onTrue(m_lift.extend())
+            .onFalse(m_lift.stop());
+
+ new JoystickButton(m_driverController, Button.kRightBumper.value)
+            .onTrue(m_lift.retract())
+            .onFalse(m_lift.stop());
+  
+
+
+//  new JoystickButton(m_driverController, Button.kRightBumper.value)
+//              .onTrue(m_launcherSubsystem.shoot())
+//               .onFalse(m_launcherSubsystem.stop());
   }
 
   /**
@@ -110,6 +142,8 @@ new JoystickButton(m_driverController, Button.kRightBumper.value)
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Autos.duluthAuto(m_robotDrive, m_intake);
-  }
+        // An ExampleCommand will run in autonomous
+        // return autoChooser.getSelected();
+        return otherChooser.getSelected();
+    }
 }

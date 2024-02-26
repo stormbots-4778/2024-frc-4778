@@ -18,10 +18,10 @@ import frc.robot.Constants.LimelightConstants;
 public class IntakeSubsystem extends SubsystemBase {
     private final LauncherSubsystem launcherSubsystem;
 
-    private final CANSparkMax topRoller;
+    public final CANSparkMax topRoller;
     private final SparkPIDController topRollerPIDController;
 
-    private final CANSparkMax bottomRoller;
+    public final CANSparkMax bottomRoller;
     private final SparkPIDController bottomRollerPIDController;
     
     private final CANSparkMax pivotMotor;
@@ -53,13 +53,13 @@ public class IntakeSubsystem extends SubsystemBase {
         bottomRollerPIDController = bottomRoller.getPIDController();
         bottomRollerPIDController.setP(IntakeConstants.intakeKp);
 
-        pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
+        // pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
         pivotMotor.setSmartCurrentLimit(IntakeConstants.kPivotMotorCurrentLimit);
 
         // TODO: Confirm if we should be using the RelativeEncoder (above) or AbsoluteEncoder for this motor
         //pivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
        
-        pivotEncoder = pivotMotor.getEncoder(); 
+        pivotEncoder = pivotMotor.getEncoder();
       
         pivotEncoder.setPositionConversionFactor(IntakeConstants.kPivotEncoderPositionFactor);
         pivotEncoder.setVelocityConversionFactor(IntakeConstants.kPivotEncoderVelocityFactor);
@@ -73,6 +73,8 @@ public class IntakeSubsystem extends SubsystemBase {
         pivotPIDController.setI(IntakeConstants.kPivotI);
         pivotPIDController.setD(IntakeConstants.kPivotD);
         pivotPIDController.setFF(IntakeConstants.kPivotFF);
+        // pivotPIDController.setClosed
+
         pivotPIDController.setOutputRange(IntakeConstants.kPivotMinOutput, IntakeConstants.kPivotMaxOutput);
 
 

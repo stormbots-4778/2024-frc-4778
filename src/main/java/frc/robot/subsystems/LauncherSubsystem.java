@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class LauncherSubsystem extends SubsystemBase {
-    private CANSparkMax leftShooter, rightShooter;
+    public CANSparkMax leftShooter, rightShooter;
     private final SparkPIDController leftShoooterPIDController;
     private final SparkPIDController rightShoooterPIDController;
 
