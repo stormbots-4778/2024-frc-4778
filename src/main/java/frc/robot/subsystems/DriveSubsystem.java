@@ -140,6 +140,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void zeroPose(Pose2d pose) {
     // swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d());
     m_odometry.resetPosition(getGyroYaw(), null, pose);
+    m_odometry.resetPosition(getGyroYaw(), SwerveModulePosition[], pose);
 }
 
 
