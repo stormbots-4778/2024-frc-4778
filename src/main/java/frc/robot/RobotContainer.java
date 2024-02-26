@@ -120,7 +120,8 @@ public class RobotContainer {
         .onFalse(m_intake.stopIntake());
 
     new JoystickButton(m_driverController, Button.kB.value)
-        .onTrue(m_launcherSubsystem.shoot())
+        .onTrue(m_launcherSubsystem.shoot()),
+        m_launcherSubsystem.waitSeconds(2.0),
         .onTrue(m_intake.speakerPosition());
         
 
