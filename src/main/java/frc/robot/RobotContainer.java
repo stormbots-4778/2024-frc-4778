@@ -121,7 +121,7 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, Button.kB.value)
         .onTrue(m_launcherSubsystem.shoot()),
-        m_launcherSubsystem.waitSeconds(2.0),
+        m_launcherSubsystem.waitSeconds(3.0),
         .onTrue(m_intake.speakerPosition());
         
 
