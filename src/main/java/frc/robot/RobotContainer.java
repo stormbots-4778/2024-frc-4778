@@ -78,7 +78,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Intake", m_intake.stopIntake());
 
     autoChooser = AutoBuilder.buildAutoChooser();
-    autoChooser.addOption("DuluthSimpleAuto", Autos.duluthAuto(m_robotDrive, m_intake));
+    autoChooser.addOption("DuluthSimpleAuto", Autos.duluthAuto(m_robotDrive, m_intake, m_launcherSubsystem));
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
