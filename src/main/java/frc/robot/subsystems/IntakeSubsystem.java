@@ -9,11 +9,8 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.LimelightConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final LauncherSubsystem launcherSubsystem;
@@ -55,9 +52,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
         // pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
         pivotMotor.setSmartCurrentLimit(IntakeConstants.kPivotMotorCurrentLimit);
-
-        // TODO: Confirm if we should be using the RelativeEncoder (above) or AbsoluteEncoder for this motor
-        //pivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
        
         pivotEncoder = pivotMotor.getEncoder();
       
@@ -76,8 +70,6 @@ public class IntakeSubsystem extends SubsystemBase {
         // pivotPIDController.setClosed
 
         pivotPIDController.setOutputRange(IntakeConstants.kPivotMinOutput, IntakeConstants.kPivotMaxOutput);
-
-
     
         // Save motor configuration
         topRoller.burnFlash();
@@ -145,9 +137,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        
         SmartDashboard.putNumber("Relative Encoder", pivotEncoder.getPosition());
-       
     }
-    
 }

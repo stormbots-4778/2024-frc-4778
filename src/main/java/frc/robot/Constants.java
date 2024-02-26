@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -11,11 +14,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -30,7 +37,7 @@ public final class Constants {
 
     public static double spdLimitSlow = .25;
     public static double turnLimitSlow = .25;
-    
+
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.6;
@@ -59,11 +66,11 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
-    
+
     // Drive Section
     public static final int kFrontLeftDrivingCanId = 11; //
     public static final int kRearLeftDrivingCanId = 13; //
-    public static final int kFrontRightDrivingCanId = 15; // 
+    public static final int kFrontRightDrivingCanId = 15; //
     public static final int kRearRightDrivingCanId = 17; //
 
     public static final int kFrontLeftTurningCanId = 10; //
@@ -72,6 +79,16 @@ public final class Constants {
     public static final int kRearRightTurningCanId = 16; //
 
     public static final boolean kGyroReversed = false;
+
+    public static final double kDriveBaseRadius = Math.max(kWheelBase, kTrackWidth) / 2.0;
+    public static final HolonomicPathFollowerConfig pathFollowerConfig =
+      new HolonomicPathFollowerConfig(
+        new PIDConstants(4, 0, 0), // TODO: Tune translation PID config
+        new PIDConstants(1, 0, 0), // TODO: Tune rotation PID config
+        kMaxSpeedMetersPerSecond,
+        kDriveBaseRadius,
+        new ReplanningConfig()
+      );
   }
 
   public static final class ShooterConstants {
@@ -90,12 +107,11 @@ public final class Constants {
 
   public static final class LiftConstants {
     public static final int kLiftMotorCanId = 25; //
-  //
 
     public static final double liftKp = 0.04;
     public static final double liftKi = 0;
     public static final double liftKd = 0;
-    
+
     public static final double liftKFF = 0;
     public static final double kLiftMinOutput = -1;
     public static final double kLiftMaxOutput = 1;
@@ -105,14 +121,11 @@ public final class Constants {
 
     public static final double kLiftEncoderPositionPIDMinInput = 0; // radians
     public static final double kLiftEncoderPositionPIDMaxInput = kLiftEncoderPositionFactor; // radians
-    
 
     public static final double liftMotorSpeed = 0.2;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
     public static int kLiftMotorCurrentLimit = 30; // amps
-   
-
   }
 
   public static final class IntakeConstants {
@@ -155,18 +168,19 @@ public final class Constants {
     public static final double kPivotAngleAmp = -(Math.PI * 8);
     public static final double kPivotAngleSpeaker = 0.0;
 
-  
-
     public static final int kPivotMotorCurrentLimit = 20;
   }
 
   public static final class ModuleConstants {
-    // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
-    // This changes the drive speed of the module (a pinion gear with more teeth will result in a
+    // The MAXSwerve module can be configured with one of three pinion gears: 12T,
+    // 13T, or 14T.
+    // This changes the drive speed of the module (a pinion gear with more teeth
+    // will result in a
     // robot that drives faster).
     public static final int kDrivingMotorPinionTeeth = 13;
 
-    // Invert the turning encoder, since the output shaft rotates in the opposite direction of
+    // Invert the turning encoder, since the output shaft rotates in the opposite
+    // direction of
     // the steering motor in the MAXSwerve Module.
     public static final boolean kTurningEncoderInverted = true;
 
@@ -174,7 +188,8 @@ public final class Constants {
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
     public static final double kWheelDiameterMeters = 0.0762;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
+    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
+    // teeth on the bevel pinion
     public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
@@ -216,14 +231,16 @@ public final class Constants {
   }
 
   public static final class LimelightConstants {
-    public static final double LimelightMountingAngle = 0; //mounting angle of the camera DEGREES
-    public static final double LimelightMountingHeight = 19.5; //height of camera off the ground INCHES (NOT FINAL VALUE WILL KNOW BEFORE LACROSSE)
-    public static final double TargetHeight = 41.875; //height of high pole off the ground (Mahi still not figured out how to do multiple targets)
+    public static final double LimelightMountingAngle = 0; // mounting angle of the camera DEGREES
+    public static final double LimelightMountingHeight = 19.5; // height of camera off the ground INCHES (NOT FINAL
+                                                               // VALUE WILL KNOW BEFORE LACROSSE)
+    public static final double TargetHeight = 41.875; // height of high pole off the ground (Mahi still not figured out
+                                                      // how to do multiple targets)
 
-    public static double x;  //wrong
-    public static double y;  //wrong
+    public static double x; // wrong
+    public static double y; // wrong
     public static double area;
-        
+
     public static boolean limelightToggle = false;
   }
 
