@@ -7,12 +7,13 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LauncherSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public final class Autos {
   // TODO: This might be useful as a starting point for starting to build up an auto routine
-  public static Command duluthAuto(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem) {
+  public static Command duluthAuto(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, LauncherSubsystem m_launcherSubsystem) {
     return Commands.sequence(
       // 1. We start with a note loaded and in shooting position.. shoot it?
       Commands.print("Starting auto routine"),

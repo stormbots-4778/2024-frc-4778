@@ -9,37 +9,44 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import frc.robot.subsystems.PivotSubsystem;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.LimelightConstants;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+
+
 public class IntakeSubsystem extends SubsystemBase {
     private final LauncherSubsystem launcherSubsystem;
+    private final PivotSubsystem pivotSubsystem;
+    
 
     public final CANSparkMax topRoller;
     private final SparkPIDController topRollerPIDController;
 
     public final CANSparkMax bottomRoller;
     private final SparkPIDController bottomRollerPIDController;
-    
-    private final CANSparkMax pivotMotor;
-    private final SparkPIDController pivotPIDController;
-    public static RelativeEncoder pivotEncoder;
 
-    public IntakeSubsystem(LauncherSubsystem launcherSubsystem) {
+
+    public IntakeSubsystem(LauncherSubsystem launcherSubsystem, PivotSubsystem pivotSubsystem) {
         this.launcherSubsystem = launcherSubsystem;
+        this.pivotSubsystem = pivotSubsystem;
 
         topRoller = new CANSparkMax(IntakeConstants.kTopRollerCanId, MotorType.kBrushless);
         bottomRoller = new CANSparkMax(IntakeConstants.kBottomRollerCanId, MotorType.kBrushless);
-        pivotMotor = new CANSparkMax(IntakeConstants.kIntakePivotCanId, MotorType.kBrushless);
+        
 
         // Reset motors to known starting point            
         topRoller.restoreFactoryDefaults();
         bottomRoller.restoreFactoryDefaults();
-        pivotMotor.restoreFactoryDefaults();
-        pivotMotor.getEncoder().setPosition(0.0);
+        
 
         topRoller.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
         topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
@@ -53,48 +60,30 @@ public class IntakeSubsystem extends SubsystemBase {
         bottomRollerPIDController = bottomRoller.getPIDController();
         bottomRollerPIDController.setP(IntakeConstants.intakeKp);
 
-        pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
-        pivotMotor.setSmartCurrentLimit(IntakeConstants.kPivotMotorCurrentLimit);
-
-        // TODO: Confirm if we should be using the RelativeEncoder (above) or AbsoluteEncoder for this motor
-        //pivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
-       
-        pivotEncoder = pivotMotor.getEncoder();
-      
-        pivotEncoder.setPositionConversionFactor(IntakeConstants.kPivotEncoderPositionFactor);
-        pivotEncoder.setVelocityConversionFactor(IntakeConstants.kPivotEncoderVelocityFactor);
-
-        pivotPIDController = pivotMotor.getPIDController();
-        pivotPIDController.setFeedbackDevice(pivotEncoder);
-        pivotPIDController.setPositionPIDWrappingEnabled(false);
-        pivotPIDController.setPositionPIDWrappingMinInput(IntakeConstants.kPivotEncoderPositionPIDMinInput);
-        pivotPIDController.setPositionPIDWrappingMaxInput(IntakeConstants.kPivotEncoderPositionPIDMaxInput);
-        pivotPIDController.setP(IntakeConstants.kPivotP);
-        pivotPIDController.setI(IntakeConstants.kPivotI);
-        pivotPIDController.setD(IntakeConstants.kPivotD);
-        pivotPIDController.setFF(IntakeConstants.kPivotFF);
-        // pivotPIDController.setClosed
-
-        pivotPIDController.setOutputRange(IntakeConstants.kPivotMinOutput, IntakeConstants.kPivotMaxOutput);
 
 
-    
-        // Save motor configuration
         topRoller.burnFlash();
         bottomRoller.burnFlash();
-        pivotMotor.burnFlash();
+
     }
     
     // State machine
     public Command intake() {
         return new InstantCommand(() -> {
             // 1. Move the pivot to the intake position
-            pivotPIDController.setReference(IntakeConstants.kPivotAngleIntake, ControlType.kPosition);
-
+            // pivotPIDController.setReference(IntakeConstants.kPivotAngleIntake, ControlType.kPosition);
+            //this is now moved to the pivot subsystem
+            
             // 2. Run the intake motors until a note is loaded
-            topRoller.setVoltage(IntakeConstants.intakeSpeed);
-            bottomRoller.setVoltage(IntakeConstants.intakeSpeed);
+            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 5);
+            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 5);
+            topRoller.set(IntakeConstants.intakeSpeed);
+             
+            bottomRoller.set(IntakeConstants.intakeSpeed);
 
+
+            pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake);
+;
             // 3. Stop the launcher if it is running
             launcherSubsystem.stop();
         }, this, launcherSubsystem);
@@ -103,7 +92,10 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command outtake() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
+            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
             topRoller.set(IntakeConstants.outtakeSpeed);
+
             bottomRoller.set(IntakeConstants.outtakeSpeed);
 
             // If we are in the speaker position, the launcher should already be running
@@ -113,8 +105,11 @@ public class IntakeSubsystem extends SubsystemBase {
        public Command ampShoot() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
+            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
             topRoller.set(IntakeConstants.shootSpeedTop);
             bottomRoller.set(IntakeConstants.shootSpeedBottom);
+            
 
             // If we are in the speaker position, the launcher should already be running
         });
@@ -123,9 +118,10 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command ampPosition() {
         return new InstantCommand(() -> {
             // 1. Move the pivot to the amp position
-            pivotPIDController.setReference(IntakeConstants.kPivotAngleAmp, ControlType.kPosition);
-
+            
+            //this is now moved to the pivot subsystem
             // 2. Stop the launcher if it is running
+            pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp);
             launcherSubsystem.stop();
         }, this, launcherSubsystem);
     }
@@ -133,8 +129,8 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command speakerPosition() {
         return new InstantCommand(() -> {  // Should this be run(..) or runOnce(..)? Try and see
                 // 1. Move the pivot to the speaker position
-                pivotPIDController.setReference(IntakeConstants.kPivotAngleSpeaker, ControlType.kPosition);
-
+                
+                pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker);
                 // 2. Start the launcher
                 launcherSubsystem.shoot();
             }, this, launcherSubsystem);
@@ -147,16 +143,12 @@ public class IntakeSubsystem extends SubsystemBase {
         });
     }
 
-    public Command stopPivot() {
-        return runOnce(() -> {
-            pivotMotor.set(0.0);
-        });
-    }
+    
 
     @Override
     public void periodic() {
         
-        SmartDashboard.putNumber("Relative Encoder", pivotEncoder.getPosition());
+        
        
     }
     

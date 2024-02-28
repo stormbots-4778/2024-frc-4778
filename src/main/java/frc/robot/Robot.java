@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    SmartDashboard.putNumber("Relative Encoder", IntakeSubsystem.pivotEncoder.getPosition());
+    
 
   }
 

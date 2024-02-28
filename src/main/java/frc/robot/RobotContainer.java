@@ -4,18 +4,20 @@
 
 package frc.robot;
 
-// import com.pathplanner.lib.auto.AutoBuilder;
-// import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -31,6 +33,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CloseShoot;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,11 +47,13 @@ import frc.robot.commands.CloseShoot;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem();
-  public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem);
+  
   public final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public final LiftSubsystem m_lift = new LiftSubsystem();
+  public final PivotSubsystem m_pivot = new PivotSubsystem();
+  public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
 
-  public final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  public SendableChooser<Command> autoChooser = new SendableChooser<>();
   public SendableChooser<Command> otherChooser = new SendableChooser<>();
 
   // Replace with CommandXboxController or CommandJoystick if needed
@@ -75,10 +83,26 @@ public class RobotContainer {
             fieldCentric, true),
         m_robotDrive));
 
-        // NamedCommands.registerCommand("Close Shoot", new CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
+        NamedCommands.registerCommand("Close Shoot", new CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
+        NamedCommands.registerCommand("Shoot", m_launcherSubsystem.shoot());
+        NamedCommands.registerCommand("Intake", m_intake.intake());
+        NamedCommands.registerCommand("Intake Pivot Position", m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake));
+        NamedCommands.registerCommand("Amp Position", m_intake.ampPosition());
+        NamedCommands.registerCommand("Amp Pivot Position", m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
+        NamedCommands.registerCommand("Turn On Shoot", m_launcherSubsystem.shoot());
+        NamedCommands.registerCommand("Turn Off Shoot", m_launcherSubsystem.stop());
+        NamedCommands.registerCommand("Speaker Position", m_intake.speakerPosition());
+        NamedCommands.registerCommand("Speaker Pivot Position", m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
+        NamedCommands.registerCommand("Stop Intake", m_intake.stopIntake());
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+        
+        // autoChooser.addOption("MidSpeakerAuto", new MidSpeakerAuto(m_robotDrive, m_intake, m_launcherSubsystem));
+
+
 
         // otherChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData("Auto Chooser", otherChooser);
+        SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
  
@@ -108,14 +132,24 @@ public class RobotContainer {
     //         m_intake));
 
     new JoystickButton(m_driverController, Button.kX.value)
-            .onTrue(m_intake.ampPosition());
+            .toggleOnTrue(m_intake.ampPosition())
+            .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp))
+            .onTrue(m_launcherSubsystem.stop());
+
+            
             
     new JoystickButton(m_driverController, Button.kY.value)
-             .onTrue(m_intake.intake())
+             .toggleOnTrue(m_intake.intake())
+             .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
+             .onTrue(m_launcherSubsystem.stop())
+             
              .onFalse(m_intake.stopIntake());
           
     new JoystickButton(m_driverController, Button.kB.value)
-            .onTrue(m_intake.speakerPosition());
+            .toggleOnTrue(m_launcherSubsystem.shoot())
+            .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker))
+            .toggleOnTrue(m_intake.speakerPosition());
+            
 
     new JoystickButton(m_driverController, Button.kA.value)
             .onTrue(m_intake.outtake())
@@ -123,21 +157,23 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
             .onTrue(m_lift.extend())
+            
+            .onTrue(m_launcherSubsystem.stop())
             .onFalse(m_lift.stop());
 
  new JoystickButton(m_driverController, Button.kRightBumper.value)
             .onTrue(m_lift.retract())
+            .onTrue(m_launcherSubsystem.stop())
             .onFalse(m_lift.stop());
             
   new JoystickButton(m_driverController, Button.kStart.value)
             .onTrue(m_intake.ampShoot())
+            .onTrue(m_launcherSubsystem.stop())
             .onFalse(m_intake.stopIntake());
+
   
 
 
-//  new JoystickButton(m_driverController, Button.kRightBumper.value)
-//              .onTrue(m_launcherSubsystem.shoot())
-//               .onFalse(m_launcherSubsystem.stop());
   }
 
   /**
@@ -148,6 +184,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         // return autoChooser.getSelected();
-        return otherChooser.getSelected();
+        return autoChooser.getSelected();
     }
 }

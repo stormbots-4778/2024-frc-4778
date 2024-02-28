@@ -14,28 +14,17 @@ public class CloseShoot extends SequentialCommandGroup{
     
     public CloseShoot(LauncherSubsystem m_LauncherSubsystem, IntakeSubsystem m_intake) {
         addCommands(
-            new ParallelCommandGroup(
-                //pulsing puts the intake here anyways
-                new InstantCommand(() -> m_LauncherSubsystem.leftShooter.set(ShooterConstants.leftShootSpeed)),
-                new InstantCommand(() -> m_LauncherSubsystem.rightShooter.set(ShooterConstants.rightShootSpeed))
-            ),
-              
-                 
-             
-            
-            new ParallelCommandGroup(
-                new InstantCommand(() -> m_intake.topRoller.set(IntakeConstants.outtakeSpeed)),
-                new InstantCommand(() -> m_intake.bottomRoller.set(IntakeConstants.outtakeSpeed))
-            ).withTimeout(0.2) 
-        
-              
+           // pulsing puts the intake here anyways
+           m_LauncherSubsystem.shoot(),
+           m_intake.speakerPosition(),
+           m_intake.outtake().withTimeout(2.0)
             
 
 
 
             );
 
-
+            addRequirements(m_LauncherSubsystem, m_intake);
         
     }
 }
