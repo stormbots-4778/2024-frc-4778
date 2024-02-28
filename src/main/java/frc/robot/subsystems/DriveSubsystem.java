@@ -24,10 +24,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
+// import com.pathplanner.lib.auto.AutoBuilder;
+// import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+// import com.pathplanner.lib.util.PIDConstants;
+// import com.pathplanner.lib.util.ReplanningConfig;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -45,24 +45,24 @@ public class DriveSubsystem extends SubsystemBase {
     // m_gyro.enableLogging(true);
     // m_gyro.calibrate();
 
-        AutoBuilder.configureHolonomic(
-            this::getPose,
-             this::zeroPose,
-              this::getChassisSpeeds,
-               this::setChassisSpeeds,
-                new HolonomicPathFollowerConfig(
-                    new PIDConstants(4,0,0), 
-                    new PIDConstants(1,0,0), 4.5, 0.39, new ReplanningConfig() 
-                    ),
-                 () -> {
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                 },
-                  this
-        );
+        // AutoBuilder.configureHolonomic(
+        //     this::getPose,
+        //      this::zeroPose,
+        //       this::getChassisSpeeds,
+        //        this::setChassisSpeeds,
+        //         new HolonomicPathFollowerConfig(
+        //             new PIDConstants(4,0,0), 
+        //             new PIDConstants(1,0,0), 4.5, 0.39, new ReplanningConfig() 
+        //             ),
+        //          () -> {
+        //             var alliance = DriverStation.getAlliance();
+        //             if (alliance.isPresent()) {
+        //                 return alliance.get() == DriverStation.Alliance.Red;
+        //             }
+        //             return false;
+        //          },
+        //           this
+        // );
   }
 
  
@@ -137,11 +137,12 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
-  public void zeroPose(Pose2d pose) {
-    // swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d());
-    m_odometry.resetPosition(getGyroYaw(), null, pose);
-    m_odometry.resetPosition(getGyroYaw(), SwerveModulePosition[], pose);
-}
+  // public void zeroPose(Pose2d pose) {
+  //   // swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d());
+  //   m_odometry.resetPosition(getGyroYaw(), null, pose);
+  //   m_odometry.resetPosition(getGyroYaw(), SwerveModulePosition[], pose);
+
+
 
 
 

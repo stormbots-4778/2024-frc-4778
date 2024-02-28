@@ -4,8 +4,8 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+// import com.pathplanner.lib.auto.AutoBuilder;
+// import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.OperatorConstants;
@@ -75,9 +75,9 @@ public class RobotContainer {
             fieldCentric, true),
         m_robotDrive));
 
-        NamedCommands.registerCommand("Close Shoot", new CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
+        // NamedCommands.registerCommand("Close Shoot", new CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
 
-        otherChooser = AutoBuilder.buildAutoChooser();
+        // otherChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", otherChooser);
   }
 
@@ -128,6 +128,10 @@ public class RobotContainer {
  new JoystickButton(m_driverController, Button.kRightBumper.value)
             .onTrue(m_lift.retract())
             .onFalse(m_lift.stop());
+            
+  new JoystickButton(m_driverController, Button.kStart.value)
+            .onTrue(m_intake.ampShoot())
+            .onFalse(m_intake.stopIntake());
   
 
 

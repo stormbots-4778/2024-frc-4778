@@ -53,7 +53,7 @@ public class IntakeSubsystem extends SubsystemBase {
         bottomRollerPIDController = bottomRoller.getPIDController();
         bottomRollerPIDController.setP(IntakeConstants.intakeKp);
 
-        // pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
+        pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
         pivotMotor.setSmartCurrentLimit(IntakeConstants.kPivotMotorCurrentLimit);
 
         // TODO: Confirm if we should be using the RelativeEncoder (above) or AbsoluteEncoder for this motor
@@ -92,8 +92,8 @@ public class IntakeSubsystem extends SubsystemBase {
             pivotPIDController.setReference(IntakeConstants.kPivotAngleIntake, ControlType.kPosition);
 
             // 2. Run the intake motors until a note is loaded
-            topRoller.set(IntakeConstants.intakeSpeed);
-            bottomRoller.set(IntakeConstants.intakeSpeed);
+            topRoller.setVoltage(IntakeConstants.intakeSpeed);
+            bottomRoller.setVoltage(IntakeConstants.intakeSpeed);
 
             // 3. Stop the launcher if it is running
             launcherSubsystem.stop();
@@ -105,6 +105,16 @@ public class IntakeSubsystem extends SubsystemBase {
             // 1. Run the intake motors in reverse
             topRoller.set(IntakeConstants.outtakeSpeed);
             bottomRoller.set(IntakeConstants.outtakeSpeed);
+
+            // If we are in the speaker position, the launcher should already be running
+        });
+    }
+
+       public Command ampShoot() {
+        return runOnce(() -> {
+            // 1. Run the intake motors in reverse
+            topRoller.set(IntakeConstants.shootSpeedTop);
+            bottomRoller.set(IntakeConstants.shootSpeedBottom);
 
             // If we are in the speaker position, the launcher should already be running
         });

@@ -84,7 +84,7 @@ public final class Constants {
 
     public static final double leftShootSpeed = 1.0;
     public static final double rightShootSpeed = -1.0;
-    public static IdleMode kShootingMotorIdleMode = IdleMode.kBrake;
+    public static IdleMode kShootingMotorIdleMode = IdleMode.kCoast;
     public static int kShootingMotorCurrentLimit = 50; // amps
   }
 
@@ -117,19 +117,20 @@ public final class Constants {
 
   public static final class IntakeConstants {
     // Intake Motors
-    public static final int kTopRollerCanId = 20; //
-    public static final int kBottomRollerCanId = 21; //
+    public static final int kTopRollerCanId = 21; //
+    public static final int kBottomRollerCanId = 20; //
     public static final int kIntakePivotCanId = 22; //
 
-    public static final double intakeSpeed = 0.5;
+    public static final double intakeSpeed = 6.0;
     public static final double outtakeSpeed = -1.0;
-    public static final double shootSpeed = -0.5;
+    public static final double shootSpeedTop = -0.5;
+    public static final double shootSpeedBottom = -0.75;
 
     public static final double intakeKp = 0.02;
     public static final double intakeKi = 0;
     public static final double intakeKd = 0;
 
-    public static IdleMode kIntakeMotorIdleMode = IdleMode.kBrake;
+    public static IdleMode kIntakeMotorIdleMode = IdleMode.kCoast;
     public static int kIntakeMotorCurrentLimit = 40; // amps
 
     // Intake/outtake times
