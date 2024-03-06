@@ -17,7 +17,7 @@ public class CloseShoot extends SequentialCommandGroup{
            // pulsing puts the intake here anyways
            m_LauncherSubsystem.shoot(),
            m_intake.speakerPosition(),
-           m_intake.outtake().withTimeout(2.0)
+           m_intake.outtake().withTimeout(1.0)
             
 
 
