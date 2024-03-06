@@ -29,11 +29,12 @@ public final class Constants {
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort2 = 1;
   }
 
   public static final class DriveConstants {
-    public static double spdLimitFast = .6;
-    public static double turnLimitFast = .5;
+    public static double spdLimitFast = .9;
+    public static double turnLimitFast = .7;
 
     public static double spdLimitSlow = .25;
     public static double turnLimitSlow = .25;
@@ -122,7 +123,12 @@ public final class Constants {
     public static final double kLiftEncoderPositionPIDMinInput = 0; // radians
     public static final double kLiftEncoderPositionPIDMaxInput = kLiftEncoderPositionFactor; // radians
 
-    public static final double liftMotorSpeed = 0.3;
+    public static final double liftMotorSpeed = 0.4;
+
+    public static final double kFullExtend = 760;
+    public static final double kFullRetract = 0;
+
+    public static final double kStepDistance = 75;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
     public static int kLiftMotorCurrentLimit = 40; // amps
@@ -144,7 +150,7 @@ public final class Constants {
     public static final double intakeKd = 0;
 
     public static IdleMode kIntakeMotorIdleMode = IdleMode.kCoast;
-    public static int kIntakeMotorCurrentLimit = 40; // amps
+    public static int kIntakeMotorCurrentLimit = 35; // amps
 
     // Intake/outtake times
     public static final double outtakeTime = 3.0;
@@ -214,7 +220,7 @@ public final class Constants {
     public static final double kDrivingMinOutput = -1;
     public static final double kDrivingMaxOutput = 1;
 
-    public static final double kTurningP = 1;
+    public static final double kTurningP = 2;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
     public static final double kTurningFF = 0;

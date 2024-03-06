@@ -10,14 +10,14 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 
-public class CloseShoot extends SequentialCommandGroup{
+public class SpinLauncher extends SequentialCommandGroup{
     
-    public CloseShoot(LauncherSubsystem m_LauncherSubsystem, IntakeSubsystem m_intake) {
+    public SpinLauncher(LauncherSubsystem m_LauncherSubsystem) {
         addCommands(
            // pulsing puts the intake here anyways
-           m_LauncherSubsystem.shoot(),
+           m_LauncherSubsystem.shoot()
         //    m_intake.speakerPosition(),
-           m_intake.outtake().withTimeout(2.0)
+           
             
             
 
@@ -25,10 +25,7 @@ public class CloseShoot extends SequentialCommandGroup{
 
             );
 
-            addRequirements(m_LauncherSubsystem, m_intake);
+            addRequirements(m_LauncherSubsystem);
         
     }
 }
-
-
-            

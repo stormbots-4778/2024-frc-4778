@@ -18,6 +18,18 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "Spin Launcher"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "Close Shoot"
                 }
               }
@@ -25,7 +37,13 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "sequential",
           "data": {
             "commands": [
               {
@@ -35,18 +53,24 @@
                 }
               },
               {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "Intake"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Start On Right"
-                }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Start On Right"
           }
         },
         {
@@ -60,12 +84,6 @@
                 }
               },
               {
-                "type": "named",
-                "data": {
-                  "name": "Speaker Position"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "Go Back To The Right"
@@ -75,9 +93,46 @@
           }
         },
         {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spin Launcher"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Close Shoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Close Shoot"
+            "name": "Turn Off Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
           }
         }
       ]

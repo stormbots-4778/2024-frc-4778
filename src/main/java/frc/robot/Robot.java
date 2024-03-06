@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 
 
 /**
@@ -65,7 +66,11 @@ public class Robot extends TimedRobot {
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
+
     }
+    
+    // LiftSubsystem.getInstance().setLiftGoalCommand(0);
+    // m_lift.setLiftGoalCommand(0);
   }
 
   /** This function is called periodically during autonomous. */
@@ -94,6 +99,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
+
     CommandScheduler.getInstance().cancelAll();
   }
 

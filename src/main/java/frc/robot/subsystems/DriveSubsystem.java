@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -160,7 +161,7 @@ public class DriveSubsystem extends SubsystemBase {
         } else {
           inputTranslationMag = (gyroPitchRad + gyroRollRad) / 2.75;
         }
-        fieldRelative = true;
+        fieldRelative = false;
         rot = 0;
       } else {
         inputTranslationDir = 0;
@@ -203,7 +204,7 @@ public class DriveSubsystem extends SubsystemBase {
         }
       }
 
-    fieldRelative = true;
+    fieldRelative = false;
 
     double xSpeedCommanded;
     double ySpeedCommanded;
@@ -327,8 +328,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /** Zeroes the heading of the robot. */
-  public void zeroHeading() {
-    m_gyro.zeroYaw();
+  public Command zeroHeading() {
+     return runOnce(() -> {
+            m_gyro.zeroYaw();
+        });
   }
 
   /**

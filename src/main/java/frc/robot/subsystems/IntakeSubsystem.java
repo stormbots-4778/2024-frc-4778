@@ -75,8 +75,8 @@ public class IntakeSubsystem extends SubsystemBase {
             //this is now moved to the pivot subsystem
             
             // 2. Run the intake motors until a note is loaded
-            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 5);
-            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 5);
+            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 4);
+            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 4);
             topRoller.set(IntakeConstants.intakeSpeed);
              
             bottomRoller.set(IntakeConstants.intakeSpeed);
@@ -132,7 +132,7 @@ public class IntakeSubsystem extends SubsystemBase {
                 
                 pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker);
                 // 2. Start the launcher
-                launcherSubsystem.shoot();
+                // launcherSubsystem.shoot();
             }, this, launcherSubsystem);
     }
 

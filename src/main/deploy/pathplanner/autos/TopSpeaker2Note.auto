@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3949707899415804,
-      "y": 5.541275082550166
+      "x": 0.6913168112050516,
+      "y": 6.714031713777714
     },
-    "rotation": 0
+    "rotation": 60.461217740441896
   },
   "command": {
     "type": "sequential",
@@ -70,7 +70,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Out Middle"
+            "pathName": "StartOnLeft"
           }
         },
         {
@@ -86,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Drive Back Middle"
+                  "pathName": "Go Back To Left"
                 }
               }
             ]
