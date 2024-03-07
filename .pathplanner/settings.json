@@ -2,8 +2,14 @@
   "robotWidth": 0.9,
   "robotLength": 0.9,
   "holonomicMode": true,
-  "pathFolders": [],
-  "autoFolders": [],
+  "pathFolders": [
+    "Left",
+    "Middle",
+    "Right"
+  ],
+  "autoFolders": [
+    "Niko"
+  ],
   "defaultMaxVel": 2.75,
   "defaultMaxAccel": 2.75,
   "defaultMaxAngVel": 540.0,

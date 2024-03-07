@@ -122,16 +122,16 @@ public final class Constants {
 
     public static final double kLiftEncoderPositionPIDMinInput = 0; // radians
     public static final double kLiftEncoderPositionPIDMaxInput = kLiftEncoderPositionFactor; // radians
-
-    public static final double liftMotorSpeed = 0.4;
-
-    public static final double kFullExtend = 760;
-    public static final double kFullRetract = 0;
+    
 
     public static final double kStepDistance = 75;
+      public static final double kFullExtend = 760;
+      public static final double kFullRetract = 0;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
-    public static int kLiftMotorCurrentLimit = 40; // amps
+    public static int kLiftMotorCurrentLimit = 30; // amps
+   
+
   }
 
   public static final class IntakeConstants {
@@ -176,7 +176,9 @@ public final class Constants {
     public static final double kPivotAngleAmp = -(Math.PI * 8.80);
     public static final double kPivotAngleSpeaker = 0.0;
 
-    public static final int kPivotMotorCurrentLimit = 30;
+  
+
+    public static final int kPivotMotorCurrentLimit = 20;
   }
 
   public static final class ModuleConstants {

@@ -265,7 +265,20 @@ public class DriveSubsystem extends SubsystemBase {
 
     var chassisSpeeds =
      fieldRelative
+    var chassisSpeeds =
+     fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(-m_gyro.getYaw()))
+            : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
+
+    setChassisSpeeds(chassisSpeeds);
+  }
+
+  public ChassisSpeeds getChassisSpeeds() {
+    return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+  }
+
+  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
+    setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds));
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
 
     setChassisSpeeds(chassisSpeeds);
@@ -279,6 +292,13 @@ public class DriveSubsystem extends SubsystemBase {
     setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds));
   }
 
+  public SwerveModuleState[] getModuleStates() {
+    return new SwerveModuleState[] {
+        m_frontLeft.getState(),
+        m_frontRight.getState(),
+        m_rearLeft.getState(),
+        m_rearRight.getState()
+    };
   public SwerveModuleState[] getModuleStates() {
     return new SwerveModuleState[] {
         m_frontLeft.getState(),
@@ -300,6 +320,16 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(desiredStates[1]);
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
+  }
+
+  /**
+   * Sets the wheels into an X formation to prevent movement.
+   */
+  public void setX() {
+    m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
   /**
@@ -355,6 +385,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void AutoBalance() {
     boolean drive = true;
     // autoBalanceToggle = false;
+
     float gyroPitch = m_gyro.getPitch();
     while ((gyroPitch >= -6 && gyroPitch <= 6)) {
       gyroPitch = m_gyro.getPitch();
@@ -365,11 +396,13 @@ public class DriveSubsystem extends SubsystemBase {
     autoBalanceToggle = true;
 
     while (drive) {
+    while (drive) {
       gyroPitch = m_gyro.getPitch();
       drive(0, 0, 0, false, true);
     }
   }
 
+  public void BalanceToggle() {
   public void BalanceToggle() {
     autoBalanceToggle = !autoBalanceToggle;
   }

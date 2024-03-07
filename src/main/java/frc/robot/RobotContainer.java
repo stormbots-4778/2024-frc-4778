@@ -13,38 +13,38 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.LiftConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.Autos;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Autos;
 import frc.robot.commands.CloseShoot;
 import frc.robot.commands.SpinLauncher;
 
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.CANSparkMax;
 
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
@@ -55,6 +55,10 @@ public class RobotContainer {
   public final LiftSubsystem m_lift = new LiftSubsystem();
   public final PivotSubsystem m_pivot = new PivotSubsystem();
   public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
+
+  // BlinkIn
+  // public Spark blinkin = new Spark(1);
+
 
   public SendableChooser<Command> autoChooser = new SendableChooser<>();
   public SendableChooser<Command> otherChooser = new SendableChooser<>();
@@ -69,13 +73,13 @@ public class RobotContainer {
 
     public boolean fieldCentric = false;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
 
     m_robotDrive.setDefaultCommand(
-        Commands.run(() -> 
-          m_robotDrive.drive(
+        Commands.run(() -> m_robotDrive.drive(
             -MathUtil.applyDeadband(
                 Math.pow(m_driverController.getLeftY(), 2) * Math.signum(m_driverController.getLeftY()) * spdLimit,
                 OIConstants.kDriveDeadband),
@@ -85,6 +89,7 @@ public class RobotContainer {
             -MathUtil.applyDeadband(
                 Math.pow(m_driverController.getRightX(), 2) * Math.signum(m_driverController.getRightX()) * turnLimit,
                 OIConstants.kDriveDeadband),
+
             false, true),
         m_robotDrive));
 
@@ -116,31 +121,38 @@ public class RobotContainer {
   // }
  
 
+
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandXboxController
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandXboxController
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
     // // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // new Trigger(m_exampleSubsystem::exampleCondition)
-    //     .onTrue(new ExampleCommand(m_exampleSubsystem));
-    
+    // .onTrue(new ExampleCommand(m_exampleSubsystem));
+
     // new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    //         .whileTrue(new InstantCommand(
-    //         ()->m_intake.stowPos(),
-    //         m_intake));     
+    // .whileTrue(new InstantCommand(
+    // ()->m_intake.stowPos(),
+    // m_intake));
 
     // new JoystickButton(m_driverController, Button.kRightBumper.value)
-    //         .whileTrue(new InstantCommand(
-    //         ()->m_intake.deployPos(),
-    //         m_intake));
+    // .whileTrue(new InstantCommand(
+    // ()->m_intake.deployPos(),
+    // m_intake));
 
     new JoystickButton(m_driverController, Button.kX.value)
+
             .toggleOnTrue(m_intake.ampPosition())
             .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp))
             .onTrue(m_launcherSubsystem.stop());
@@ -192,6 +204,7 @@ public class RobotContainer {
 //             .onTrue(m_robotDrive.zeroHeading());
             
 
+
   }
 
   /**
@@ -200,8 +213,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
         // An ExampleCommand will run in autonomous
         // return autoChooser.getSelected();
         return autoChooser.getSelected();
     }
+
+    return autoChooser.getSelected();
+  }
+
 }
