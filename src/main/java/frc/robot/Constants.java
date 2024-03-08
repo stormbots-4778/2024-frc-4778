@@ -136,14 +136,14 @@ public final class Constants {
 
   public static final class IntakeConstants {
     // Intake Motors
-    public static final int kTopRollerCanId = 20; //
-    public static final int kBottomRollerCanId = 21; //
+    public static final int kBottomRollerCanId = 20; //
+    public static final int kTopRollerCanId = 21; //
     public static final int kIntakePivotCanId = 22; //
 
     public static final double intakeSpeed = 0.6;
     public static final double outtakeSpeed = -1.0;
-    public static final double shootSpeedTop = -0.505;
-    public static final double shootSpeedBottom = -0.605;
+    public static final double shootSpeedTop = -0.555; // can shoot from 2ft away with ~4in
+    public static final double shootSpeedBottom = -0.75;
 
     public static final double intakeKp = 0.02;
     public static final double intakeKi = 0;
@@ -173,7 +173,7 @@ public final class Constants {
 
     // TODO: Tune angles for each pivot position
     public static final double kPivotAngleIntake = -(Math.PI * 22);
-    public static final double kPivotAngleAmp = -(Math.PI * 8.80);
+    public static final double kPivotAngleAmp = -(Math.PI * 9.5);
     public static final double kPivotAngleSpeaker = 0.0;
 
   

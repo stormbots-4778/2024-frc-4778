@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.subsystems.IntakeSubsystem;
+// import frc.robot.Constants.IntakeConstants;
+// import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 
 public class SpinLauncher extends SequentialCommandGroup{
@@ -17,10 +17,6 @@ public class SpinLauncher extends SequentialCommandGroup{
            // pulsing puts the intake here anyways
            m_LauncherSubsystem.shoot()
         //    m_intake.speakerPosition(),
-           
-            
-            
-
 
 
             );

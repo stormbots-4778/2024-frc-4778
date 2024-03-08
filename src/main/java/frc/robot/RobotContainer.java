@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
-import frc.robot.commands.CloseShoot;
+//import frc.robot.commands.CloseShoot;
 import frc.robot.commands.SpinLauncher;
 
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -93,7 +93,7 @@ public class RobotContainer {
             false, true),
         m_robotDrive));
 
-        NamedCommands.registerCommand("Close Shoot", new CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
+       // NamedCommands.registerCommand("Close Shoot", new CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
         NamedCommands.registerCommand("Spin Launcher", new SpinLauncher(m_launcherSubsystem));
         NamedCommands.registerCommand("Shoot", m_launcherSubsystem.shoot());
         NamedCommands.registerCommand("Intake", m_intake.intake());
