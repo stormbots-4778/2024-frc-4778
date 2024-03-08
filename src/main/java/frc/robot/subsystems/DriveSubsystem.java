@@ -17,14 +17,16 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
 public class DriveSubsystem extends SubsystemBase {
   public boolean autoBalanceToggle = false;
   public boolean wallAlignToggle = false;
+  // public Pigeon2 gyro;
 
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
@@ -141,70 +143,70 @@ public class DriveSubsystem extends SubsystemBase {
     double inputTranslationDir = 0.0;
     double inputTranslationMag = 0.0;
 
-    if(autoBalanceToggle){
-      // Default: gyroYaw = m_gyro.getYaw();
-      float gyroYaw = (-(Math.signum(m_gyro.getYaw()))) * (Math.signum(m_gyro.getYaw()) * 180) - m_gyro.getYaw();
-      float gyroPitch = m_gyro.getPitch();
-      float gyroRoll = -m_gyro.getRoll();
+    // if(autoBalanceToggle){
+    //   // Default: gyroYaw = m_gyro.getYaw();
+    //   float gyroYaw = (-(Math.signum(m_gyro.getYaw()))) * (Math.signum(m_gyro.getYaw()) * 180) - m_gyro.getYaw();
+    //   float gyroPitch = m_gyro.getPitch();
+    //   float gyroRoll = -m_gyro.getRoll();
 
-      double gyroPitchRad = Math.toRadians(gyroPitch);
-      double gyroRollRad = -Math.toRadians(gyroRoll);
+    //   double gyroPitchRad = Math.toRadians(gyroPitch);
+    //   double gyroRollRad = -Math.toRadians(gyroRoll);
 
-      if(gyroPitch <= -3 || gyroPitch >= 3 || gyroRoll <= -3 || gyroRoll >= 3){
-        gyroPitchRad = Math.toRadians(gyroPitch);
-        gyroRollRad = Math.toRadians(gyroRoll);
+    //   if(gyroPitch <= -3 || gyroPitch >= 3 || gyroRoll <= -3 || gyroRoll >= 3){
+    //     gyroPitchRad = Math.toRadians(gyroPitch);
+    //     gyroRollRad = Math.toRadians(gyroRoll);
 
-        inputTranslationDir = -Math.atan2(gyroRollRad, gyroPitchRad);
+    //     inputTranslationDir = -Math.atan2(gyroRollRad, gyroPitchRad);
   
-        if(Math.abs(gyroPitch) < 1.5){
-          inputTranslationMag = (gyroPitchRad + gyroRollRad) / 3;
-        } else {
-          inputTranslationMag = (gyroPitchRad + gyroRollRad) / 2.75;
-        }
-        fieldRelative = false;
-        rot = 0;
-      } else {
-        inputTranslationDir = 0;
-        inputTranslationMag = 0;
-      }
-      
-        rateLimit = true;
-    // } else if (LimelightConstants.limelightToggle){
-    //   fieldRelative = false;
-
-    //     double xError = LimelightConstants.x;
-    //     double yError = -LimelightConstants.y;
-        
-    //     double yawCalculated = (Math.signum(m_gyro.getYaw()) * Math.PI) - (Math.toRadians(m_gyro.getYaw()));
-        
-    //     double kpTurn = 0.25;
-    //     float KpStrafe = 0.0f;
-    //     //  float KpStrafe = 0.01f;       
-    //     if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
-    //      //rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
-    //      ySpeed = -(KpStrafe * xError);
+    //     if(Math.abs(gyroPitch) < 1.5){
+    //       inputTranslationMag = (gyroPitchRad + gyroRollRad) / 3;
+    //     } else {
+    //       inputTranslationMag = (gyroPitchRad + gyroRollRad) / 2.75;
     //     }
+    //     fieldRelative = true;
+    //     rot = 0;
+    //   } else {
+    //     inputTranslationDir = 0;
+    //     inputTranslationMag = 0;
+    //   }
+      
+    //     rateLimit = true;
+    // // } else if (LimelightConstants.limelightToggle){
+    // //   fieldRelative = false;
 
-        // if (Math.abs(yError) >  0.25 ){
-        //  xSpeed = (KpStrafe * yError);
-        // }
-      } else if (wallAlignToggle) {
-        double KpTurn = 0.25;
+    // //     double xError = LimelightConstants.x;
+    // //     double yError = -LimelightConstants.y;
+        
+    // //     double yawCalculated = (Math.signum(m_gyro.getYaw()) * Math.PI) - (Math.toRadians(m_gyro.getYaw()));
+        
+    // //     double kpTurn = 0.25;
+    // //     float KpStrafe = 0.0f;
+    // //     //  float KpStrafe = 0.01f;       
+    // //     if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
+    // //      //rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
+    // //      ySpeed = -(KpStrafe * xError);
+    // //     }
 
-        double yawTo0 = Math.toRadians(m_gyro.getYaw());
-        double yawTo90 = (Math.signum(m_gyro.getYaw()) * (Math.PI / 2)) - (Math.toRadians(m_gyro.getYaw()));
-        double yawTo180 = (Math.signum(m_gyro.getYaw()) * Math.PI) - (Math.toRadians(m_gyro.getYaw()));
-        double targetSpeed = yawTo90 > yawTo180? yawTo180:yawTo90;
-        targetSpeed = targetSpeed > yawTo0? yawTo0: targetSpeed;
+    //     // if (Math.abs(yError) >  0.25 ){
+    //     //  xSpeed = (KpStrafe * yError);
+    //     // }
+    //   } else if (wallAlignToggle) {
+    //     double KpTurn = 0.25;
 
-        if(Math.abs(Math.toDegrees(targetSpeed)) < 1) {
-          wallAlignToggle = false;
-        } else {
-          rot = MathUtil.clamp((targetSpeed * KpTurn) + .05, -0.25, 0.25);
-        }
-      }
+    //     double yawTo0 = Math.toRadians(m_gyro.getYaw());
+    //     double yawTo90 = (Math.signum(m_gyro.getYaw()) * (Math.PI / 2)) - (Math.toRadians(m_gyro.getYaw()));
+    //     double yawTo180 = (Math.signum(m_gyro.getYaw()) * Math.PI) - (Math.toRadians(m_gyro.getYaw()));
+    //     double targetSpeed = yawTo90 > yawTo180? yawTo180:yawTo90;
+    //     targetSpeed = targetSpeed > yawTo0? yawTo0: targetSpeed;
 
-    fieldRelative = false;
+    //     if(Math.abs(Math.toDegrees(targetSpeed)) < 1) {
+    //       wallAlignToggle = false;
+    //     } else {
+    //       rot = MathUtil.clamp((targetSpeed * KpTurn) + .05, -0.25, 0.25);
+    //     }
+    //   }
+
+    fieldRelative = true;
 
     double xSpeedCommanded;
     double ySpeedCommanded;
@@ -265,8 +267,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     var chassisSpeeds =
      fieldRelative
-    var chassisSpeeds =
-     fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(-m_gyro.getYaw()))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
 
@@ -279,26 +279,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
     setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds));
-            : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
-
-    setChassisSpeeds(chassisSpeeds);
   }
 
-  public ChassisSpeeds getChassisSpeeds() {
-    return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
-  }
-
-  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
-    setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds));
-  }
-
-  public SwerveModuleState[] getModuleStates() {
-    return new SwerveModuleState[] {
-        m_frontLeft.getState(),
-        m_frontRight.getState(),
-        m_rearLeft.getState(),
-        m_rearRight.getState()
-    };
   public SwerveModuleState[] getModuleStates() {
     return new SwerveModuleState[] {
         m_frontLeft.getState(),
@@ -332,16 +314,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
-  /**
-   * Sets the wheels into an X formation to prevent movement.
-   */
-  public void setX() {
-    m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-  }
-
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
     m_frontLeft.resetEncoders();
@@ -358,10 +330,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /** Zeroes the heading of the robot. */
-  public Command zeroHeading() {
-     return runOnce(() -> {
-            m_gyro.zeroYaw();
-        });
+  public void zeroHeading() {
+    m_gyro.zeroYaw();
   }
 
   /**
@@ -382,28 +352,7 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  public void AutoBalance() {
-    boolean drive = true;
-    // autoBalanceToggle = false;
 
-    float gyroPitch = m_gyro.getPitch();
-    while ((gyroPitch >= -6 && gyroPitch <= 6)) {
-      gyroPitch = m_gyro.getPitch();
-      SmartDashboard.putNumber("PITCH AUTO", gyroPitch);
-      drive(.1, 0, 0, false, true);
-    }
-    drive = false;
-    autoBalanceToggle = true;
 
-    while (drive) {
-    while (drive) {
-      gyroPitch = m_gyro.getPitch();
-      drive(0, 0, 0, false, true);
-    }
-  }
 
-  public void BalanceToggle() {
-  public void BalanceToggle() {
-    autoBalanceToggle = !autoBalanceToggle;
-  }
 }

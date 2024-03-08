@@ -52,29 +52,29 @@ public class IntakeSubsystem extends SubsystemBase {
         bottomRollerPIDController = bottomRoller.getPIDController();
         bottomRollerPIDController.setP(IntakeConstants.intakeKp);
 
-        // pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
-        pivotMotor.setSmartCurrentLimit(IntakeConstants.kPivotMotorCurrentLimit);
+        // // pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
+        // pivotMotor.setSmartCurrentLimit(IntakeConstants.kPivotMotorCurrentLimit);
 
-        // TODO: Confirm if we should be using the RelativeEncoder (above) or AbsoluteEncoder for this motor
-        //pivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
+        // // TODO: Confirm if we should be using the RelativeEncoder (above) or AbsoluteEncoder for this motor
+        // //pivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
        
-        pivotEncoder = pivotMotor.getEncoder();
+        // pivotEncoder = pivotMotor.getEncoder();
       
-        pivotEncoder.setPositionConversionFactor(IntakeConstants.kPivotEncoderPositionFactor);
-        pivotEncoder.setVelocityConversionFactor(IntakeConstants.kPivotEncoderVelocityFactor);
+        // pivotEncoder.setPositionConversionFactor(IntakeConstants.kPivotEncoderPositionFactor);
+        // pivotEncoder.setVelocityConversionFactor(IntakeConstants.kPivotEncoderVelocityFactor);
 
-        pivotPIDController = pivotMotor.getPIDController();
-        pivotPIDController.setFeedbackDevice(pivotEncoder);
-        pivotPIDController.setPositionPIDWrappingEnabled(false);
-        pivotPIDController.setPositionPIDWrappingMinInput(IntakeConstants.kPivotEncoderPositionPIDMinInput);
-        pivotPIDController.setPositionPIDWrappingMaxInput(IntakeConstants.kPivotEncoderPositionPIDMaxInput);
-        pivotPIDController.setP(IntakeConstants.kPivotP);
-        pivotPIDController.setI(IntakeConstants.kPivotI);
-        pivotPIDController.setD(IntakeConstants.kPivotD);
-        pivotPIDController.setFF(IntakeConstants.kPivotFF);
-        // pivotPIDController.setClosed
+        // pivotPIDController = pivotMotor.getPIDController();
+        // pivotPIDController.setFeedbackDevice(pivotEncoder);
+        // pivotPIDController.setPositionPIDWrappingEnabled(false);
+        // pivotPIDController.setPositionPIDWrappingMinInput(IntakeConstants.kPivotEncoderPositionPIDMinInput);
+        // pivotPIDController.setPositionPIDWrappingMaxInput(IntakeConstants.kPivotEncoderPositionPIDMaxInput);
+        // pivotPIDController.setP(IntakeConstants.kPivotP);
+        // pivotPIDController.setI(IntakeConstants.kPivotI);
+        // pivotPIDController.setD(IntakeConstants.kPivotD);
+        // pivotPIDController.setFF(IntakeConstants.kPivotFF);
+        // // pivotPIDController.setClosed
 
-        pivotPIDController.setOutputRange(IntakeConstants.kPivotMinOutput, IntakeConstants.kPivotMaxOutput);
+        // pivotPIDController.setOutputRange(IntakeConstants.kPivotMinOutput, IntakeConstants.kPivotMaxOutput);
 
 
     
@@ -165,7 +165,7 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         
-        SmartDashboard.putNumber("Relative Encoder", pivotEncoder.getPosition());
+        
        
     }
 }

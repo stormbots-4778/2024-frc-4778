@@ -217,9 +217,7 @@ public class RobotContainer {
         // An ExampleCommand will run in autonomous
         // return autoChooser.getSelected();
         return autoChooser.getSelected();
-    }
 
-    return autoChooser.getSelected();
   }
 
 }

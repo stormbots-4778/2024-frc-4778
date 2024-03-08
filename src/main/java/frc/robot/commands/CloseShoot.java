@@ -13,10 +13,6 @@ public class CloseShoot extends SequentialCommandGroup {
            m_LauncherSubsystem.shoot(),
         //    m_intake.speakerPosition(),
            m_intake.outtake().withTimeout(2.0)
-            
-            
-
-
 
             );
 
@@ -25,6 +21,6 @@ public class CloseShoot extends SequentialCommandGroup {
 
 
         
-        addRequirements(m_LauncherSubsystem, m_intake);
+        
     }
 }
