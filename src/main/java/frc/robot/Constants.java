@@ -123,6 +123,7 @@ public final class Constants {
     public static final double kLiftEncoderPositionPIDMinInput = 0; // radians
     public static final double kLiftEncoderPositionPIDMaxInput = kLiftEncoderPositionFactor; // radians
     
+    public static final double kLiftMotorSpeed = 0.5; 
 
     public static final double kStepDistance = 75;
       public static final double kFullExtend = 760;

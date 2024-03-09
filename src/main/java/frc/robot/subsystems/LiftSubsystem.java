@@ -20,7 +20,7 @@ public class LiftSubsystem extends SubsystemBase {
         LiftMotor.restoreFactoryDefaults();
        
         LiftMotor.setIdleMode(LiftConstants.kLiftMotorIdleMode);
-        LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);6
+        LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
         LiftMotor.burnFlash();
 
         LiftPIDController = LiftMotor.getPIDController();
@@ -31,9 +31,6 @@ public class LiftSubsystem extends SubsystemBase {
 
         LiftPIDController.setOutputRange(LiftConstants.kLiftMinOutput, LiftConstants.kLiftMaxOutput);
 
-
-        
-
         LiftEncoder = LiftMotor.getEncoder();
 
         LiftEncoder.setPositionConversionFactor(LiftConstants.kLiftEncoderPositionFactor);
@@ -42,26 +39,17 @@ public class LiftSubsystem extends SubsystemBase {
         LiftPIDController.setPositionPIDWrappingEnabled(false);
         LiftPIDController.setPositionPIDWrappingMinInput(LiftConstants.kLiftEncoderPositionPIDMinInput);
         LiftPIDController.setPositionPIDWrappingMaxInput(LiftConstants.kLiftEncoderPositionPIDMaxInput);
-
-
-      
-
- 
-
- 
-        
-        
     }
 
     public Command extend() {
         return runOnce(()-> {
-            LiftMotor.set(LiftConstants.liftMotorSpeed);
+            LiftMotor.set(LiftConstants.kLiftMotorSpeed);
         });
     }
 
     public Command retract() {
         return runOnce(()-> {
-            LiftMotor.set(-(LiftConstants.liftMotorSpeed));
+            LiftMotor.set(-(LiftConstants.kLiftMotorSpeed));
         });
     }
 
@@ -71,18 +59,4 @@ public class LiftSubsystem extends SubsystemBase {
               
         });
     }
-
-    // public Command shoot() {
-    //     return runOnce(()-> {
-    //         leftShooter.set(ShooterConstants.leftShootSpeed);
-    //         rightShooter.set(ShooterConstants.rightShootSpeed);
-    //     });
-    // }
-
-    // public Command () {
-    //     return runOnce(()-> {
-    //         leftShooter.set(0.0);
-    //         rightShooter.set(0.0);        
-    //     });
-    // }
 }
