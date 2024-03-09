@@ -20,7 +20,7 @@ public class LiftSubsystem extends SubsystemBase {
         LiftMotor.restoreFactoryDefaults();
        
         LiftMotor.setIdleMode(LiftConstants.kLiftMotorIdleMode);
-        LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);6
+        LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
         LiftMotor.burnFlash();
 
         LiftPIDController = LiftMotor.getPIDController();
