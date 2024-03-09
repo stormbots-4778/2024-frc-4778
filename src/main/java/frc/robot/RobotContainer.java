@@ -18,6 +18,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.LauncherPivotSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -55,6 +56,7 @@ public class RobotContainer {
   public final LiftSubsystem m_lift = new LiftSubsystem();
   public final PivotSubsystem m_pivot = new PivotSubsystem();
   public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
+  public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
 
   // BlinkIn
   // public Spark blinkin = new Spark(1);
@@ -105,6 +107,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Speaker Position", m_intake.speakerPosition());
         NamedCommands.registerCommand("Speaker Pivot Position", m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
         NamedCommands.registerCommand("Stop Intake", m_intake.stopIntake());
+        NamedCommands.registerCommand("Speaker Shot", m_launcherPivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
         
         autoChooser = AutoBuilder.buildAutoChooser();
         
