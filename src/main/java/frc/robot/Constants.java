@@ -164,7 +164,7 @@ public final class Constants {
     public static final double kPivotEncoderPositionPIDMaxInput = kPivotEncoderPositionFactor; // radians
 
     // TODO: Tune PID gains
-    public static final double kPivotP = 0.01;
+    public static final double kPivotP = 0.02;
     public static final double kPivotI = 0;
     public static final double kPivotD = 0;
     public static final double kPivotFF = 0;
@@ -216,14 +216,14 @@ public final class Constants {
     public static final double kTurningEncoderPositionPIDMinInput = 0; // radians
     public static final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
 
-    public static final double kDrivingP = 0.04;
+    public static final double kDrivingP = 0.06;
     public static final double kDrivingI = 0;
     public static final double kDrivingD = 0;
     public static final double kDrivingFF = 1 / kDriveWheelFreeSpeedRps;
     public static final double kDrivingMinOutput = -1;
     public static final double kDrivingMaxOutput = 1;
 
-    public static final double kTurningP = 2;
+    public static final double kTurningP = 3;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
     public static final double kTurningFF = 0;
@@ -257,7 +257,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.05;
+    public static final double kDriveDeadband = 0.025;
   }
 
   public final class LauncherConstants {
