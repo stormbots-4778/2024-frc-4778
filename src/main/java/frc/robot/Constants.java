@@ -123,6 +123,7 @@ public final class Constants {
     public static final double kLiftEncoderPositionPIDMinInput = 0; // radians
     public static final double kLiftEncoderPositionPIDMaxInput = kLiftEncoderPositionFactor; // radians
     
+    public static final double kLiftMotorSpeed = 0.5; 
 
     public static final double kStepDistance = 75;
       public static final double kFullExtend = 760;
@@ -257,5 +258,19 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.05;
+  }
+
+  public final class LauncherConstants {
+    public static final IdleMode kLauncherMotorIdleMode = IdleMode.kCoast;
+    public static final int kLauncherPivotCanId = 26;
+    public static final int kPivotMotorCurrentLimit = 30; // Changed from double to int
+    public static final double kPivotEncoderPositionFactor = 1.0;
+    public static final double kPivotEncoderVelocityFactor = 1.0;
+    public static final double kPivotEncoderPositionPIDMinInput = -1.0;
+    public static final double kPivotEncoderPositionPIDMaxInput = 1.0;
+    public static final double kPivotP = 0.1;
+    public static final double kPivotI = 0.0;
+    public static final double kPivotD = 0.0;
+    public static final double kPivotFF = 0.0; 
   }
 }
