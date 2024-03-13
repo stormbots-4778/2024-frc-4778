@@ -16,8 +16,14 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.LimelightConstants;
+import frc.robot.LimelightHelpers;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import javax.xml.xpath.XPath;
+
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
@@ -50,7 +56,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
-  private final AHRS m_gyro = new AHRS(SerialPort.Port.kUSB);
+  public final AHRS m_gyro = new AHRS(SerialPort.Port.kUSB);
 
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
@@ -62,7 +68,7 @@ public class DriveSubsystem extends SubsystemBase {
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
   // Odometry class for tracking robot pose
-  private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+  public final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
       Rotation2d.fromDegrees(m_gyro.getYaw() * -1),
       new SwerveModulePosition[] {
@@ -129,6 +135,19 @@ public class DriveSubsystem extends SubsystemBase {
         pose);
   }
 
+
+
+
+
+  
+
+
+
+
+
+
+
+
   /**
    * Method to drive the robot using joystick info.
    *
@@ -143,82 +162,12 @@ public class DriveSubsystem extends SubsystemBase {
     double inputTranslationDir = 0.0;
     double inputTranslationMag = 0.0;
 
-    // if(autoBalanceToggle){
-    //   // Default: gyroYaw = m_gyro.getYaw();
-    //   float gyroYaw = (-(Math.signum(m_gyro.getYaw()))) * (Math.signum(m_gyro.getYaw()) * 180) - m_gyro.getYaw();
-    //   float gyroPitch = m_gyro.getPitch();
-    //   float gyroRoll = -m_gyro.getRoll();
-
-    //   double gyroPitchRad = Math.toRadians(gyroPitch);
-    //   double gyroRollRad = -Math.toRadians(gyroRoll);
-
-    //   if(gyroPitch <= -3 || gyroPitch >= 3 || gyroRoll <= -3 || gyroRoll >= 3){
-    //     gyroPitchRad = Math.toRadians(gyroPitch);
-    //     gyroRollRad = Math.toRadians(gyroRoll);
-
-    //     inputTranslationDir = -Math.atan2(gyroRollRad, gyroPitchRad);
-  
-    //     if(Math.abs(gyroPitch) < 1.5){
-    //       inputTranslationMag = (gyroPitchRad + gyroRollRad) / 3;
-    //     } else {
-    //       inputTranslationMag = (gyroPitchRad + gyroRollRad) / 2.75;
-    //     }
-    //     fieldRelative = true;
-    //     rot = 0;
-    //   } else {
-    //     inputTranslationDir = 0;
-    //     inputTranslationMag = 0;
-    //   }
-      
-    //     rateLimit = true;
-    // // } else if (LimelightConstants.limelightToggle){
-    // //   fieldRelative = false;
-
-    // //     double xError = LimelightConstants.x;
-    // //     double yError = -LimelightConstants.y;
-        
-    // //     double yawCalculated = (Math.signum(m_gyro.getYaw()) * Math.PI) - (Math.toRadians(m_gyro.getYaw()));
-        
-    // //     double kpTurn = 0.25;
-    // //     float KpStrafe = 0.0f;
-    // //     //  float KpStrafe = 0.01f;       
-    // //     if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
-    // //      //rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
-    // //      ySpeed = -(KpStrafe * xError);
-    // //     }
-
-    //     // if (Math.abs(yError) >  0.25 ){
-    //     //  xSpeed = (KpStrafe * yError);
-    //     // }
-    //   } else if (wallAlignToggle) {
-    //     double KpTurn = 0.25;
-
-    //     double yawTo0 = Math.toRadians(m_gyro.getYaw());
-    //     double yawTo90 = (Math.signum(m_gyro.getYaw()) * (Math.PI / 2)) - (Math.toRadians(m_gyro.getYaw()));
-    //     double yawTo180 = (Math.signum(m_gyro.getYaw()) * Math.PI) - (Math.toRadians(m_gyro.getYaw()));
-    //     double targetSpeed = yawTo90 > yawTo180? yawTo180:yawTo90;
-    //     targetSpeed = targetSpeed > yawTo0? yawTo0: targetSpeed;
-
-    //     if(Math.abs(Math.toDegrees(targetSpeed)) < 1) {
-    //       wallAlignToggle = false;
-    //     } else {
-    //       rot = MathUtil.clamp((targetSpeed * KpTurn) + .05, -0.25, 0.25);
-    //     }
-    //   }
-
     fieldRelative = true;
 
     double xSpeedCommanded;
     double ySpeedCommanded;
 
     if (rateLimit) {
-      // Convert XY to polar for rate limiting
-      if(!autoBalanceToggle){
-        inputTranslationDir = Math.atan2(ySpeed, xSpeed);
-        inputTranslationMag = Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2));
-      }
-
-
       // Calculate the direction slew rate based on an estimate of the lateral acceleration
       double directionSlewRate;
       if (m_currentTranslationMag != 0.0) {
@@ -226,7 +175,6 @@ public class DriveSubsystem extends SubsystemBase {
       } else {
         directionSlewRate = 500.0; //some high number that means the slew rate is effectively instantaneous
       }
-      
 
       double currentTime = WPIUtilJNI.now() * 1e-6;
       double elapsedTime = currentTime - m_prevTime;
@@ -264,7 +212,6 @@ public class DriveSubsystem extends SubsystemBase {
     double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
     double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
     double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
-
     var chassisSpeeds =
      fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(-m_gyro.getYaw()))
@@ -272,6 +219,36 @@ public class DriveSubsystem extends SubsystemBase {
 
     setChassisSpeeds(chassisSpeeds);
   }
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   public ChassisSpeeds getChassisSpeeds() {
     return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
@@ -289,6 +266,8 @@ public class DriveSubsystem extends SubsystemBase {
         m_rearRight.getState()
     };
   }
+
+  
 
   /**
    * Sets the swerve ModuleStates.

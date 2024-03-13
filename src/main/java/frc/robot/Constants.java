@@ -253,6 +253,12 @@ public final class Constants {
     public static double area;
 
     public static boolean limelightToggle = false;
+
+    public static final double AmpTargetTy = 13.0;
+    public static final double AmpTargetTx = 0.0;
+
+    public static final double AutoAlignSpeedFactor = 0.1;
+
   }
 
   public static final class OIConstants {

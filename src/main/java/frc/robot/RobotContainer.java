@@ -18,6 +18,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.AutoAim;
 import frc.robot.subsystems.LauncherPivotSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -32,7 +34,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
 //import frc.robot.commands.CloseShoot;
 import frc.robot.commands.SpinLauncher;
-
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -56,11 +59,17 @@ public class RobotContainer {
   public final LiftSubsystem m_lift = new LiftSubsystem();
   public final PivotSubsystem m_pivot = new PivotSubsystem();
   public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
-  public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
+  public final LimelightSubsystem m_limelight = new LimelightSubsystem();
+  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive);
+  // public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
+  //  public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
+
+
+  //public UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
+  private UsbCamera camera;
 
   // BlinkIn
   // public Spark blinkin = new Spark(1);
-
 
   public SendableChooser<Command> autoChooser = new SendableChooser<>();
   public SendableChooser<Command> otherChooser = new SendableChooser<>();
@@ -80,8 +89,12 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
+    camera = CameraServer.startAutomaticCapture();
+    camera.setResolution(80, 60);
+
     m_robotDrive.setDefaultCommand(
-        Commands.run(() -> m_robotDrive.drive(
+        Commands.run(() -> {
+        m_robotDrive.drive(
             -MathUtil.applyDeadband(
                 Math.pow(m_driverController.getLeftY(), 2) * Math.signum(m_driverController.getLeftY()) * spdLimit,
                 OIConstants.kDriveDeadband),
@@ -91,9 +104,11 @@ public class RobotContainer {
             -MathUtil.applyDeadband(
                 Math.pow(m_driverController.getRightX(), 2) * Math.signum(m_driverController.getRightX()) * turnLimit,
                 OIConstants.kDriveDeadband),
+            // Rate limit = true sets speed to 0. Why? This is something to fix.
+            false, false);
+        }, m_robotDrive));
 
-            false, true),
-        m_robotDrive));
+    
 
        // NamedCommands.registerCommand("Close Shoot", new CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
         NamedCommands.registerCommand("Spin Launcher", new SpinLauncher(m_launcherSubsystem));
@@ -107,7 +122,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Speaker Position", m_intake.speakerPosition());
         NamedCommands.registerCommand("Speaker Pivot Position", m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
         NamedCommands.registerCommand("Stop Intake", m_intake.stopIntake());
-        NamedCommands.registerCommand("Speaker Shot", m_launcherPivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
+        // NamedCommands.registerCommand("Speaker Shot", m_launcherPivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
         
         autoChooser = AutoBuilder.buildAutoChooser();
         
@@ -155,7 +170,6 @@ public class RobotContainer {
     // m_intake));
 
     new JoystickButton(m_driverController, Button.kX.value)
-
             .toggleOnTrue(m_intake.ampPosition())
             .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp))
             .onTrue(m_launcherSubsystem.stop());
@@ -178,9 +192,7 @@ public class RobotContainer {
             .onTrue(m_intake.outtake())
             .onFalse(m_intake.stopIntake());
 
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
-            .onTrue(m_intake.outtake())
-            .onFalse(m_intake.stopIntake());
+
             
   new JoystickButton(m_driverController, Button.kStart.value)
             .onTrue(m_intake.ampShoot())
@@ -197,6 +209,10 @@ public class RobotContainer {
              .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
    new JoystickButton(m_driverController2, Button.kRightBumper.value)
              .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
+       /*new JoystickButton(m_driverController2, Button.kB.value)
+             .toggleOnTrue(m_autoaim.AmpAlign());
+*/
+            
             
 //         new JoystickButton(m_driverController2, Button.kLeftBumper.value)
 //              .toggleOnTrue(m_lift.retractStep());
