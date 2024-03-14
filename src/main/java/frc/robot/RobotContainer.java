@@ -209,9 +209,9 @@ public class RobotContainer {
              .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
    new JoystickButton(m_driverController2, Button.kRightBumper.value)
              .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
-       /*new JoystickButton(m_driverController2, Button.kB.value)
-             .toggleOnTrue(m_autoaim.AmpAlign());
-*/
+       new JoystickButton(m_driverController2, Button.kB.value)
+             .whileTrue(m_autoaim.AmpAlign());
+
             
             
 //         new JoystickButton(m_driverController2, Button.kLeftBumper.value)
