@@ -14,6 +14,7 @@ public class LimelightSubsystem extends SubsystemBase {
     public NetworkTableEntry tx = table.getEntry("tx");
     public NetworkTableEntry ty = table.getEntry("ty");
     public NetworkTableEntry ta = table.getEntry("ta");
+    
 
     public void periodic() {
         LimelightConstants.x = tx.getDouble(0.0);

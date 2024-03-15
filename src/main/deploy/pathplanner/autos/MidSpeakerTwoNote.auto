@@ -70,7 +70,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Out Middle"
+            "pathName": "MidSpeaker-MidNote"
           }
         },
         {
@@ -86,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Drive Back Middle"
+                  "pathName": "MidNote-MidSpeaker"
                 }
               }
             ]

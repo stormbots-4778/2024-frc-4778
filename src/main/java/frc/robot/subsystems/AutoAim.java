@@ -35,7 +35,7 @@ public class AutoAim extends SubsystemBase {
             double ySpeed = 0.0;
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
-
+            
             //double yawCalculated = (Math.signum(Drive.m_gyro.getYaw()) * Math.PI) - (Math.toRadians(Drive.m_gyro.getYaw()));
             
             // double kpTurn = 0.25;
@@ -83,5 +83,14 @@ public class AutoAim extends SubsystemBase {
             System.out.printf("%f\n", ty);
         });
     }
+
+        
+
+
+
+
+
+
+
     
 }

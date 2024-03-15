@@ -70,7 +70,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Start On Right"
+            "pathName": "BottomSpeaker-BottomNote"
           }
         },
         {
@@ -86,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Go Back To The Right"
+                  "pathName": "BottomNote-BottomSpeaker"
                 }
               }
             ]

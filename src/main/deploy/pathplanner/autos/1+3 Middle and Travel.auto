@@ -70,7 +70,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Out Middle"
+            "pathName": "MidSpeaker-MidNote"
           }
         },
         {
@@ -86,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Drive Back Middle"
+                  "pathName": "MidNote-MidSpeaker"
                 }
               }
             ]
@@ -151,7 +151,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "DriveToRightNote"
+            "pathName": "MidSpeaker-BottomNote"
           }
         },
         {
@@ -167,7 +167,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DriveBackFromRightNote"
+                  "pathName": "BottomNote-MidSpeaker"
                 }
               }
             ]
@@ -232,7 +232,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "DriveToLeftNote"
+            "pathName": "MidSpeaker-TopNote"
           }
         },
         {
@@ -248,7 +248,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DriveBackFromLeftNote"
+                  "pathName": "TopNote-MidSpeaker"
                 }
               }
             ]

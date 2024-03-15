@@ -70,11 +70,11 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StartOnLeft"
+            "pathName": "TopSpeaker-TopNote"
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -86,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Go Back To Left"
+                  "pathName": "TopNote-TopSpeaker"
                 }
               }
             ]
