@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.LimelightConstants;
@@ -18,8 +19,7 @@ public class AutoAim extends SubsystemBase {
     public DriveSubsystem Drive;
     public IntakeSubsystem Intake;
     public PivotSubsystem Pivot;
-    private NetworkTable table;
-    private double angleError;
+
 
     public AutoAim (LimelightSubsystem Limelight, DriveSubsystem Drive, IntakeSubsystem Intake, PivotSubsystem Pivot){
         this.Limelight = Limelight;
@@ -47,28 +47,28 @@ public class AutoAim extends SubsystemBase {
             //double yawCalculated = (Math.signum(Drive.m_gyro.getYaw()) * Math.PI) - (Math.toRadians(Drive.m_gyro.getYaw()));
             
             // double kpTurn = 0.25;
-            float KpStrafe = 0.01f;
+            float KpStrafe = 0.015f;
             
             //if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
             //rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
 
-            rotSpeed = (KpStrafe * (angleError + 1.9));
+            rotSpeed = (KpStrafe * (angleError + 2.5));
             ySpeed = -(KpStrafe * (tx + 4.7)); //tx = horizontal error, strafe direction in robot coordinates 
-            xSpeed = (KpStrafe * (12.5 - ty)); 
+            xSpeed = (KpStrafe * (16 - ty)); 
             //}
             
-            if (rotSpeed > 0.25){
-                rotSpeed = 0.25;
+            if (rotSpeed > 0.10){
+                rotSpeed = 0.10;
             }
-            else if (rotSpeed < -0.25){
-                rotSpeed = -0.25;
+            else if (rotSpeed < -0.10){
+                rotSpeed = -0.10;
             }
             
-             if (xSpeed > 0.1){
-                xSpeed = 0.1;
+             if (xSpeed > 0.075){
+                xSpeed = 0.075;
             }
-            else if (xSpeed < -0.1){
-                xSpeed = -0.1;
+            else if (xSpeed < -0.075){
+                xSpeed = -0.075;
             }
              if (ySpeed > 0.1){
                 ySpeed = 0.1;
@@ -77,22 +77,27 @@ public class AutoAim extends SubsystemBase {
                 ySpeed = -0.1;
             }
 
-            if (tv < 1.0){
+            if (tv < 0.9999){
                 xSpeed = 0;
                 ySpeed = 0;
                 rotSpeed = 0;
             }
             
             Drive.drive(xSpeed, ySpeed, rotSpeed, false, false);
+            
+            if ( (tv > 0.9999) && (Math.abs(rotSpeed) < 0.025) && (Math.abs(xSpeed) < 0.025) && (Math.abs(ySpeed) < 0.025)){
+                // Commands.runOnce(() -> {
+                    
+                    Intake.autoAmpShoot();
 
-            if ((rotSpeed < 0.05) && (xSpeed < 0.05) && (ySpeed < 0.05)){
-                Intake.ampShoot();
+                // }, Intake);
             }
 
             //debug test
-            System.out.printf("%f\n", tv);
-            System.out.printf("%f\n", tx);
-            System.out.printf("%f\n", ty);
+            System.out.printf("Rot, X, Y Speeds");
+            System.out.printf("%f\n", rotSpeed);
+            System.out.printf("%f\n", xSpeed);
+            System.out.printf("%f\n", ySpeed);
         });
     }
 

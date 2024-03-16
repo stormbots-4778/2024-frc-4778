@@ -33,8 +33,11 @@ public final class Constants {
   }
 
   public static final class DriveConstants {
-    public static double spdLimitFast = .9;
-    public static double turnLimitFast = .7;
+    // public static double spdLimitFast = .9;  <======== Competition values
+    // public static double turnLimitFast = .7;
+
+    public static double spdLimitFast = .5;
+    public static double turnLimitFast = .4;
 
     public static double spdLimitSlow = .25;
     public static double turnLimitSlow = .25;
@@ -85,7 +88,7 @@ public final class Constants {
     public static final HolonomicPathFollowerConfig pathFollowerConfig =
       new HolonomicPathFollowerConfig(
         new PIDConstants(4, 0, 0), // TODO: Tune translation PID config
-        new PIDConstants(0.75, 0, 0), // TODO: Tune rotation PID config
+        new PIDConstants(2, 0, 0), // TODO: Tune rotation PID config
         kMaxSpeedMetersPerSecond,
         kDriveBaseRadius,
         new ReplanningConfig()
@@ -143,8 +146,8 @@ public final class Constants {
 
     public static final double intakeSpeed = 0.6;
     public static final double outtakeSpeed = -1.0;
-    public static final double shootSpeedTop = -0.555; // can shoot from 2ft away with ~4in
-    public static final double shootSpeedBottom = -0.75;
+    public static final double shootSpeedTop = -0.500; // can shoot from 2ft away with ~4in
+    public static final double shootSpeedBottom = -0.70;
 
     public static final double intakeKp = 0.02;
     public static final double intakeKi = 0;

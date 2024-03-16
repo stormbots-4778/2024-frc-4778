@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3656518741608918,
-      "y": 5.541275082550166
+      "x": 1.4,
+      "y": 5.55
     },
     "rotation": 0
   },
@@ -16,21 +16,9 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Spin Launcher"
-                }
-              },
-              {
                 "type": "wait",
                 "data": {
                   "waitTime": 0.25
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot"
                 }
               }
             ]
@@ -47,21 +35,9 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake Pivot Position"
-                }
-              },
-              {
                 "type": "wait",
                 "data": {
                   "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
                 }
               }
             ]
@@ -78,12 +54,6 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Speaker Pivot Position"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "MidNote-MidSpeaker"
@@ -97,21 +67,9 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Spin Launcher"
-                }
-              },
-              {
                 "type": "wait",
                 "data": {
                   "waitTime": 0.25
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot"
                 }
               }
             ]
@@ -128,102 +86,9 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake Pivot Position"
-                }
-              },
-              {
                 "type": "wait",
                 "data": {
                   "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "MidSpeaker-BottomNote"
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Speaker Pivot Position"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "BottomNote-MidSpeaker"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Spin Launcher"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.25
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake Pivot Position"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
                 }
               }
             ]
@@ -240,12 +105,6 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Speaker Pivot Position"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "TopNote-MidSpeaker"
@@ -259,21 +118,60 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Spin Launcher"
-                }
-              },
-              {
                 "type": "wait",
                 "data": {
                   "waitTime": 0.25
                 }
-              },
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Shoot"
+                  "waitTime": 1.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MidSpeaker-BottomNote"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BottomNote-MidSpeaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
                 }
               }
             ]

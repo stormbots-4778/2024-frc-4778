@@ -132,6 +132,14 @@ public class IntakeSubsystem extends SubsystemBase {
         });
     }
 
+
+    public void autoAmpShoot() {
+        topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+        bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+        topRoller.set(IntakeConstants.shootSpeedTop);
+        bottomRoller.set(IntakeConstants.shootSpeedBottom);
+    }
+
     public Command ampPosition() {
         return new InstantCommand(() -> {
             // 1. Move the pivot to the amp position

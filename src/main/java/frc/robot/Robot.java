@@ -30,8 +30,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private final Pigeon2 pidgey = new Pigeon2(32, "rio");
-  private double currentTime = Timer.getFPGATimestamp();
+  // private final Pigeon2 pidgey = new Pigeon2(32, "rio");
+  // private double currentTime = Timer.getFPGATimestamp();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -49,13 +49,13 @@ public class Robot extends TimedRobot {
 
     /* Configure Pigeon2 */
 
-    var toApply = new Pigeon2Configuration();
+    // var toApply = new Pigeon2Configuration();
 
-    pidgey.getConfigurator().apply(toApply);
+    // pidgey.getConfigurator().apply(toApply);
 
-    /* Speed up signals to an appropriate rate */
-    pidgey.getYaw().setUpdateFrequency(100);
-    pidgey.getGravityVectorZ().setUpdateFrequency(100);
+    // /* Speed up signals to an appropriate rate */
+    // pidgey.getYaw().setUpdateFrequency(100);
+    // pidgey.getGravityVectorZ().setUpdateFrequency(100);
   
 
   /* User can change the configs if they want, or leave it empty for factory-default */
@@ -80,8 +80,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
 
-    if (Timer.getFPGATimestamp() - currentTime > 1) {
-      currentTime += 1;
+    // if (Timer.getFPGATimestamp() - currentTime > 1) {
+    //   currentTime += 1;
 
       /**
        * getYaw automatically calls refresh(), no need to manually refresh.
@@ -89,15 +89,15 @@ public class Robot extends TimedRobot {
        * StatusSignalValues also have the toString method implemented, to provide
        * a useful print of the signal.
        */
-      var yaw = pidgey.getYaw();
+      // var yaw = pidgey.getYaw();
       // System.out.println("Yaw is " + yaw.toString() + " with " + yaw.getTimestamp().getLatency() + " seconds of latency");
 
       /**
        * Get the gravity vector Z component StatusSignalValue
        */
-      var gravityVectorZ = pidgey.getGravityVectorZ();
+      // var gravityVectorZ = pidgey.getGravityVectorZ();
       /* This time wait for the signal to reduce latency */
-      gravityVectorZ.waitForUpdate(1); // Wait up to our period
+      // gravityVectorZ.waitForUpdate(1); // Wait up to our period
       /**
        * This uses the explicit getValue and getUnits functions to print, even though it's not
        * necessary for the ostream print
@@ -115,7 +115,7 @@ public class Robot extends TimedRobot {
        * When the device is on a CANivore, the reported latency is very close to the true latency of the sensor, as the CANivore
        * timestamps when it receives the frame. This can be further used for latency compensation.
        */
-      System.out.println();
+      // System.out.println();
     }
     
 
@@ -124,7 +124,7 @@ public class Robot extends TimedRobot {
 
 
 
-  }
+  
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -165,8 +165,8 @@ public class Robot extends TimedRobot {
     /**
      * When we teleop init, set the position of the Pigeon2 and wait for the setter to take affect.
      */
-    pidgey.setYaw(144, 0.1); // Set our yaw to 144 degrees and wait up to 100 ms for the setter to take affect
-    pidgey.getYaw().waitForUpdate(0.1); // And wait up to 100 ms for the position to take affect
+    // pidgey.setYaw(144, 0.1); // Set our yaw to 144 degrees and wait up to 100 ms for the setter to take affect
+    // pidgey.getYaw().waitForUpdate(0.1); // And wait up to 100 ms for the position to take affect
     // System.out.println("Set the position to 144 degrees, we are currently at " + pidgey.getYaw()); // Use java's implicit toString operator
 
 

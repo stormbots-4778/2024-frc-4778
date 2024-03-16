@@ -181,6 +181,26 @@ public class RobotContainer {
     // ()->m_intake.deployPos(),
     // m_intake));
 
+
+
+
+        new JoystickButton(m_driverController, Button.kLeftBumper.value)
+            .whileTrue(Commands.run(() -> {
+        m_robotDrive.drive(
+            -MathUtil.applyDeadband(
+                Math.pow(m_driverController.getLeftY(), 2) * Math.signum(m_driverController.getLeftY()) * spdLimit,
+                OIConstants.kDriveDeadband),
+            -MathUtil.applyDeadband(
+                Math.pow(m_driverController.getLeftX(), 2) * Math.signum(m_driverController.getLeftX()) * spdLimit,
+                OIConstants.kDriveDeadband),
+            -MathUtil.applyDeadband(
+                Math.pow(m_driverController.getRightX(), 2) * Math.signum(m_driverController.getRightX()) * turnLimit,
+                OIConstants.kDriveDeadband),
+            // Rate limit = true sets speed to 0. Why? This is something to fix.
+            false, false);
+        }, m_robotDrive));
+        
+
     new JoystickButton(m_driverController, Button.kX.value)
             .toggleOnTrue(m_intake.ampPosition())
             .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp))
@@ -204,8 +224,8 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kB.value)
             .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
     
-    new JoystickButton(m_driverController, Button.kLeftBumper.value)
-            .toggleOnTrue(m_launcherSubsystem.shoot());
+    // new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    //         .toggleOnTrue(m_launcherSubsystem.shoot());
 
     new JoystickButton(m_driverController, Button.kRightBumper.value)
             .onTrue(m_intake.outtake())

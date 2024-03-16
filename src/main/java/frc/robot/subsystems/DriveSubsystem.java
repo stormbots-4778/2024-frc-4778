@@ -115,7 +115,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(getGyroDouble() * -1),
+        getGyroYaw(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -191,8 +191,6 @@ public void zeroPose(Pose2d pose) {
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
     double inputTranslationDir = 0.0;
     double inputTranslationMag = 0.0;
-
-    fieldRelative = true;
 
     double xSpeedCommanded;
     double ySpeedCommanded;
