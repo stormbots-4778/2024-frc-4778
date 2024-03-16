@@ -9,17 +9,23 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
 
 public class AutoAim extends SubsystemBase {
     
     public LimelightSubsystem Limelight;
     public DriveSubsystem Drive;
+    public IntakeSubsystem Intake;
+    public PivotSubsystem Pivot;
     private NetworkTable table;
     private double angleError;
 
-    public AutoAim (LimelightSubsystem Limelight, DriveSubsystem Drive){
+    public AutoAim (LimelightSubsystem Limelight, DriveSubsystem Drive, IntakeSubsystem Intake, PivotSubsystem Pivot){
         this.Limelight = Limelight;
         this.Drive = Drive;
+        this.Intake = Intake;
+        this.Pivot = Pivot;
     }
 
     public Command AmpAlign() {
@@ -35,11 +41,13 @@ public class AutoAim extends SubsystemBase {
             double ySpeed = 0.0;
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
+
+            Pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp);
             
             //double yawCalculated = (Math.signum(Drive.m_gyro.getYaw()) * Math.PI) - (Math.toRadians(Drive.m_gyro.getYaw()));
             
             // double kpTurn = 0.25;
-            float KpStrafe = 0.02f;
+            float KpStrafe = 0.01f;
             
             //if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
             //rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
@@ -76,6 +84,10 @@ public class AutoAim extends SubsystemBase {
             }
             
             Drive.drive(xSpeed, ySpeed, rotSpeed, false, false);
+
+            if ((rotSpeed < 0.05) && (xSpeed < 0.05) && (ySpeed < 0.05)){
+                Intake.ampShoot();
+            }
 
             //debug test
             System.out.printf("%f\n", tv);

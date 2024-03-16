@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.hardware.Pigeon2;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,6 +29,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  private final Pigeon2 pidgey = new Pigeon2(32, "rio");
+  private double currentTime = Timer.getFPGATimestamp();
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -34,7 +41,26 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+
+    
+
+
     m_robotContainer = new RobotContainer();
+
+    /* Configure Pigeon2 */
+
+    var toApply = new Pigeon2Configuration();
+
+    pidgey.getConfigurator().apply(toApply);
+
+    /* Speed up signals to an appropriate rate */
+    pidgey.getYaw().setUpdateFrequency(100);
+    pidgey.getGravityVectorZ().setUpdateFrequency(100);
+  
+
+  /* User can change the configs if they want, or leave it empty for factory-default */
+
+  
 
   }
 
@@ -52,6 +78,52 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+
+    if (Timer.getFPGATimestamp() - currentTime > 1) {
+      currentTime += 1;
+
+      /**
+       * getYaw automatically calls refresh(), no need to manually refresh.
+       * 
+       * StatusSignalValues also have the toString method implemented, to provide
+       * a useful print of the signal.
+       */
+      var yaw = pidgey.getYaw();
+      // System.out.println("Yaw is " + yaw.toString() + " with " + yaw.getTimestamp().getLatency() + " seconds of latency");
+
+      /**
+       * Get the gravity vector Z component StatusSignalValue
+       */
+      var gravityVectorZ = pidgey.getGravityVectorZ();
+      /* This time wait for the signal to reduce latency */
+      gravityVectorZ.waitForUpdate(1); // Wait up to our period
+      /**
+       * This uses the explicit getValue and getUnits functions to print, even though it's not
+       * necessary for the ostream print
+      //  */
+      // System.out.println("Gravity Vector in the Z direction is " +
+      //                    gravityVectorZ.getValue() + " " +
+      //                    gravityVectorZ.getUnits() + " with " +
+      //                    gravityVectorZ.getTimestamp().getLatency() + " seconds of latency");
+      /**
+       * Notice when running this example that the second print's latency is always shorter than the first print's latency.
+       * This is because we explicitly wait for the signal using the waitForUpdate() method instead of using the refresh()
+       * method, which only gets the last cached value (similar to how Phoenix v5 works).
+       * This can be used to make sure we synchronously update our control loop from the CAN bus, reducing any latency or jitter in
+       * CAN bus measurements.
+       * When the device is on a CANivore, the reported latency is very close to the true latency of the sensor, as the CANivore
+       * timestamps when it receives the frame. This can be further used for latency compensation.
+       */
+      System.out.println();
+    }
+    
+
+
+
+
+
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -89,6 +161,19 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    /**
+     * When we teleop init, set the position of the Pigeon2 and wait for the setter to take affect.
+     */
+    pidgey.setYaw(144, 0.1); // Set our yaw to 144 degrees and wait up to 100 ms for the setter to take affect
+    pidgey.getYaw().waitForUpdate(0.1); // And wait up to 100 ms for the position to take affect
+    // System.out.println("Set the position to 144 degrees, we are currently at " + pidgey.getYaw()); // Use java's implicit toString operator
+
+
+
+
+
+
   }
 
   /** This function is called periodically during operator control. */

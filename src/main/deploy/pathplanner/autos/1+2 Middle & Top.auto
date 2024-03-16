@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Zero Yaw"
+          }
+        },
+        {
           "type": "sequential",
           "data": {
             "commands": [

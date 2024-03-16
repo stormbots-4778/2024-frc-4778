@@ -22,7 +22,9 @@ import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.AutoAim;
 import frc.robot.subsystems.LauncherPivotSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.event.BooleanEvent;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -60,13 +62,15 @@ public class RobotContainer {
   public final PivotSubsystem m_pivot = new PivotSubsystem();
   public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
   public final LimelightSubsystem m_limelight = new LimelightSubsystem();
-  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive);
+  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot);
+
+  public boolean Centric = true;
   // public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
   //  public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
 
 
   //public UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
-  private UsbCamera camera;
+  // private UsbCamera camera;
 
   // BlinkIn
   // public Spark blinkin = new Spark(1);
@@ -89,8 +93,8 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    camera = CameraServer.startAutomaticCapture();
-    camera.setResolution(80, 60);
+    // camera = CameraServer.startAutomaticCapture();
+    // camera.setResolution(80, 60);
 
     m_robotDrive.setDefaultCommand(
         Commands.run(() -> {
@@ -105,8 +109,12 @@ public class RobotContainer {
                 Math.pow(m_driverController.getRightX(), 2) * Math.signum(m_driverController.getRightX()) * turnLimit,
                 OIConstants.kDriveDeadband),
             // Rate limit = true sets speed to 0. Why? This is something to fix.
-            false, false);
+            true, false);
         }, m_robotDrive));
+
+    
+
+    
 
     
 
@@ -122,6 +130,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Speaker Position", m_intake.speakerPosition());
         NamedCommands.registerCommand("Speaker Pivot Position", m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
         NamedCommands.registerCommand("Stop Intake", m_intake.stopIntake());
+        NamedCommands.registerCommand("Zero Yaw", m_robotDrive.ZeroHeading());
         // NamedCommands.registerCommand("Speaker Shot", m_launcherPivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
         
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -132,6 +141,9 @@ public class RobotContainer {
 
         // otherChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
+
+        // SmartDashboard.putNumber("IMU", m_robotDrive.m_gyro.getAngle());
+
   }
 
   // private void toggleFieldCentric(){
@@ -174,13 +186,20 @@ public class RobotContainer {
             .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp))
             .onTrue(m_launcherSubsystem.stop());
    
-            
     new JoystickButton(m_driverController, Button.kY.value)
-             .toggleOnTrue(m_intake.intake())
+            .toggleOnTrue(m_intake.intake())
              .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
              .onTrue(m_launcherSubsystem.stop())
              
              .onFalse(m_intake.stopIntake());
+             
+            
+    // new JoystickButton(m_driverController.leftTrigger())
+    //          .toggleOnTrue(m_intake.intake())
+    //          .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
+    //          .onTrue(m_launcherSubsystem.stop())
+             
+    //          .onFalse(m_intake.stopIntake());
           
     new JoystickButton(m_driverController, Button.kB.value)
             .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
@@ -209,8 +228,16 @@ public class RobotContainer {
              .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
    new JoystickButton(m_driverController2, Button.kRightBumper.value)
              .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
-       new JoystickButton(m_driverController2, Button.kB.value)
+    new JoystickButton(m_driverController2, Button.kB.value)
              .whileTrue(m_autoaim.AmpAlign());
+  new JoystickButton(m_driverController2, Button.kY.value)
+             .onTrue(m_robotDrive.ZeroHeading());
+
+        
+
+            
+             
+  
 
             
             
