@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
-import frc.robot.Constants.LauncherConstants;
+import frc.robot.Constants.ShooterConstants;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,45 +16,45 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem{
-    private final CANSparkMax pivotMotor = new CANSparkMax(LauncherConstants.kLauncherPivotCanId, MotorType.kBrushless);
-    private final SparkPIDController pivotPIDController;
-    public static RelativeEncoder pivotEncoder;
+    private final CANSparkMax launcherPivotMotor = new CANSparkMax(ShooterConstants.kLauncherPivotCanId, MotorType.kBrushless);
+    private final SparkPIDController launcherPivotPIDController;
+    public static RelativeEncoder launcherPivotEncoder;
 
     public LauncherPivotSubsystem() {
         super(
             new TrapezoidProfile.Constraints(
                 200.0, 320.0),0.0);
         
-        pivotMotor.restoreFactoryDefaults();
-        pivotMotor.getEncoder().setPosition(0.0);
+        launcherPivotMotor.restoreFactoryDefaults();
+        launcherPivotMotor.getEncoder().setPosition(0.0);
 
-        pivotMotor.setIdleMode(LauncherConstants.kLauncherMotorIdleMode);
-        pivotMotor.setSmartCurrentLimit(LauncherConstants.kPivotMotorCurrentLimit);
+        launcherPivotMotor.setIdleMode(ShooterConstants.kLauncherPivotMotorIdleMode);
+        launcherPivotMotor.setSmartCurrentLimit(ShooterConstants.kLauncherPivotMotorCurrentLimit);
 
-        pivotEncoder = pivotMotor.getEncoder();
+        launcherPivotEncoder = launcherPivotMotor.getEncoder();
 
-        pivotEncoder.setPositionConversionFactor(LauncherConstants.kPivotEncoderPositionFactor);
-        pivotEncoder.setVelocityConversionFactor(LauncherConstants.kPivotEncoderVelocityFactor);
+        launcherPivotEncoder.setPositionConversionFactor(ShooterConstants.kLauncherPivotEncoderPositionFactor);
+        launcherPivotEncoder.setVelocityConversionFactor(ShooterConstants.kLauncherPivotEncoderVelocityFactor);
 
-        pivotPIDController = pivotMotor.getPIDController();
-        pivotPIDController.setFeedbackDevice(pivotEncoder);
-        pivotPIDController.setPositionPIDWrappingEnabled(false);
-        pivotPIDController.setPositionPIDWrappingMinInput(LauncherConstants.kPivotEncoderPositionPIDMinInput);
-        pivotPIDController.setPositionPIDWrappingMaxInput(LauncherConstants.kPivotEncoderPositionPIDMaxInput);
-        pivotPIDController.setP(LauncherConstants.kPivotP);
-        pivotPIDController.setI(LauncherConstants.kPivotI);
-        pivotPIDController.setD(LauncherConstants.kPivotD);
-        pivotPIDController.setFF(LauncherConstants.kPivotFF);
+        launcherPivotPIDController = launcherPivotMotor.getPIDController();
+        launcherPivotPIDController.setFeedbackDevice(launcherPivotEncoder);
+        launcherPivotPIDController.setPositionPIDWrappingEnabled(false);
+        launcherPivotPIDController.setPositionPIDWrappingMinInput(ShooterConstants.kLauncherPivotEncoderPositionPIDMinInput);
+        launcherPivotPIDController.setPositionPIDWrappingMaxInput(ShooterConstants.kLauncherPivotEncoderPositionPIDMaxInput);
+        launcherPivotPIDController.setP(ShooterConstants.kLauncherPivotP);
+        launcherPivotPIDController.setI(ShooterConstants.kLauncherPivotI);
+        launcherPivotPIDController.setD(ShooterConstants.kLauncherPivotD);
+        launcherPivotPIDController.setFF(ShooterConstants.kLauncherPivotFF);
 
-        pivotMotor.burnFlash();
+        launcherPivotMotor.burnFlash();
     }
 
     @Override
     public void useState(TrapezoidProfile.State setpoint) {
-        pivotPIDController.setReference(setpoint.position, ControlType.kPosition);
+        launcherPivotPIDController.setReference(setpoint.position, ControlType.kPosition);
     }
 
-    public Command setPivotGoalCommand(double pivotPos) {
+    public Command setLauncherPivotGoalCommand(double pivotPos) {
         return Commands.runOnce(() -> setGoal(pivotPos), this);
     }
 }

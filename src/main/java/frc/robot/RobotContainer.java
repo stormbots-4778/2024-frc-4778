@@ -21,6 +21,7 @@ import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.AutoAim;
 import frc.robot.subsystems.LauncherPivotSubsystem;
+import frc.robot.subsystems.RobotPivotsSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -62,7 +63,9 @@ public class RobotContainer {
   public final PivotSubsystem m_pivot = new PivotSubsystem();
   public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
   public final LimelightSubsystem m_limelight = new LimelightSubsystem();
-  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot);
+  public final LauncherPivotSubsystem m_launcherpivot = new LauncherPivotSubsystem();
+  public final RobotPivotsSubsystem m_robotPivot = new RobotPivotsSubsystem(m_launcherpivot, m_pivot);
+  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot, m_robotPivot);
 
   public boolean Centric = true;
   // public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
@@ -227,16 +230,19 @@ public class RobotContainer {
     // new JoystickButton(m_driverController, Button.kLeftBumper.value)
     //         .toggleOnTrue(m_launcherSubsystem.shoot());
 
+        new JoystickButton(m_driverController, Button.kStart.value)
+            .toggleOnTrue(m_launcherSubsystem.shoot());
+
     new JoystickButton(m_driverController, Button.kRightBumper.value)
             .onTrue(m_intake.outtake())
             .onFalse(m_intake.stopIntake());
 
 
             
-  new JoystickButton(m_driverController, Button.kStart.value)
-            .onTrue(m_intake.ampShoot())
-            .onTrue(m_launcherSubsystem.stop())
-            .onFalse(m_intake.stopIntake());
+  // new JoystickButton(m_driverController, Button.kStart.value)
+  //           .onTrue(m_intake.ampShoot())
+  //           .onTrue(m_launcherSubsystem.stop())
+  //           .onFalse(m_intake.stopIntake());
 
 //   new JoystickButton(m_driverController2, Button.kLeftBumper.value)
 //             .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
