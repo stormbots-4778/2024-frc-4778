@@ -13,6 +13,7 @@ public class RobotPivotsSubsystem extends SubsystemBase{
 
 
 
+
     public RobotPivotsSubsystem(LauncherPivotSubsystem LauncherPivot, PivotSubsystem IntakePivot){
         this.LauncherPivot = LauncherPivot;
         this.IntakePivot = IntakePivot;
@@ -20,19 +21,13 @@ public class RobotPivotsSubsystem extends SubsystemBase{
 
 
     public Command High() {
-        return run(() -> {        
-            
-
-            
+        return run(() -> {           
         LauncherPivot.setLauncherPivotGoalCommand(0); //<==================== value is wrong, don't know actual
         IntakePivot.setPivotGoalCommand(0); //<==================== value is wrong, don't know actual
-
-
-
-
         });
 
     }
+
 
     public Command Medium() {
         return run(() -> {        

@@ -96,8 +96,8 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int kleftShooterCanId = 23; //
-    public static final int kRightShooterCanId = 24; //
+    public static final int kleftShooterCanId = 24; //
+    public static final int kRightShooterCanId = 23; //
     public static final int kLauncherPivotCanId = 26;
     public static final double shooterKp = 0.04;
     public static final double shooterKi = 0;
@@ -129,13 +129,13 @@ public final class Constants {
 
 
     // TODO: Tune angles for each pivot position
-    public static final double kLauncherPivotAngleIntake = -(Math.PI * 22);
-    public static final double kLauncherPivotAngleAmp = -(Math.PI * 9.5);
-    public static final double kLauncherPivotAngleSpeaker = 0.0;
+    // public static final double kLauncherPivotAngleIntake = -(Math.PI * 22);
+    public static final double kLauncherPivotAngleHigh = -(Math.PI * 3);
+    public static final double kLauncherPivotAngleLow = 0.0;
 
   
     public static IdleMode kLauncherPivotMotorIdleMode = IdleMode.kCoast;
-    public static final int kLauncherPivotMotorCurrentLimit = 20; 
+    public static final int kLauncherPivotMotorCurrentLimit = 5; 
 
 
 
@@ -217,9 +217,11 @@ public final class Constants {
     public static final double kPivotAngleAmp = -(Math.PI * 9.5);
     public static final double kPivotAngleSpeaker = 0.0;
 
+    
+
   
 
-    public static final int kPivotMotorCurrentLimit = 20;
+    public static final int kPivotMotorCurrentLimit = 10;
   }
 
   public static final class ModuleConstants {
