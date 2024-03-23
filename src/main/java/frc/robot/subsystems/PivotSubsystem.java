@@ -25,7 +25,7 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem{
 
         super(
             new TrapezoidProfile.Constraints(
-                200.0, 320.0),0.0);
+                100.0, 200.0),0.0);
         
         pivotMotor.restoreFactoryDefaults();
         pivotMotor.getEncoder().setPosition(0.0);
@@ -61,6 +61,9 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem{
   public Command setPivotGoalCommand(double pivotPos) {
     return Commands.runOnce(() -> setGoal(pivotPos), this);
   }
+
+
+
 
 
 

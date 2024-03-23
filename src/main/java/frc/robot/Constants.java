@@ -213,15 +213,15 @@ public final class Constants {
 
 
     // TODO: Tune angles for each pivot position
-    public static final double kPivotAngleIntake = -(Math.PI * 22);
-    public static final double kPivotAngleAmp = -(Math.PI * 9.5);
+    public static final double kPivotAngleIntake = (Math.PI * 22);
+    public static final double kPivotAngleAmp = (Math.PI * 9.5);
     public static final double kPivotAngleSpeaker = 0.0;
 
     
 
   
 
-    public static final int kPivotMotorCurrentLimit = 10;
+    public static final int kPivotMotorCurrentLimit = 15;
   }
 
   public static final class ModuleConstants {

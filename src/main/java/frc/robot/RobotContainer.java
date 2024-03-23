@@ -66,8 +66,8 @@ public class RobotContainer {
   public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
   public final LimelightSubsystem m_limelight = new LimelightSubsystem();
   public final LauncherPivotSubsystem m_launcherpivot = new LauncherPivotSubsystem();
-  public final RobotPivotsSubsystem m_robotPivot = new RobotPivotsSubsystem(m_launcherpivot, m_pivot);
-  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot, m_robotPivot);
+  public final RobotPivotsSubsystem m_robotPivot = new RobotPivotsSubsystem(m_launcherpivot, m_pivot, true);
+  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot, m_launcherSubsystem);
 
   public boolean Centric = true;
   // public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
@@ -196,7 +196,7 @@ public class RobotContainer {
 
 
 
-        new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
             .whileTrue(Commands.run(() -> {
         m_robotDrive.drive(
             -MathUtil.applyDeadband(
@@ -221,10 +221,11 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kX.value)
             
             .whileTrue(m_autoaim.AmpAlign())
+
             
             .onTrue(m_launcherSubsystem.stop());
 
-        new JoystickButton(m_driverController, Button.kA.value)
+    new JoystickButton(m_driverController, Button.kA.value)
             .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
 
     
@@ -238,11 +239,11 @@ public class RobotContainer {
              
     //          .onFalse(m_intake.stopIntake());
 
-    new JoystickButton(m_driverController, Axis.kLeftTrigger.value)
+    new JoystickButton(m_driverController, Button.kY.value)
               
             .toggleOnTrue(m_intake.intake())
-             .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
-            .toggleOnTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh))
+             .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
+            // .toggleOnTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh))
              .onTrue(m_launcherSubsystem.stop())
              
              .onFalse(m_intake.stopIntake());
@@ -250,9 +251,12 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kRightBumper.value)
             .onTrue(m_launcherSubsystem.shoot())
             .onFalse(m_intake.stopIntake());
+
+
+
              
     new JoystickButton(m_driverController, Button.kLeftStick.value)
-            .onTrue(m_robotPivot.High());
+            .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
 
 
 
@@ -302,11 +306,11 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController2, Button.kLeftBumper.value)
              .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
-   new JoystickButton(m_driverController2, Button.kRightBumper.value)
+    new JoystickButton(m_driverController2, Button.kRightBumper.value)
              .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
     // new JoystickButton(m_driverController2, Button.kB.value)
     //          .whileTrue(m_autoaim.AmpAlign());
-  new JoystickButton(m_driverController2, Button.kY.value)
+    new JoystickButton(m_driverController2, Button.kY.value)
              .onTrue(m_robotDrive.ZeroHeading());
 
         

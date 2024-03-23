@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.LauncherPivotSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
 
 
 /**
@@ -79,6 +81,8 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
+    SmartDashboard.putNumber("Launcher Pivot Position", LauncherPivotSubsystem.launcherPivotEncoder.getPosition());
+    SmartDashboard.putNumber("Intake Pivot Position", PivotSubsystem.pivotEncoder.getPosition());
 
     // if (Timer.getFPGATimestamp() - currentTime > 1) {
     //   currentTime += 1;

@@ -5,18 +5,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.LauncherPivotSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.RobotContainer;
 public class RobotPivotsSubsystem extends SubsystemBase{
     public LauncherPivotSubsystem LauncherPivot;
     public PivotSubsystem IntakePivot;
+    public boolean UpPosition;
 
 
 
 
-    public RobotPivotsSubsystem(LauncherPivotSubsystem LauncherPivot, PivotSubsystem IntakePivot){
+    public RobotPivotsSubsystem(LauncherPivotSubsystem LauncherPivot, PivotSubsystem IntakePivot, boolean UpPosition){
         this.LauncherPivot = LauncherPivot;
         this.IntakePivot = IntakePivot;
+        this.UpPosition = UpPosition;
     }
 
 
@@ -29,19 +33,23 @@ public class RobotPivotsSubsystem extends SubsystemBase{
     }
 
 
-    public Command Medium() {
-        return run(() -> {        
+    public Command Move() {
+        return runOnce(() -> {        
             
-
+        
+        if (UpPosition){
+            LauncherPivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow);
+            IntakePivot.setPivotGoalCommand(0); //<======= Tune this value
             
-        LauncherPivot.setLauncherPivotGoalCommand(0); //<==================== value is wrong, don't know actual
-        IntakePivot.setPivotGoalCommand(0); //<==================== value is wrong, don't know actual
+        } else {
+            LauncherPivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh);
+            IntakePivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker); //<======= Tune this value
+            
+        }
 
-
-
+        UpPosition = !UpPosition;
 
         });
-
     }
 
 

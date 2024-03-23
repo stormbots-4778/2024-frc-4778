@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
 import frc.robot.Constants.ShooterConstants;
+
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,6 +15,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
 
 public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem{
     private final CANSparkMax launcherPivotMotor = new CANSparkMax(ShooterConstants.kLauncherPivotCanId, MotorType.kBrushless);
@@ -57,4 +59,6 @@ public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem{
     public Command setLauncherPivotGoalCommand(double pivotPos) {
         return Commands.runOnce(() -> setGoal(pivotPos), this);
     }
+
+    
 }

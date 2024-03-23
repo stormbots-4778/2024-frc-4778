@@ -1,11 +1,15 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.LimelightConstants;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.Servo;
 
 
 public class LimelightSubsystem extends SubsystemBase {
@@ -14,6 +18,8 @@ public class LimelightSubsystem extends SubsystemBase {
     public NetworkTableEntry tx = table.getEntry("tx");
     public NetworkTableEntry ty = table.getEntry("ty");
     public NetworkTableEntry ta = table.getEntry("ta");
+
+    Servo LimelightServo;
     
 
     public void periodic() {
@@ -24,7 +30,40 @@ public class LimelightSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("LimelightX", LimelightConstants.x);
         SmartDashboard.putNumber("LimelightY", LimelightConstants.y);
         SmartDashboard.putNumber("LimelightArea", LimelightConstants.area);
+
+        SmartDashboard.putNumber("Limelight Servo Position", LimelightServo.getPosition());
     }
+
+    public LimelightSubsystem() {
+        LimelightServo = new Servo(0);  //<======= change this number
+    }
+
+ public Command AmpAlignServoPos() {
+        return runOnce(() -> {
+            // 1. Run the intake motors in reverse
+            LimelightServo.setAngle(135); //<======= value needs to be tuned
+        });
+    }
+
+ public Command SpeakerAlignServoPos() {
+        return runOnce(() -> {
+            // 1. Run the intake motors in reverse
+            LimelightServo.setAngle(45); //<======= value needs to be tuned
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
 }
