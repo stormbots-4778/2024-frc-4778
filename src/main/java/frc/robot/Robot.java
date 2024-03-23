@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.LauncherPivotSubsystem;
@@ -32,6 +34,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private PivotSubsystem m_PivotSubsystem;
+
   // private final Pigeon2 pidgey = new Pigeon2(32, "rio");
   // private double currentTime = Timer.getFPGATimestamp();
   
@@ -48,6 +52,12 @@ public class Robot extends TimedRobot {
 
 
     m_robotContainer = new RobotContainer();
+
+    
+
+
+
+    
 
     /* Configure Pigeon2 */
 
@@ -83,7 +93,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Launcher Pivot Position", LauncherPivotSubsystem.launcherPivotEncoder.getPosition());
     SmartDashboard.putNumber("Intake Pivot Position", PivotSubsystem.pivotEncoder.getPosition());
-
+    
     // if (Timer.getFPGATimestamp() - currentTime > 1) {
     //   currentTime += 1;
 
@@ -147,6 +157,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
 
     }
+
+
     
     // LiftSubsystem.getInstance().setLiftGoalCommand(0);
     // m_lift.setLiftGoalCommand(0);
@@ -165,6 +177,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    
 
     /**
      * When we teleop init, set the position of the Pigeon2 and wait for the setter to take affect.

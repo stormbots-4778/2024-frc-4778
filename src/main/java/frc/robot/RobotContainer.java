@@ -14,6 +14,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.LiftConstants;
 import frc.robot.Constants.OIConstants;
+
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -70,12 +71,14 @@ public class RobotContainer {
   public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot, m_launcherSubsystem);
 
   public boolean Centric = true;
+  
+
   // public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
   //  public final LauncherPivotSubsystem m_launcherPivot = new LauncherPivotSubsystem();
 
 
-  //public UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
-  // private UsbCamera camera;
+  public UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
+  private UsbCamera camera;
 
   // BlinkIn
   // public Spark blinkin = new Spark(1);
@@ -98,7 +101,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    // camera = CameraServer.startAutomaticCapture();
+    camera = CameraServer.startAutomaticCapture();
     // camera.setResolution(80, 60);
 
     m_robotDrive.setDefaultCommand(
@@ -116,6 +119,8 @@ public class RobotContainer {
             // Rate limit = true sets speed to 0. Why? This is something to fix.
             true, false);
         }, m_robotDrive));
+
+    m_pivot.setPivotGoalCommand(1.8);
 
 
 
@@ -256,7 +261,13 @@ public class RobotContainer {
 
              
     new JoystickButton(m_driverController, Button.kLeftStick.value)
-            .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
+            .onTrue(m_pivot.setPivotGoalCommand(5))
+            .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow));
+
+
+        new JoystickButton(m_driverController, Button.kRightStick.value)
+            .onTrue(m_pivot.setPivotGoalCommand(5.5))
+            .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh));
 
 
 

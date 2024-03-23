@@ -49,6 +49,7 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem{
         pivotPIDController.setFF(IntakeConstants.kPivotFF);
 
         pivotMotor.burnFlash();
+        
 
 
     }

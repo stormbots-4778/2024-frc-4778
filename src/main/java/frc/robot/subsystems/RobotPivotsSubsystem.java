@@ -26,31 +26,29 @@ public class RobotPivotsSubsystem extends SubsystemBase{
 
     public Command High() {
         return run(() -> {           
-        LauncherPivot.setLauncherPivotGoalCommand(0); //<==================== value is wrong, don't know actual
-        IntakePivot.setPivotGoalCommand(0); //<==================== value is wrong, don't know actual
+            LauncherPivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh);
+            IntakePivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker);
         });
 
     }
 
 
-    public Command Move() {
-        return runOnce(() -> {        
+//     public Command Move() {
+//         return runOnce(() -> {        
             
         
-        if (UpPosition){
-            LauncherPivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow);
-            IntakePivot.setPivotGoalCommand(0); //<======= Tune this value
-            
-        } else {
-            LauncherPivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh);
-            IntakePivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker); //<======= Tune this value
-            
-        }
+//         if (UpPosition){
 
-        UpPosition = !UpPosition;
+            
+//         } else {
+//  //<======= Tune this value
+            
+//         }
 
-        });
-    }
+//         UpPosition = !UpPosition;
+
+//         });
+//     }
 
 
     public Command Low() {
@@ -58,8 +56,8 @@ public class RobotPivotsSubsystem extends SubsystemBase{
             
 
             
-        LauncherPivot.setLauncherPivotGoalCommand(0); //<==================== value is wrong, don't know actual
-        IntakePivot.setPivotGoalCommand(0); //<==================== value is wrong, don't know actual
+            LauncherPivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow);
+            IntakePivot.setPivotGoalCommand(0); //<======= Tune this value
 
 
 

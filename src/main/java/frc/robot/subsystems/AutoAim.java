@@ -62,7 +62,7 @@ public class AutoAim extends SubsystemBase {
 
             rotSpeed = (KpStrafe * (angleError + 2.5));
             ySpeed = -(KpStrafe * (tx + 4.7)); //tx = horizontal error, strafe direction in robot coordinates 
-            xSpeed = (KpStrafe * (16 - ty)); 
+            xSpeed = (KpStrafe * (13 - ty)); 
             //}
             
             if (rotSpeed > 0.10){

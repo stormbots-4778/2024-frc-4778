@@ -92,8 +92,8 @@ public class IntakeSubsystem extends SubsystemBase {
             //this is now moved to the pivot subsystem
             
             // 2. Run the intake motors until a note is loaded
-            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 2);
-            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 2);
+            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 3);
+            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 3);
             topRoller.set(IntakeConstants.intakeSpeed);
              
             bottomRoller.set(IntakeConstants.intakeSpeed);
@@ -111,7 +111,9 @@ public class IntakeSubsystem extends SubsystemBase {
             // 1. Run the intake motors in reverse
             topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
             bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
-            topRoller.set(IntakeConstants.outtakeSpeed);
+            topRoller.set(IntakeConstants.outtakeSpeed * 0.25);
+
+            // bottomRoller.set(IntakeConstants.outtakeSpeed);
 
             bottomRoller.set(IntakeConstants.outtakeSpeed);
 

@@ -36,8 +36,8 @@ public final class Constants {
     // public static double spdLimitFast = .9;  <======== Competition values
     // public static double turnLimitFast = .7;
 
-    public static double spdLimitFast = .5;
-    public static double turnLimitFast = .4;
+    public static double spdLimitFast = 1.0;
+    public static double turnLimitFast = .85;
 
     public static double spdLimitSlow = .25;
     public static double turnLimitSlow = .25;
@@ -130,8 +130,8 @@ public final class Constants {
 
     // TODO: Tune angles for each pivot position
     // public static final double kLauncherPivotAngleIntake = -(Math.PI * 22);
-    public static final double kLauncherPivotAngleHigh = -(Math.PI * 3);
-    public static final double kLauncherPivotAngleLow = 0.0;
+    public static final double kLauncherPivotAngleHigh = 0.0;
+    public static final double kLauncherPivotAngleLow = -51.5;
 
   
     public static IdleMode kLauncherPivotMotorIdleMode = IdleMode.kCoast;
@@ -191,7 +191,7 @@ public final class Constants {
     public static final double intakeKd = 0;
 
     public static IdleMode kIntakeMotorIdleMode = IdleMode.kCoast;
-    public static int kIntakeMotorCurrentLimit = 35; // amps
+    public static int kIntakeMotorCurrentLimit = 30; // amps
 
     // Intake/outtake times
     public static final double outtakeTime = 3.0;
@@ -215,13 +215,13 @@ public final class Constants {
     // TODO: Tune angles for each pivot position
     public static final double kPivotAngleIntake = (Math.PI * 22);
     public static final double kPivotAngleAmp = (Math.PI * 9.5);
-    public static final double kPivotAngleSpeaker = 0.0;
+    public static final double kPivotAngleSpeaker = 1.8;
 
     
 
   
 
-    public static final int kPivotMotorCurrentLimit = 15;
+    public static final int kPivotMotorCurrentLimit = 25;
   }
 
   public static final class ModuleConstants {

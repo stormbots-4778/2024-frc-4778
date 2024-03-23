@@ -25,7 +25,7 @@ public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem{
     public LauncherPivotSubsystem() {
         super(
             new TrapezoidProfile.Constraints(
-                200.0, 320.0),0.0);
+                200.0, 200.0),0.0);
         
         launcherPivotMotor.restoreFactoryDefaults();
         launcherPivotMotor.getEncoder().setPosition(0.0);
