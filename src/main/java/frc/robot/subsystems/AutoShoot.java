@@ -15,7 +15,7 @@ import frc.robot.subsystems.PivotSubsystem;
 // import frc.robot.subsystems.LauncherPivotSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 
-public class AutoAim extends SubsystemBase {
+public class AutoShoot extends SubsystemBase {
     
     public LimelightSubsystem Limelight;
     public DriveSubsystem Drive;
@@ -25,7 +25,7 @@ public class AutoAim extends SubsystemBase {
     public LauncherSubsystem Launcher;
 
 
-    public AutoAim (LimelightSubsystem Limelight, DriveSubsystem Drive, IntakeSubsystem Intake, PivotSubsystem Pivot, LauncherSubsystem Launcher){
+    public AutoShoot(LimelightSubsystem Limelight, DriveSubsystem Drive, IntakeSubsystem Intake, PivotSubsystem Pivot, LauncherSubsystem Launcher){
         this.Limelight = Limelight;
         this.Drive = Drive;
         this.Intake = Intake;
@@ -34,11 +34,10 @@ public class AutoAim extends SubsystemBase {
         this.Launcher = Launcher;
     }
 
-    public Command AmpAlign() {
-        return run(() -> {        
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
 
-            Limelight.AmpAlignServoPos(); //<===== turns limelight to amp side for alignment
+    public Command SpeakerAlign() {
+        return run(() -> {        
+            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
             
             //check against 'tv' before aligning
             double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
@@ -50,7 +49,9 @@ public class AutoAim extends SubsystemBase {
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
 
-            Pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp);
+            Limelight.LimelightServo.setAngle(135);
+
+            
             
             //double yawCalculated = (Math.signum(Drive.m_gyro.getYaw()) * Math.PI) - (Math.toRadians(Drive.m_gyro.getYaw()));
             
@@ -62,7 +63,7 @@ public class AutoAim extends SubsystemBase {
 
             rotSpeed = (KpStrafe * (angleError + 2.5));
             ySpeed = -(KpStrafe * (tx + 4.7)); //tx = horizontal error, strafe direction in robot coordinates 
-            xSpeed = (KpStrafe * (13 - ty)); 
+            xSpeed = (KpStrafe * (16 - ty)); 
             //}
             
             if (rotSpeed > 0.10){
@@ -96,7 +97,7 @@ public class AutoAim extends SubsystemBase {
             if ( (tv > 0.9999) && (Math.abs(rotSpeed) < 0.025) && (Math.abs(xSpeed) < 0.025) && (Math.abs(ySpeed) < 0.025)){
                 // Commands.runOnce(() -> {
                     
-                    Intake.autoAmpShoot();
+                Launcher.shoot();
 
                 // }, Intake);
             }
@@ -107,5 +108,25 @@ public class AutoAim extends SubsystemBase {
             System.out.printf("%f\n", xSpeed);
             System.out.printf("%f\n", ySpeed);
         });
-    }    
+
+
+
+
+
+        
+
+
+
+        
+    }
+
+        
+
+
+
+
+
+
+
+    
 }

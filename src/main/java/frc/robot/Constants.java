@@ -103,8 +103,8 @@ public final class Constants {
     public static final double shooterKi = 0;
     public static final double shooterKd = 0;
 
-    public static final double leftShootSpeed = 1.0;
-    public static final double rightShootSpeed = -1.0;
+    public static final double leftShootSpeed = 0.95;
+    public static final double rightShootSpeed = -0.95;
     public static IdleMode kShootingMotorIdleMode = IdleMode.kBrake;
     public static int kShootingMotorCurrentLimit = 50; // amps
 
@@ -120,8 +120,8 @@ public final class Constants {
     public static final double kLauncherPivotEncoderPositionPIDMaxInput = kLauncherPivotEncoderPositionFactor; // radians
 
     // TODO: Tune PID gains
-    public static final double kLauncherPivotP = 0.02;
-    public static final double kLauncherPivotI = 0;
+    public static final double kLauncherPivotP = 0.05;
+    public static final double kLauncherPivotI = 0.0001;
     public static final double kLauncherPivotD = 0;
     public static final double kLauncherPivotFF = 0;
     public static final double kLauncherPivotMinOutput = -1;
@@ -131,11 +131,11 @@ public final class Constants {
     // TODO: Tune angles for each pivot position
     // public static final double kLauncherPivotAngleIntake = -(Math.PI * 22);
     public static final double kLauncherPivotAngleHigh = 0.0;
-    public static final double kLauncherPivotAngleLow = -51.5;
+    public static final double kLauncherPivotAngleLow = -57;
 
   
     public static IdleMode kLauncherPivotMotorIdleMode = IdleMode.kCoast;
-    public static final int kLauncherPivotMotorCurrentLimit = 5; 
+    public static final int kLauncherPivotMotorCurrentLimit = 30; 
 
 
 
@@ -183,10 +183,10 @@ public final class Constants {
 
     public static final double intakeSpeed = 0.6;
     public static final double outtakeSpeed = -1.0;
-    public static final double shootSpeedTop = -0.500; // can shoot from 2ft away with ~4in
-    public static final double shootSpeedBottom = -0.70;
+    public static final double shootSpeedTop = -0.600; // can shoot from 2ft away with ~4in
+    public static final double shootSpeedBottom = -0.90;
 
-    public static final double intakeKp = 0.02;
+    public static final double intakeKp = 0.04;
     public static final double intakeKi = 0;
     public static final double intakeKd = 0;
 
@@ -204,8 +204,8 @@ public final class Constants {
     public static final double kPivotEncoderPositionPIDMaxInput = kPivotEncoderPositionFactor; // radians
 
     // TODO: Tune PID gains
-    public static final double kPivotP = 0.02;
-    public static final double kPivotI = 0;
+    public static final double kPivotP = 0.03;
+    public static final double kPivotI = 0.0001;
     public static final double kPivotD = 0;
     public static final double kPivotFF = 0;
     public static final double kPivotMinOutput = -1;
@@ -213,15 +213,17 @@ public final class Constants {
 
 
     // TODO: Tune angles for each pivot position
-    public static final double kPivotAngleIntake = (Math.PI * 22);
-    public static final double kPivotAngleAmp = (Math.PI * 9.5);
-    public static final double kPivotAngleSpeaker = 1.8;
+    public static final double kPivotAngleIntake = 75;
+    public static final double kPivotAngleAmp = 33;
+    public static final double kPivotAngleSpeaker = 10.0;
+
+    public static final double kPivotAngleLow = 7.0;
 
     
 
   
 
-    public static final int kPivotMotorCurrentLimit = 25;
+    public static final int kPivotMotorCurrentLimit = 30;
   }
 
   public static final class ModuleConstants {

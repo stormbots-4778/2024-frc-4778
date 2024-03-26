@@ -57,7 +57,7 @@ public class RobotPivotsSubsystem extends SubsystemBase{
 
             
             LauncherPivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow);
-            IntakePivot.setPivotGoalCommand(0); //<======= Tune this value
+            IntakePivot.setPivotGoalCommand(IntakeConstants.kPivotAngleLow); //<======= Tune this value
 
 
 

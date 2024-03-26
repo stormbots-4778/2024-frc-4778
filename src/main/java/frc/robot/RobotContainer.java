@@ -102,7 +102,7 @@ public class RobotContainer {
     configureBindings();
 
     camera = CameraServer.startAutomaticCapture();
-    // camera.setResolution(80, 60);
+    camera.setResolution(80, 60);
 
     m_robotDrive.setDefaultCommand(
         Commands.run(() -> {
@@ -120,7 +120,7 @@ public class RobotContainer {
             true, false);
         }, m_robotDrive));
 
-    m_pivot.setPivotGoalCommand(1.8);
+    m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker);
 
 
 
@@ -255,18 +255,20 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, Button.kRightBumper.value)
             .onTrue(m_launcherSubsystem.shoot())
-            .onFalse(m_intake.stopIntake());
+            .onFalse(m_intake.stopIntake())
+            .onFalse(m_launcherSubsystem.stop());
+            
 
 
 
              
     new JoystickButton(m_driverController, Button.kLeftStick.value)
-            .onTrue(m_pivot.setPivotGoalCommand(5))
+            .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleLow))
             .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow));
 
 
-        new JoystickButton(m_driverController, Button.kRightStick.value)
-            .onTrue(m_pivot.setPivotGoalCommand(5.5))
+    new JoystickButton(m_driverController, Button.kRightStick.value)
+            .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker))
             .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh));
 
 
