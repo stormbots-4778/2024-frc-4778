@@ -25,7 +25,7 @@ public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem{
     public LauncherPivotSubsystem() {
         super(
             new TrapezoidProfile.Constraints(
-                200.0, 200.0),0.0);
+                600.0, 800.0),0.0);
         
         launcherPivotMotor.restoreFactoryDefaults();
         launcherPivotMotor.getEncoder().setPosition(0.0);
@@ -46,6 +46,7 @@ public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem{
         launcherPivotPIDController.setP(ShooterConstants.kLauncherPivotP);
         launcherPivotPIDController.setI(ShooterConstants.kLauncherPivotI);
         launcherPivotPIDController.setD(ShooterConstants.kLauncherPivotD);
+        launcherPivotPIDController.setIZone(ShooterConstants.kLauncherPivotIZone);
         launcherPivotPIDController.setFF(ShooterConstants.kLauncherPivotFF);
 
         launcherPivotMotor.burnFlash();

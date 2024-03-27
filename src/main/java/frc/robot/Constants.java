@@ -123,6 +123,7 @@ public final class Constants {
     public static final double kLauncherPivotP = 0.05;
     public static final double kLauncherPivotI = 0.0001;
     public static final double kLauncherPivotD = 0;
+    public static final double kLauncherPivotIZone = 3.0;
     public static final double kLauncherPivotFF = 0;
     public static final double kLauncherPivotMinOutput = -1;
     public static final double kLauncherPivotMaxOutput = 1;
@@ -131,11 +132,12 @@ public final class Constants {
     // TODO: Tune angles for each pivot position
     // public static final double kLauncherPivotAngleIntake = -(Math.PI * 22);
     public static final double kLauncherPivotAngleHigh = 0.0;
-    public static final double kLauncherPivotAngleLow = -57;
+    // public static final double kLauncherPivotAngleLow = -57;
+    public static final double kLauncherPivotAngleLow = -106.875;
 
-  
+
     public static IdleMode kLauncherPivotMotorIdleMode = IdleMode.kCoast;
-    public static final int kLauncherPivotMotorCurrentLimit = 30; 
+    public static final int kLauncherPivotMotorCurrentLimit = 15; 
 
 
 
@@ -170,7 +172,7 @@ public final class Constants {
       public static final double kFullRetract = 0;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
-    public static int kLiftMotorCurrentLimit = 30; // amps
+    public static int kLiftMotorCurrentLimit = 2; // amps
    
 
   }
@@ -183,8 +185,8 @@ public final class Constants {
 
     public static final double intakeSpeed = 0.6;
     public static final double outtakeSpeed = -1.0;
-    public static final double shootSpeedTop = -0.600; // can shoot from 2ft away with ~4in
-    public static final double shootSpeedBottom = -0.90;
+    public static final double shootSpeedTop = -0.500; // can shoot from 2ft away with ~4in
+    public static final double shootSpeedBottom = -0.70;
 
     public static final double intakeKp = 0.04;
     public static final double intakeKi = 0;
@@ -208,8 +210,10 @@ public final class Constants {
     public static final double kPivotI = 0.0001;
     public static final double kPivotD = 0;
     public static final double kPivotFF = 0;
+    public static final double kPivotIZone = 3.0;
     public static final double kPivotMinOutput = -1;
     public static final double kPivotMaxOutput = 1;
+
 
 
     // TODO: Tune angles for each pivot position
@@ -217,13 +221,13 @@ public final class Constants {
     public static final double kPivotAngleAmp = 33;
     public static final double kPivotAngleSpeaker = 10.0;
 
-    public static final double kPivotAngleLow = 7.0;
+    public static final double kPivotAngleLow = 5.5;
 
     
 
   
 
-    public static final int kPivotMotorCurrentLimit = 30;
+    public static final int kPivotMotorCurrentLimit = 5;
   }
 
   public static final class ModuleConstants {

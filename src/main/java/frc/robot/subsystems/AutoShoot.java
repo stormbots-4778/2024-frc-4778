@@ -49,21 +49,24 @@ public class AutoShoot extends SubsystemBase {
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
 
-            Limelight.LimelightServo.setAngle(135);
+            Limelight.SpeakerAlignServoPos();
 
             
             
             //double yawCalculated = (Math.signum(Drive.m_gyro.getYaw()) * Math.PI) - (Math.toRadians(Drive.m_gyro.getYaw()));
             
             // double kpTurn = 0.25;
-            float KpStrafe = 0.015f;
+            float KpStrafe = 0.0002f;
             
             //if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
             //rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
 
-            rotSpeed = (KpStrafe * (angleError + 2.5));
-            ySpeed = -(KpStrafe * (tx + 4.7)); //tx = horizontal error, strafe direction in robot coordinates 
-            xSpeed = (KpStrafe * (16 - ty)); 
+            rotSpeed = -(KpStrafe * (angleError));
+            // ySpeed = -(KpStrafe * (tx + 4.7)); //tx = horizontal error, strafe direction in robot coordinates 
+            // xSpeed = (KpStrafe * (16 - ty)); 
+
+            ySpeed = 0;
+            xSpeed = 0;
             //}
             
             if (rotSpeed > 0.10){
@@ -94,13 +97,13 @@ public class AutoShoot extends SubsystemBase {
             
             Drive.drive(xSpeed, ySpeed, rotSpeed, false, false);
             
-            if ( (tv > 0.9999) && (Math.abs(rotSpeed) < 0.025) && (Math.abs(xSpeed) < 0.025) && (Math.abs(ySpeed) < 0.025)){
-                // Commands.runOnce(() -> {
+            // if ( (tv > 0.9999) && (Math.abs(rotSpeed) < 0.025) && (Math.abs(xSpeed) < 0.025) && (Math.abs(ySpeed) < 0.025)){
+            //     // Commands.runOnce(() -> {
                     
-                Launcher.shoot();
+            //     Launcher.shoot();
 
-                // }, Intake);
-            }
+            //     // }, Intake);
+            // }
 
             //debug test
             System.out.printf("Rot, X, Y Speeds");

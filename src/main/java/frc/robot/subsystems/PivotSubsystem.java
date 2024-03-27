@@ -47,7 +47,7 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem{
         pivotPIDController.setI(IntakeConstants.kPivotI);
         pivotPIDController.setD(IntakeConstants.kPivotD);
         pivotPIDController.setFF(IntakeConstants.kPivotFF);
-
+        pivotPIDController.setIZone(IntakeConstants.kPivotIZone);
         pivotMotor.burnFlash();
         
 
@@ -62,6 +62,29 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem{
   public Command setPivotGoalCommand(double pivotPos) {
     return Commands.runOnce(() -> setGoal(pivotPos), this);
   }
+
+
+  public void intakePos(double pivotPos) {
+    this.setGoal(pivotPos);
+  }
+
+  public Command resetAxis(){
+    return run(() -> {
+      pivotMotor.setVoltage(-0.2);
+  });
+  }
+
+    public Command resetEncoder(){
+    return runOnce(() -> {
+      pivotEncoder.setPosition(0.0);
+      this.setGoal(IntakeConstants.kPivotAngleSpeaker);
+  });
+  }
+
+
+
+
+
 
 
 

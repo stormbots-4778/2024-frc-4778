@@ -25,13 +25,13 @@ public class AutoAim extends SubsystemBase {
     public LauncherSubsystem Launcher;
 
 
-    public AutoAim (LimelightSubsystem Limelight, DriveSubsystem Drive, IntakeSubsystem Intake, PivotSubsystem Pivot, LauncherSubsystem Launcher){
+    public AutoAim (LimelightSubsystem Limelight, DriveSubsystem Drive, IntakeSubsystem Intake, PivotSubsystem Pivot){
         this.Limelight = Limelight;
         this.Drive = Drive;
         this.Intake = Intake;
         this.Pivot = Pivot;
         // this.RobotPivot = RobotPivot;
-        this.Launcher = Launcher;
+
     }
 
     public Command AmpAlign() {

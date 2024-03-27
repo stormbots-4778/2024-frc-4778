@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.29235458470917,
-        "y": 6.977901955803912
+        "x": 1.1897383794767595,
+        "y": 6.992561413694256
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.7939330164374621,
-        "y": 6.6553938822163365
+        "x": 0.7792735585471178,
+        "y": 6.582096592764614
       },
       "prevControl": {
-        "x": 1.1311005479153822,
-        "y": 6.80198846111978
+        "x": 1.1164410900250379,
+        "y": 6.831307376900469
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Top Speaker"
     }
   ],
   "rotationTargets": [

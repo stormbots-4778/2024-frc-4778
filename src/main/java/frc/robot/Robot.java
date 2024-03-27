@@ -55,6 +55,8 @@ public class Robot extends TimedRobot {
 
     
 
+    
+
 
 
     
@@ -158,8 +160,10 @@ public class Robot extends TimedRobot {
 
     }
 
+    m_robotContainer.m_pivot.intakePos(IntakeConstants.kPivotAngleSpeaker);
 
-    
+
+    //TODO: Remember to switch from a command to a method to set the lift in the beginning
     // LiftSubsystem.getInstance().setLiftGoalCommand(0);
     // m_lift.setLiftGoalCommand(0);
   }
@@ -178,6 +182,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+
+    m_robotContainer.m_pivot.intakePos(IntakeConstants.kPivotAngleSpeaker);
     
 
     /**

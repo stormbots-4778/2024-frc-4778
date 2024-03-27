@@ -22,6 +22,7 @@ import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.AutoAim;
+import frc.robot.subsystems.AutoShoot;
 import frc.robot.subsystems.LauncherPivotSubsystem;
 import frc.robot.subsystems.RobotPivotsSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
@@ -68,7 +69,8 @@ public class RobotContainer {
   public final LimelightSubsystem m_limelight = new LimelightSubsystem();
   public final LauncherPivotSubsystem m_launcherpivot = new LauncherPivotSubsystem();
   public final RobotPivotsSubsystem m_robotPivot = new RobotPivotsSubsystem(m_launcherpivot, m_pivot, true);
-  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot, m_launcherSubsystem);
+  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot);
+  public final AutoShoot m_autoShoot = new AutoShoot(m_limelight, m_robotDrive, m_intake, m_pivot, m_launcherSubsystem);
 
   public boolean Centric = true;
   
@@ -317,15 +319,31 @@ public class RobotContainer {
 //  new JoystickButton(m_driverController2, Button.kRightBumper.value)
 //             .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
 
-    new JoystickButton(m_driverController2, Button.kLeftBumper.value)
-             .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
-    new JoystickButton(m_driverController2, Button.kRightBumper.value)
-             .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
+    // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
+    //          .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
+    // new JoystickButton(m_driverController2, Button.kRightBumper.value)
+    //          .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
     // new JoystickButton(m_driverController2, Button.kB.value)
     //          .whileTrue(m_autoaim.AmpAlign());
     new JoystickButton(m_driverController2, Button.kY.value)
              .onTrue(m_robotDrive.ZeroHeading());
 
+    new JoystickButton(m_driverController2, Button.kA.value)
+             .onTrue(m_limelight.AmpAlignServoPos());
+
+    new JoystickButton(m_driverController2, Button.kB.value)
+             .onTrue(m_limelight.SpeakerAlignServoPos());
+
+    new JoystickButton(m_driverController2, Button.kX.value)
+             .whileTrue(m_autoShoot.SpeakerAlign());
+
+    new JoystickButton(m_driverController2, Button.kLeftBumper.value)
+             .onTrue(m_pivot.resetAxis())
+             .onFalse(m_pivot.resetEncoder());
+
+    
+
+    
         
 
             

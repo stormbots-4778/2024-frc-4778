@@ -9,28 +9,28 @@
       "prevControl": null,
       "nextControl": {
         "x": 1.3656518741608918,
-        "y": 6.889945208461845
+        "y": 6.626074966435647
       },
       "isLocked": false,
       "linkedName": "Top Speaker"
     },
     {
       "anchor": {
-        "x": 2.34,
-        "y": 7.007220871584601
+        "x": 2.626365252730506,
+        "y": 5.4826372509887875
       },
       "prevControl": {
-        "x": 1.0206487898690084,
-        "y": 7.021880329474945
+        "x": 1.4242897057222694,
+        "y": 5.2247015494030995
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Middle Note"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.45,
       "rotationDegrees": 0,
       "rotateFast": false
     }
