@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
+// import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -106,6 +106,8 @@ public class DriveSubsystem extends SubsystemBase {
     // gyro = new Pigeon2(32);
 
     gyro.getConfigurator().apply(new Pigeon2Configuration());
+    gyro.getYaw().setUpdateFrequency(100);
+    gyro.getGravityVectorZ().setUpdateFrequency(100);
     gyro.setYaw(0.0);
   }
 

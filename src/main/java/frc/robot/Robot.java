@@ -4,24 +4,15 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
-import com.ctre.phoenix6.hardware.Pigeon2;
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
+//import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.LauncherPivotSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,11 +25,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private PivotSubsystem m_PivotSubsystem;
-
-  // private final Pigeon2 pidgey = new Pigeon2(32, "rio");
-  // private double currentTime = Timer.getFPGATimestamp();
-  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
