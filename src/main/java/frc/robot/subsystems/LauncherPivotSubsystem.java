@@ -16,17 +16,18 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-
-public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem{
-    private final CANSparkMax launcherPivotMotor = new CANSparkMax(ShooterConstants.kLauncherPivotCanId, MotorType.kBrushless);
+public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem {
+    private final CANSparkMax launcherPivotMotor = new CANSparkMax(ShooterConstants.kLauncherPivotCanId,
+            MotorType.kBrushless);
     private final SparkPIDController launcherPivotPIDController;
     public static RelativeEncoder launcherPivotEncoder;
 
     public LauncherPivotSubsystem() {
         super(
-            new TrapezoidProfile.Constraints(
-                600.0, 800.0),0.0);
-        
+                new TrapezoidProfile.Constraints(
+                        600.0, 800.0),
+                0.0);
+
         launcherPivotMotor.restoreFactoryDefaults();
         launcherPivotMotor.getEncoder().setPosition(0.0);
 
@@ -41,8 +42,10 @@ public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem{
         launcherPivotPIDController = launcherPivotMotor.getPIDController();
         launcherPivotPIDController.setFeedbackDevice(launcherPivotEncoder);
         launcherPivotPIDController.setPositionPIDWrappingEnabled(false);
-        launcherPivotPIDController.setPositionPIDWrappingMinInput(ShooterConstants.kLauncherPivotEncoderPositionPIDMinInput);
-        launcherPivotPIDController.setPositionPIDWrappingMaxInput(ShooterConstants.kLauncherPivotEncoderPositionPIDMaxInput);
+        launcherPivotPIDController
+                .setPositionPIDWrappingMinInput(ShooterConstants.kLauncherPivotEncoderPositionPIDMinInput);
+        launcherPivotPIDController
+                .setPositionPIDWrappingMaxInput(ShooterConstants.kLauncherPivotEncoderPositionPIDMaxInput);
         launcherPivotPIDController.setP(ShooterConstants.kLauncherPivotP);
         launcherPivotPIDController.setI(ShooterConstants.kLauncherPivotI);
         launcherPivotPIDController.setD(ShooterConstants.kLauncherPivotD);
@@ -61,5 +64,4 @@ public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem{
         return Commands.runOnce(() -> setGoal(pivotPos), this);
     }
 
-    
 }

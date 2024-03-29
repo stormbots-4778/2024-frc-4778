@@ -18,7 +18,6 @@ import frc.robot.Constants.LimelightConstants;
 public class IntakeSubsystem extends SubsystemBase {
     private final LauncherSubsystem launcherSubsystem;
     private final PivotSubsystem pivotSubsystem;
-    
 
     public final CANSparkMax topRoller;
     private final SparkPIDController topRollerPIDController;
@@ -26,40 +25,38 @@ public class IntakeSubsystem extends SubsystemBase {
     public final CANSparkMax bottomRoller;
     private final SparkPIDController bottomRollerPIDController;
 
-
     public IntakeSubsystem(LauncherSubsystem launcherSubsystem, PivotSubsystem pivotSubsystem) {
         this.launcherSubsystem = launcherSubsystem;
         this.pivotSubsystem = pivotSubsystem;
 
         topRoller = new CANSparkMax(IntakeConstants.kTopRollerCanId, MotorType.kBrushless);
         bottomRoller = new CANSparkMax(IntakeConstants.kBottomRollerCanId, MotorType.kBrushless);
-        
 
-        // Reset motors to known starting point            
+        // Reset motors to known starting point
         topRoller.restoreFactoryDefaults();
         bottomRoller.restoreFactoryDefaults();
-        
 
         topRoller.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
         topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
 
         topRollerPIDController = topRoller.getPIDController();
         topRollerPIDController.setP(IntakeConstants.intakeKp);
-        
+
         bottomRoller.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
         bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
-        
+
         bottomRollerPIDController = bottomRoller.getPIDController();
         bottomRollerPIDController.setP(IntakeConstants.intakeKp);
 
         // // pivotMotor.setIdleMode(IntakeConstants.kIntakeMotorIdleMode);
         // pivotMotor.setSmartCurrentLimit(IntakeConstants.kPivotMotorCurrentLimit);
 
-        // // TODO: Confirm if we should be using the RelativeEncoder (above) or AbsoluteEncoder for this motor
+        // // TODO: Confirm if we should be using the RelativeEncoder (above) or
+        // AbsoluteEncoder for this motor
         // //pivotEncoder = pivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
-       
+
         // pivotEncoder = pivotMotor.getEncoder();
-      
+
         // pivotEncoder.setPositionConversionFactor(IntakeConstants.kPivotEncoderPositionFactor);
         // pivotEncoder.setVelocityConversionFactor(IntakeConstants.kPivotEncoderVelocityFactor);
 
@@ -74,38 +71,37 @@ public class IntakeSubsystem extends SubsystemBase {
         // pivotPIDController.setFF(IntakeConstants.kPivotFF);
         // // pivotPIDController.setClosed
 
-        // pivotPIDController.setOutputRange(IntakeConstants.kPivotMinOutput, IntakeConstants.kPivotMaxOutput);
+        // pivotPIDController.setOutputRange(IntakeConstants.kPivotMinOutput,
+        // IntakeConstants.kPivotMaxOutput);
 
-
-    
         // Save motor configuration
         topRoller.burnFlash();
         bottomRoller.burnFlash();
 
     }
-    
+
     // State machine
     public Command intake() {
         return new InstantCommand(() -> {
             // 1. Move the pivot to the intake position
-            // pivotPIDController.setReference(IntakeConstants.kPivotAngleIntake, ControlType.kPosition);
-            //this is now moved to the pivot subsystem
-            
+            // pivotPIDController.setReference(IntakeConstants.kPivotAngleIntake,
+            // ControlType.kPosition);
+            // this is now moved to the pivot subsystem
+
             // 2. Run the intake motors until a note is loaded
             topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 2);
             bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 2);
             topRoller.set(IntakeConstants.intakeSpeed);
-             
+
             bottomRoller.set(IntakeConstants.intakeSpeed);
 
-
             pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake);
-;
+            ;
             // 3. Stop the launcher if it is running
             launcherSubsystem.stop();
         }, this, launcherSubsystem);
     }
-    
+
     public Command outtake() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
@@ -121,19 +117,17 @@ public class IntakeSubsystem extends SubsystemBase {
         });
     }
 
-       public Command ampShoot() {
+    public Command ampShoot() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
             topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
             bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
             topRoller.set(IntakeConstants.shootSpeedTop);
             bottomRoller.set(IntakeConstants.shootSpeedBottom);
-            
 
             // If we are in the speaker position, the launcher should already be running
         });
     }
-
 
     public void autoAmpShoot() {
         topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
@@ -145,8 +139,8 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command ampPosition() {
         return new InstantCommand(() -> {
             // 1. Move the pivot to the amp position
-            
-            //this is now moved to the pivot subsystem
+
+            // this is now moved to the pivot subsystem
             // 2. Stop the launcher if it is running
             pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp);
             launcherSubsystem.stop();
@@ -154,14 +148,16 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public Command speakerPosition() {
-        return new InstantCommand(() -> {  // Should this be run(..) or runOnce(..)? Try and see
-                // 1. Move the pivot to the speaker position
-                
-                pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker);
-                // 2. Start the launcher
-                // launcherSubsystem.shoot();
-            }, this, launcherSubsystem);
+        return new InstantCommand(() -> { // Should this be run(..) or runOnce(..)? Try and see
+            // 1. Move the pivot to the speaker position
+
+            pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker);
+            // 2. Start the launcher
+            // launcherSubsystem.shoot();
+        });
     }
+
+
 
     public Command stopIntake() {
         return runOnce(() -> {
@@ -170,14 +166,8 @@ public class IntakeSubsystem extends SubsystemBase {
         });
     }
 
-    
-
-    
-
     @Override
     public void periodic() {
-        
-        
-       
+
     }
 }

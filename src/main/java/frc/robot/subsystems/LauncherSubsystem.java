@@ -23,28 +23,28 @@ public class LauncherSubsystem extends SubsystemBase {
         leftShoooterPIDController.setP(ShooterConstants.shooterKp);
 
         leftShooter.burnFlash();
-        
+
         rightShooter = new CANSparkMax(ShooterConstants.kRightShooterCanId, MotorType.kBrushless);
         rightShooter.setIdleMode(ShooterConstants.kShootingMotorIdleMode);
         rightShooter.setSmartCurrentLimit(ShooterConstants.kShootingMotorCurrentLimit);
-        
+
         rightShoooterPIDController = rightShooter.getPIDController();
         rightShoooterPIDController.setP(ShooterConstants.shooterKp);
-        
+
         rightShooter.burnFlash();
     }
 
     public Command shoot() {
-        return runOnce(()-> {
+        return runOnce(() -> {
             leftShooter.set(ShooterConstants.leftShootSpeed);
             rightShooter.set(ShooterConstants.rightShootSpeed);
         });
     }
 
     public Command stop() {
-        return runOnce(()-> {
+        return runOnce(() -> {
             leftShooter.set(0.0);
-            rightShooter.set(0.0);        
+            rightShooter.set(0.0);
         });
     }
 }

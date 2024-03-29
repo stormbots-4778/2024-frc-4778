@@ -11,7 +11,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.Servo;
 
-
 public class LimelightSubsystem extends SubsystemBase {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -20,12 +19,11 @@ public class LimelightSubsystem extends SubsystemBase {
     public NetworkTableEntry ta = table.getEntry("ta");
 
     Servo LimelightServo;
-    
 
     public void periodic() {
         LimelightConstants.x = tx.getDouble(0.0);
         LimelightConstants.y = ty.getDouble(0.0);
-        LimelightConstants.area = ta.getDouble(0.0);        
+        LimelightConstants.area = ta.getDouble(0.0);
 
         SmartDashboard.putNumber("LimelightX", LimelightConstants.x);
         SmartDashboard.putNumber("LimelightY", LimelightConstants.y);
@@ -35,35 +33,21 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     public LimelightSubsystem() {
-        LimelightServo = new Servo(0);  //<======= change this number
+        LimelightServo = new Servo(0); // <======= change this number
     }
 
- public Command AmpAlignServoPos() {
+    public Command AmpAlignServoPos() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
-            LimelightServo.setAngle(0); //<======= value needs to be tuned
+            LimelightServo.setAngle(180); // <======= value needs to be tuned
         });
     }
 
- public Command SpeakerAlignServoPos() {
+    public Command SpeakerAlignServoPos() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
-            LimelightServo.setAngle(180); //<======= value needs to be tuned
+            LimelightServo.setAngle(0); // <======= value needs to be tuned
         });
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 }

@@ -33,7 +33,7 @@ public final class Constants {
   }
 
   public static final class DriveConstants {
-    // public static double spdLimitFast = .9;  <======== Competition values
+    // public static double spdLimitFast = .9; <======== Competition values
     // public static double turnLimitFast = .7;
 
     public static double spdLimitFast = 1.0;
@@ -85,14 +85,12 @@ public final class Constants {
     public static final boolean kGyroReversed = false;
 
     public static final double kDriveBaseRadius = Math.max(kWheelBase, kTrackWidth) / 2.0;
-    public static final HolonomicPathFollowerConfig pathFollowerConfig =
-      new HolonomicPathFollowerConfig(
+    public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
         new PIDConstants(4, 0, 0), // TODO: Tune translation PID config
         new PIDConstants(2, 0, 0), // TODO: Tune rotation PID config
         kMaxSpeedMetersPerSecond,
         kDriveBaseRadius,
-        new ReplanningConfig()
-      );
+        new ReplanningConfig());
   }
 
   public static final class ShooterConstants {
@@ -108,10 +106,10 @@ public final class Constants {
     public static IdleMode kShootingMotorIdleMode = IdleMode.kBrake;
     public static int kShootingMotorCurrentLimit = 50; // amps
 
+    // Pivot motor configuration
 
-        // Pivot motor configuration
-
-    //TODO: The below values for the launcher pivot are basically random, mean nothing, and HAVE to be tuned
+    // TODO: The below values for the launcher pivot are basically random, mean
+    // nothing, and HAVE to be tuned
 
     public static final double kLauncherPivotEncoderPositionFactor = (2 * Math.PI); // radians
     public static final double kLauncherPivotEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
@@ -128,23 +126,14 @@ public final class Constants {
     public static final double kLauncherPivotMinOutput = -1;
     public static final double kLauncherPivotMaxOutput = 1;
 
-
     // TODO: Tune angles for each pivot position
     // public static final double kLauncherPivotAngleIntake = -(Math.PI * 22);
     public static final double kLauncherPivotAngleHigh = 0.0;
     // public static final double kLauncherPivotAngleLow = -57;
-    public static final double kLauncherPivotAngleLow = -106.875;
-
-
+    // public static final double kLauncherPivotAngleLow = -106.875;
+    public static final double kLauncherPivotAngleLow = -28.5;
     public static IdleMode kLauncherPivotMotorIdleMode = IdleMode.kCoast;
-    public static final int kLauncherPivotMotorCurrentLimit = 15; 
-
-
-
-
-
-
-
+    public static final int kLauncherPivotMotorCurrentLimit = 10;
 
   }
 
@@ -164,16 +153,15 @@ public final class Constants {
 
     public static final double kLiftEncoderPositionPIDMinInput = 0; // radians
     public static final double kLiftEncoderPositionPIDMaxInput = kLiftEncoderPositionFactor; // radians
-    
-    public static final double kLiftMotorSpeed = 0.5; 
+
+    public static final double kLiftMotorSpeed = 0.5;
 
     public static final double kStepDistance = 75;
-      public static final double kFullExtend = 760;
-      public static final double kFullRetract = 0;
+    public static final double kFullExtend = 760;
+    public static final double kFullRetract = 0;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
     public static int kLiftMotorCurrentLimit = 2; // amps
-   
 
   }
 
@@ -214,18 +202,12 @@ public final class Constants {
     public static final double kPivotMinOutput = -1;
     public static final double kPivotMaxOutput = 1;
 
-
-
     // TODO: Tune angles for each pivot position
     public static final double kPivotAngleIntake = 75;
     public static final double kPivotAngleAmp = 33;
     public static final double kPivotAngleSpeaker = 10.0;
 
     public static final double kPivotAngleLow = 5.5;
-
-    
-
-  
 
     public static final int kPivotMotorCurrentLimit = 5;
   }
@@ -249,9 +231,9 @@ public final class Constants {
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
     // teeth on the bevel pinion
-    //3/19/2024 Mahi - swerve drive modified to suit 21 teeth
+    // 3/19/2024 Mahi - swerve drive modified to suit 21 teeth
     public static final double kDrivingMotorReduction = (45.0 * 21) / (kDrivingMotorPinionTeeth * 15);
-    
+
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
 
@@ -315,6 +297,5 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.025;
   }
-
 
 }

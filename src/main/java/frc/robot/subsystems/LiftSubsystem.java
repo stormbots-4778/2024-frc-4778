@@ -17,115 +17,101 @@ import frc.robot.Constants.LiftConstants;
 import frc.robot.subsystems.LiftSubsystem;
 
 public class LiftSubsystem extends TrapezoidProfileSubsystem {
-    // private CANSparkMax LiftMotor;
-    // private final SparkPIDController LiftPIDController;
-    // public static RelativeEncoder LiftEncoder;
+  // private CANSparkMax LiftMotor;
+  // private final SparkPIDController LiftPIDController;
+  // public static RelativeEncoder LiftEncoder;
 
-        public CANSparkMax LiftMotor;
-        public final SparkPIDController LiftPIDController;
-        public static RelativeEncoder LiftEncoder;
+  public CANSparkMax LiftMotor;
+  public final SparkPIDController LiftPIDController;
+  public static RelativeEncoder LiftEncoder;
 
-        private double curGoal = 0.0;
+  private double curGoal = 0.0;
 
-   
+  // public LiftSubsystem() {
+  // LiftMotor = new CANSparkMax(LiftConstants.kLiftMotorCanId,
+  // MotorType.kBrushless);
+  // LiftMotor.restoreFactoryDefaults();
+  // LiftMotor.getEncoder().setPosition(0.0);
 
-    // public LiftSubsystem() {
-    //     LiftMotor = new CANSparkMax(LiftConstants.kLiftMotorCanId, MotorType.kBrushless);
-    //     LiftMotor.restoreFactoryDefaults();
-    //     LiftMotor.getEncoder().setPosition(0.0);
-       
-    //     LiftMotor.setIdleMode(LiftConstants.kLiftMotorIdleMode);
-    //     LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
-    //     LiftMotor.burnFlash();
+  // LiftMotor.setIdleMode(LiftConstants.kLiftMotorIdleMode);
+  // LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
+  // LiftMotor.burnFlash();
 
-    //     LiftPIDController = LiftMotor.getPIDController();
-    //     LiftPIDController.setP(LiftConstants.liftKp);
-    //     LiftPIDController.setI(LiftConstants.liftKi);
-    //     LiftPIDController.setD(LiftConstants.liftKd);
-    //     LiftPIDController.setFF(LiftConstants.liftKFF);
+  // LiftPIDController = LiftMotor.getPIDController();
+  // LiftPIDController.setP(LiftConstants.liftKp);
+  // LiftPIDController.setI(LiftConstants.liftKi);
+  // LiftPIDController.setD(LiftConstants.liftKd);
+  // LiftPIDController.setFF(LiftConstants.liftKFF);
 
-    //     LiftPIDController.setOutputRange(LiftConstants.kLiftMinOutput, LiftConstants.kLiftMaxOutput);
+  // LiftPIDController.setOutputRange(LiftConstants.kLiftMinOutput,
+  // LiftConstants.kLiftMaxOutput);
 
+  // LiftEncoder = LiftMotor.getEncoder();
 
-        
+  // LiftEncoder.setPositionConversionFactor(LiftConstants.kLiftEncoderPositionFactor);
+  // LiftEncoder.setVelocityConversionFactor(LiftConstants.kLiftEncoderVelocityFactor);
+  // LiftPIDController.setFeedbackDevice(LiftEncoder);
+  // LiftPIDController.setPositionPIDWrappingEnabled(false);
+  // LiftPIDController.setPositionPIDWrappingMinInput(LiftConstants.kLiftEncoderPositionPIDMinInput);
+  // LiftPIDController.setPositionPIDWrappingMaxInput(LiftConstants.kLiftEncoderPositionPIDMaxInput);
 
-    //     LiftEncoder = LiftMotor.getEncoder();
+  // }
 
-    //     LiftEncoder.setPositionConversionFactor(LiftConstants.kLiftEncoderPositionFactor);
-    //     LiftEncoder.setVelocityConversionFactor(LiftConstants.kLiftEncoderVelocityFactor);
-    //     LiftPIDController.setFeedbackDevice(LiftEncoder);
-    //     LiftPIDController.setPositionPIDWrappingEnabled(false);
-    //     LiftPIDController.setPositionPIDWrappingMinInput(LiftConstants.kLiftEncoderPositionPIDMinInput);
-    //     LiftPIDController.setPositionPIDWrappingMaxInput(LiftConstants.kLiftEncoderPositionPIDMaxInput);
+  // public Command extend() {
+  // return runOnce(()-> {
+  // LiftMotor.set(LiftConstants.liftMotorSpeed);
 
+  // });
+  // }
 
-      
+  // public Command retract() {
+  // return runOnce(()-> {
+  // LiftMotor.set(-(LiftConstants.liftMotorSpeed));
+  // });
+  // }
 
- 
+  // public Command stop() {
+  // return runOnce(()-> {
+  // LiftMotor.set(0.0);
 
- 
-        
-        
-    // }
+  // });
+  // }
 
-    // public Command extend() {
-    //     return runOnce(()-> {
-    //         LiftMotor.set(LiftConstants.liftMotorSpeed);
-            
-    //     });
-    // }
+  public LiftSubsystem() {
 
-    // public Command retract() {
-    //     return runOnce(()-> {
-    //         LiftMotor.set(-(LiftConstants.liftMotorSpeed));
-    //     });
-    // }
+    super(
+        new TrapezoidProfile.Constraints(
+            450.0, 600.0),
+        0.0);
 
-    // public Command stop() {
-    //     return runOnce(()-> {
-    //         LiftMotor.set(0.0);
-              
-    //     });
-    // }
+    LiftMotor = new CANSparkMax(LiftConstants.kLiftMotorCanId, MotorType.kBrushless);
+    LiftMotor.restoreFactoryDefaults();
+    LiftMotor.getEncoder().setPosition(0.0);
 
+    LiftMotor.setIdleMode(LiftConstants.kLiftMotorIdleMode);
+    LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
+    LiftMotor.burnFlash();
 
+    LiftPIDController = LiftMotor.getPIDController();
+    LiftPIDController.setP(LiftConstants.liftKp);
+    LiftPIDController.setI(LiftConstants.liftKi);
+    LiftPIDController.setD(LiftConstants.liftKd);
+    LiftPIDController.setFF(LiftConstants.liftKFF);
 
-    public LiftSubsystem() {
+    LiftPIDController.setOutputRange(LiftConstants.kLiftMinOutput, LiftConstants.kLiftMaxOutput);
 
-        super(
-            new TrapezoidProfile.Constraints(
-                450.0, 600.0),0.0);
-        
+    LiftEncoder = LiftMotor.getEncoder();
 
-        LiftMotor = new CANSparkMax(LiftConstants.kLiftMotorCanId, MotorType.kBrushless);
-        LiftMotor.restoreFactoryDefaults();
-        LiftMotor.getEncoder().setPosition(0.0);
-       
-        LiftMotor.setIdleMode(LiftConstants.kLiftMotorIdleMode);
-        LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
-        LiftMotor.burnFlash();
+    LiftEncoder.setPositionConversionFactor(LiftConstants.kLiftEncoderPositionFactor);
+    LiftEncoder.setVelocityConversionFactor(LiftConstants.kLiftEncoderVelocityFactor);
+    LiftPIDController.setFeedbackDevice(LiftEncoder);
+    LiftPIDController.setPositionPIDWrappingEnabled(false);
+    LiftPIDController.setPositionPIDWrappingMinInput(LiftConstants.kLiftEncoderPositionPIDMinInput);
+    LiftPIDController.setPositionPIDWrappingMaxInput(LiftConstants.kLiftEncoderPositionPIDMaxInput);
 
-        LiftPIDController = LiftMotor.getPIDController();
-        LiftPIDController.setP(LiftConstants.liftKp);
-        LiftPIDController.setI(LiftConstants.liftKi);
-        LiftPIDController.setD(LiftConstants.liftKd);
-        LiftPIDController.setFF(LiftConstants.liftKFF);
+  }
 
-        LiftPIDController.setOutputRange(LiftConstants.kLiftMinOutput, LiftConstants.kLiftMaxOutput);
-
-        LiftEncoder = LiftMotor.getEncoder();
-
-        LiftEncoder.setPositionConversionFactor(LiftConstants.kLiftEncoderPositionFactor);
-        LiftEncoder.setVelocityConversionFactor(LiftConstants.kLiftEncoderVelocityFactor);
-        LiftPIDController.setFeedbackDevice(LiftEncoder);
-        LiftPIDController.setPositionPIDWrappingEnabled(false);
-        LiftPIDController.setPositionPIDWrappingMinInput(LiftConstants.kLiftEncoderPositionPIDMinInput);
-        LiftPIDController.setPositionPIDWrappingMaxInput(LiftConstants.kLiftEncoderPositionPIDMaxInput);
-        
-    }
-
-
-      @Override
+  @Override
   public void useState(TrapezoidProfile.State setpoint) {
     LiftPIDController.setReference(setpoint.position, ControlType.kPosition);
   }
@@ -134,10 +120,10 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
     return Commands.runOnce(() -> setGoal(liftPos), this);
   }
 
-//   public Command setLiftGoalCommand(double liftPos) {
-//     curGoal = liftPos;
-//     return Commands.runOnce(() -> setGoal(curGoal), this);
-//   }
+  // public Command setLiftGoalCommand(double liftPos) {
+  // curGoal = liftPos;
+  // return Commands.runOnce(() -> setGoal(curGoal), this);
+  // }
 
   public Command extendStep() {
     return setLiftGoalCommand(Math.min(LiftConstants.kFullExtend, curGoal + LiftConstants.kStepDistance));
@@ -146,12 +132,5 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
   public Command retractStep() {
     return setLiftGoalCommand(Math.max(LiftConstants.kFullRetract, curGoal - LiftConstants.kStepDistance));
   }
-
-
-
-
-
-
-
 
 }
