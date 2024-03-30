@@ -208,7 +208,7 @@ public final class Constants {
     public static final double kPivotAngleAmp = 33;
     // public static final double kPivotAngleSpeaker = 10.0;
 
-    public static final double kPivotAngleSpeaker = 10.0;
+    public static final double kPivotAngleSpeaker = 9.0;
 
     public static final double kPivotAngleLow = 5.5;
 

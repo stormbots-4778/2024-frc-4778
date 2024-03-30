@@ -69,7 +69,8 @@ public class AutoShoot extends SubsystemBase {
             // rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
 
             rotSpeed = (KpStrafe * (tx));
-            double yAngle = ((Math.pow(0.0895 * ty, 2)) - (3.8796 * ty) + 6.3136);
+            // double yAngle = ((Math.pow(0.0895 * ty, 2)) - (3.8796 * ty) + 6.3136);
+             double yAngle = ((Math.pow(0.0895 * ty, 2)) - (3.8796 * ty) + 2.3136);
 
             double intakeAngle = 0.157895 * (yAngle) + 10;
 

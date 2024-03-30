@@ -131,7 +131,7 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Close Shoot", new
     // CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
     NamedCommands.registerCommand("Spin Launcher", new SpinLauncher(m_launcherSubsystem));
-    NamedCommands.registerCommand("Shoot", m_launcherSubsystem.shoot());
+    NamedCommands.registerCommand("Shoot", m_intake.outtake());
     NamedCommands.registerCommand("Intake", m_intake.intake());
     NamedCommands.registerCommand("Intake Pivot Position",
         m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake));

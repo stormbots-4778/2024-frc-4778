@@ -12,16 +12,16 @@
         "y": 5.5206760195883575
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Middle Speaker"
     },
     {
       "anchor": {
-        "x": 2.626365252730506,
-        "y": 5.4826372509887875
+        "x": 2.890235494756704,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 3.0954678823495554,
-        "y": 5.497297440763893
+        "x": 3.3593381243757534,
+        "y": 5.564660189775105
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 1.0,
     "maxAngularVelocity": 270.0,
     "maxAngularAcceleration": 270.0

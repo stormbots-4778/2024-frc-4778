@@ -12,12 +12,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "RotateBottom"
-          }
-        },
-        {
           "type": "sequential",
           "data": {
             "commands": [
@@ -25,6 +19,12 @@
                 "type": "named",
                 "data": {
                   "name": "Spin Launcher"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
                 }
               },
               {
@@ -139,6 +139,12 @@
           "type": "named",
           "data": {
             "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BottomSpeaker-MidlineBottom"
           }
         }
       ]
