@@ -107,7 +107,7 @@ public class AutoShoot extends SubsystemBase {
                 intakeAngle = 2.5;
             }
 
-            if (intakeAngle > 9.5) {
+            if (intakeAngle > 10.0) {
                 intakeAngle = 10.0;
             }
 
