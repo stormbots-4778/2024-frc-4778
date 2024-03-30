@@ -112,6 +112,7 @@ public class AutoAim extends SubsystemBase {
     // Below code is if amp shot is missed and we need to align closer, adjusted TY
     // offset
     public Command AmpAlignAdjustment() {
+        double adjustValue;
         return run(() -> {
             NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
 
@@ -128,7 +129,9 @@ public class AutoAim extends SubsystemBase {
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
 
-            Pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp);
+
+
+            // Pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp);
 
             // double yawCalculated = (Math.signum(Drive.m_gyro.getYaw()) * Math.PI) -
             // (Math.toRadians(Drive.m_gyro.getYaw()));
@@ -179,10 +182,10 @@ public class AutoAim extends SubsystemBase {
             }
 
             // debug test
-            System.out.printf("Rot, X, Y Speeds");
-            System.out.printf("%f\n", rotSpeed);
-            System.out.printf("%f\n", xSpeed);
-            System.out.printf("%f\n", ySpeed);
+            // System.out.printf("Rot, X, Y Speeds");
+            // System.out.printf("%f\n", rotSpeed);
+            // System.out.printf("%f\n", xSpeed);
+            // System.out.printf("%f\n", ySpeed);
         });
     }
 

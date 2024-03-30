@@ -129,9 +129,10 @@ public final class Constants {
     // TODO: Tune angles for each pivot position
     // public static final double kLauncherPivotAngleIntake = -(Math.PI * 22);
     public static final double kLauncherPivotAngleHigh = 0.0;
+    //  public static final double kLauncherPivotAngleHigh = -5.0;
     // public static final double kLauncherPivotAngleLow = -57;
     // public static final double kLauncherPivotAngleLow = -106.875;
-    public static final double kLauncherPivotAngleLow = -28.5;
+    public static final double kLauncherPivotAngleLow = -33;
     public static IdleMode kLauncherPivotMotorIdleMode = IdleMode.kCoast;
     public static final int kLauncherPivotMotorCurrentLimit = 10;
 
@@ -194,22 +195,24 @@ public final class Constants {
     public static final double kPivotEncoderPositionPIDMaxInput = kPivotEncoderPositionFactor; // radians
 
     // TODO: Tune PID gains
-    public static final double kPivotP = 0.03;
-    public static final double kPivotI = 0.0001;
+    public static final double kPivotP = 0.08;
+    public static final double kPivotI = 0.0005;
     public static final double kPivotD = 0;
     public static final double kPivotFF = 0;
-    public static final double kPivotIZone = 3.0;
+    public static final double kPivotIZone = 10.0;
     public static final double kPivotMinOutput = -1;
     public static final double kPivotMaxOutput = 1;
 
     // TODO: Tune angles for each pivot position
-    public static final double kPivotAngleIntake = 75;
+    public static final double kPivotAngleIntake = 72;
     public static final double kPivotAngleAmp = 33;
+    // public static final double kPivotAngleSpeaker = 10.0;
+
     public static final double kPivotAngleSpeaker = 10.0;
 
     public static final double kPivotAngleLow = 5.5;
 
-    public static final int kPivotMotorCurrentLimit = 5;
+    public static final int kPivotMotorCurrentLimit = 30;
   }
 
   public static final class ModuleConstants {

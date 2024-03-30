@@ -122,6 +122,8 @@ public class RobotContainer {
               true, false);
         }, m_robotDrive));
 
+
+   
     
 
     //
@@ -226,6 +228,7 @@ public class RobotContainer {
         .onTrue(m_launcherSubsystem.stop());
 
     new JoystickButton(m_driverController, Button.kA.value)
+        .toggleOnTrue(m_pivot.notSpeakerPosition())
         .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
 
     // new JoystickButton(m_driverController, Button.kY.value)
@@ -236,12 +239,11 @@ public class RobotContainer {
     // .onFalse(m_intake.stopIntake());
 
     new JoystickButton(m_driverController, Button.kY.value)
-
-        .toggleOnTrue(m_intake.intake())
-        .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
+        .toggleOnTrue(m_pivot.notSpeakerPosition())
+        .onTrue(m_intake.intake())
+        .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
         // .toggleOnTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh))
         .onTrue(m_launcherSubsystem.stop())
-
         .onFalse(m_intake.stopIntake());
 
     new JoystickButton(m_driverController, Button.kRightBumper.value)
@@ -254,17 +256,20 @@ public class RobotContainer {
     // .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow));
 
     new JoystickButton(m_driverController, Button.kLeftStick.value)
+        .toggleOnTrue(m_pivot.speakerPosition())
         .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow))
-        .onTrue(m_robotPivot.trackLauncherPivot());
+        // .onTrue(m_robotPivot.trackLauncherPivot())
+        .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleLow));
 
     // new JoystickButton(m_driverController, Button.kRightStick.value)
     // .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker))
     // .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh));
 
     new JoystickButton(m_driverController, Button.kRightStick.value)
-
+        .toggleOnTrue(m_pivot.speakerPosition())
         .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh))
-        .onTrue(m_robotPivot.trackLauncherPivot());
+        // .onTrue(m_robotPivot.trackLauncherPivot())
+        .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
 
     new JoystickButton(m_driverController, Button.kStart.value)
         .onTrue(m_pivot.resetAxis())

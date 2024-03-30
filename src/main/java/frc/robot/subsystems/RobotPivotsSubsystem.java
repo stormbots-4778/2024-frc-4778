@@ -16,6 +16,8 @@ public class RobotPivotsSubsystem extends SubsystemBase {
     public LauncherPivotSubsystem LauncherPivot;
     public PivotSubsystem IntakePivot;
     public boolean UpPosition;
+    
+    
 
     public RobotPivotsSubsystem(LauncherPivotSubsystem LauncherPivot, PivotSubsystem IntakePivot, boolean UpPosition) {
         this.LauncherPivot = LauncherPivot;
@@ -58,21 +60,40 @@ public class RobotPivotsSubsystem extends SubsystemBase {
 
     public Command trackLauncherPivot() {
 
-        // final double command = 0.157895 * (LauncherPivotSubsystem.launcherPivotEncoder.getPosition()) + 10;
+        // final double command = 0.157895 *
+        // (LauncherPivotSubsystem.launcherPivotEncoder.getPosition()) + 10;
 
         // if (command < 0){
-        //     command = 0;
+        // command = 0;
         // }
 
         // if (command > IntakeConstants.kPivotAngleSpeaker){
-        //     command = IntakeConstants.kPivotAngleSpeaker;
+        // command = IntakeConstants.kPivotAngleSpeaker;
         // }
 
         return run(() -> { // Should this be run(..) or runOnce(..)? Try and see
 
-            IntakePivot.setPivotGoalCommand(0.157895 * (LauncherPivotSubsystem.launcherPivotEncoder.getPosition()) + 10);
+            this.trackPivot();
 
         });
     }
+
+    public void trackPivot() {
+        if(IntakePivot.inSpeakerPosition){
+        double command = 0.157895 * (LauncherPivotSubsystem.launcherPivotEncoder.getPosition()) + 10;
+        
+        if (command < 0) {
+            command = 0;
+        }
+
+        if (command > IntakeConstants.kPivotAngleSpeaker) {
+            command = IntakeConstants.kPivotAngleSpeaker;
+        }
+
+        this.IntakePivot.setPivotGoalCommand(command);
+        
+        System.out.printf("%f\n", command);
+    }
+}
 
 }

@@ -19,12 +19,13 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem {
   private final CANSparkMax pivotMotor = new CANSparkMax(IntakeConstants.kIntakePivotCanId, MotorType.kBrushless);
   private final SparkPIDController pivotPIDController;
   public static RelativeEncoder pivotEncoder;
+  public boolean inSpeakerPosition = true;
 
   public PivotSubsystem() {
 
     super(
         new TrapezoidProfile.Constraints(
-            100.0, 200.0),
+            100.0, 200.0),    // 100, 200
         0.0);
 
     pivotMotor.restoreFactoryDefaults();
@@ -59,6 +60,28 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem {
 
   public Command setPivotGoalCommand(double pivotPos) {
     return Commands.runOnce(() -> setGoal(pivotPos), this);
+  }
+
+  public Command speakerPosition(){
+    return runOnce(() -> {
+      this.S();
+    });
+  }
+
+  public Command notSpeakerPosition(){
+    return runOnce(() -> {
+      this.nS();
+    });
+  }
+
+  public void S(){
+    inSpeakerPosition = true;
+    System.out.println("Speaker Position");
+  }
+
+  public void nS(){
+    inSpeakerPosition = false;
+    System.out.println("Not Speaker Position");
   }
 
   public void intakePos(double pivotPos) {

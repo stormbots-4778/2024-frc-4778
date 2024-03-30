@@ -39,14 +39,15 @@ public class LimelightSubsystem extends SubsystemBase {
     public Command AmpAlignServoPos() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
-            LimelightServo.setAngle(180); // <======= value needs to be tuned
+            LimelightServo.set(0); // <======= value needs to be tuned
         });
     }
 
     public Command SpeakerAlignServoPos() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
-            LimelightServo.setAngle(0); // <======= value needs to be tuned
+            LimelightServo.set(1); // <======= value needs to be tuned
+            LimelightServo.setPosition(0);
         });
     }
 

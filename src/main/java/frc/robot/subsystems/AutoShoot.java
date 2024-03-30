@@ -44,7 +44,7 @@ public class AutoShoot extends SubsystemBase {
 
     public Command SpeakerAlign() {
         return run(() -> {
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
 
             // check against 'tv' before aligning
             double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
@@ -52,7 +52,7 @@ public class AutoShoot extends SubsystemBase {
             double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
             double[] poseArray = NetworkTableInstance.getDefault().getTable("limelight")
                     .getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
-            double angleError = poseArray[5];
+            // double angleError = poseArray[5];
             double ySpeed = 0.0;
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
@@ -69,6 +69,10 @@ public class AutoShoot extends SubsystemBase {
             // rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
 
             rotSpeed = (KpStrafe * (tx));
+            double yAngle = ((Math.pow(0.0895 * ty, 2)) - (3.8796 * ty) + 6.3136);
+
+            double intakeAngle = 0.157895 * (yAngle) + 10;
+
             // ySpeed = -(KpStrafe * (tx + 4.7)); //tx = horizontal error, strafe direction
             // in robot coordinates
             // xSpeed = (KpStrafe * (16 - ty));
@@ -83,27 +87,48 @@ public class AutoShoot extends SubsystemBase {
                 rotSpeed = -0.50;
             }
 
-
             if (tv < 0.9999) {
                 rotSpeed = -MathUtil.applyDeadband(
-                    Math.pow(RobotContainer.m_driverController.getRightX(), 2) * Math.signum(RobotContainer.m_driverController.getRightX()) * 0.25,
-                    OIConstants.kDriveDeadband);
+                        Math.pow(RobotContainer.m_driverController.getRightX(), 2)
+                                * Math.signum(RobotContainer.m_driverController.getRightX()) * 0.25,
+                        OIConstants.kDriveDeadband);
             }
 
-            
+            if (yAngle > 0.0) {
+                yAngle = 0.0;
+            }
+
+            if (yAngle < -32) {
+                yAngle = -32;
+            }
+
+            if (intakeAngle < 2.5) {
+                intakeAngle = 2.5;
+            }
+
+            if (intakeAngle > 9.5) {
+                intakeAngle = 10.0;
+            }
+
             Drive.drive(
-              -MathUtil.applyDeadband(
-                  Math.pow(RobotContainer.m_driverController.getLeftY(), 2) * Math.signum(RobotContainer.m_driverController.getLeftY()) * 0.25,
-                  OIConstants.kDriveDeadband),
-              -MathUtil.applyDeadband(
-                  Math.pow(RobotContainer.m_driverController.getLeftX(), 2) * Math.signum(RobotContainer.m_driverController.getLeftX()) * 0.25,
-                  OIConstants.kDriveDeadband),
-              rotSpeed,
-              // Rate limit = true sets speed to 0. Why? This is something to fix.
-              true, false);
+                    -MathUtil.applyDeadband(
+                            Math.pow(RobotContainer.m_driverController.getLeftY(), 2)
+                                    * Math.signum(RobotContainer.m_driverController.getLeftY()) * 0.25,
+                            OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(
+                            Math.pow(RobotContainer.m_driverController.getLeftX(), 2)
+                                    * Math.signum(RobotContainer.m_driverController.getLeftX()) * 0.25,
+                            OIConstants.kDriveDeadband),
+                    rotSpeed,
+                    // Rate limit = true sets speed to 0. Why? This is something to fix.
+                    true, false);
             // if ( (tv > 0.9999) && (Math.abs(rotSpeed) < 0.025) && (Math.abs(xSpeed) <
             // 0.025) && (Math.abs(ySpeed) < 0.025)){
             // // Commands.runOnce(() -> {
+
+            LauncherPivot.setLauncherPivotGoal(yAngle);
+
+            Pivot.intakePos(intakeAngle);
 
             // Launcher.shoot();
 
@@ -115,6 +140,9 @@ public class AutoShoot extends SubsystemBase {
             // System.out.printf("%f\n", rotSpeed);
             // System.out.printf("%f\n", xSpeed);
             // System.out.printf("%f\n", ySpeed);
+
+            System.out.printf("%f\n", yAngle);
+            System.out.printf("%f\n", intakeAngle);
         });
 
     }
@@ -130,26 +158,14 @@ public class AutoShoot extends SubsystemBase {
             double[] poseArray = NetworkTableInstance.getDefault().getTable("limelight")
                     .getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
             double angleError = poseArray[5];
-            
 
             Limelight.SpeakerAlignServoPos();
 
-            
-
             // double kpTurn = 0.25;
-            float KpAngle = 0.2f; //<======= value not real and has to be tuned
+            float KpAngle = 0.2f; // <======= value not real and has to be tuned
 
-            
-            LauncherPivot.setLauncherPivotGoalCommand(KpAngle * (15 - ty)); //<======= offset value is completely wrong and has to be tuned for goal command
-
-
- 
-
-
-
-
-            
-
+            LauncherPivot.setLauncherPivotGoalCommand(KpAngle * (15 - ty)); // <======= offset value is completely wrong
+                                                                            // and has to be tuned for goal command
 
             // if ( (tv > 0.9999) && (Math.abs(rotSpeed) < 0.025) && (Math.abs(xSpeed) <
             // 0.025) && (Math.abs(ySpeed) < 0.025)){
@@ -162,20 +178,9 @@ public class AutoShoot extends SubsystemBase {
 
             // debug test
             System.out.printf("Rot, X, Y Speeds");
-            
+
         });
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

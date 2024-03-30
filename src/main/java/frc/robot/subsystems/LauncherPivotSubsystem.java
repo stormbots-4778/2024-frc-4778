@@ -17,9 +17,9 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem {
-    private final CANSparkMax launcherPivotMotor = new CANSparkMax(ShooterConstants.kLauncherPivotCanId,
+    public static final CANSparkMax launcherPivotMotor = new CANSparkMax(ShooterConstants.kLauncherPivotCanId,
             MotorType.kBrushless);
-    private final SparkPIDController launcherPivotPIDController;
+    public final SparkPIDController launcherPivotPIDController;
     public static RelativeEncoder launcherPivotEncoder;
 
     public LauncherPivotSubsystem() {
@@ -63,5 +63,9 @@ public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem {
     public Command setLauncherPivotGoalCommand(double pivotPos) {
         return Commands.runOnce(() -> setGoal(pivotPos), this);
     }
+
+    public void setLauncherPivotGoal(double pivotPos) {
+        this.setGoal(pivotPos);
+      }
 
 }
