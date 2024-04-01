@@ -155,8 +155,6 @@ public class RobotContainer {
     // otherChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    // SmartDashboard.putNumber("IMU", m_robotDrive.m_gyro.getAngle());
-
   }
 
   // private void toggleFieldCentric(){
@@ -290,11 +288,11 @@ public class RobotContainer {
     // .onTrue(m_launcherSubsystem.stop())
     // .onFalse(m_intake.stopIntake());
 
-    // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
-    // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
+    new JoystickButton(m_driverController2, Button.kLeftBumper.value)
+    .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
 
-    // new JoystickButton(m_driverController2, Button.kRightBumper.value)
-    // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
+    new JoystickButton(m_driverController2, Button.kRightBumper.value)
+    .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
 
     // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
     // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));

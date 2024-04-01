@@ -157,12 +157,13 @@ public final class Constants {
 
     public static final double kLiftMotorSpeed = 0.5;
 
-    public static final double kStepDistance = 75;
-    public static final double kFullExtend = 760;
+   
+    public static final double kStepDistance = 20;
+    public static final double kFullExtend = 720;
     public static final double kFullRetract = 0;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
-    public static int kLiftMotorCurrentLimit = 2; // amps
+    public static int kLiftMotorCurrentLimit = 15; // amps
 
   }
 

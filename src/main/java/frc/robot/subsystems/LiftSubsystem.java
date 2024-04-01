@@ -23,7 +23,7 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
 
   public CANSparkMax LiftMotor;
   public final SparkPIDController LiftPIDController;
-  public static RelativeEncoder LiftEncoder;
+  public  RelativeEncoder LiftEncoder;
 
   private double curGoal = 0.0;
 
@@ -81,7 +81,7 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
 
     super(
         new TrapezoidProfile.Constraints(
-            450.0, 600.0),
+            450.0, 1350.0),
         0.0);
 
     LiftMotor = new CANSparkMax(LiftConstants.kLiftMotorCanId, MotorType.kBrushless);
