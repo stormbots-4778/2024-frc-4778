@@ -49,6 +49,12 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "Turn Off Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "Intake Pivot Position"
                 }
               },
