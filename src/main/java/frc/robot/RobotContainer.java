@@ -23,6 +23,7 @@ import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.AutoAim;
 import frc.robot.subsystems.AutoShoot;
+import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.LauncherPivotSubsystem;
 import frc.robot.subsystems.RobotPivotsSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
@@ -60,13 +61,13 @@ import com.revrobotics.CANSparkMax;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem();
-
   public final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public final LiftSubsystem m_lift = new LiftSubsystem();
   public final PivotSubsystem m_pivot = new PivotSubsystem();
   public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
   public final LimelightSubsystem m_limelight = new LimelightSubsystem();
   public final LauncherPivotSubsystem m_launcherpivot = new LauncherPivotSubsystem();
+  public final BlinkinSubsystem m_blinkin = new BlinkinSubsystem();  
   public final RobotPivotsSubsystem m_robotPivot = new RobotPivotsSubsystem(m_launcherpivot, m_pivot, true);
   public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot);
   public final AutoShoot m_autoShoot = new AutoShoot(m_limelight, m_robotDrive, m_intake, m_pivot, m_launcherSubsystem, m_launcherpivot);
@@ -90,8 +91,12 @@ public class RobotContainer {
   // Replace with CommandXboxController or CommandJoystick if needed
   public static final XboxController m_driverController = new XboxController(OperatorConstants.kDriverControllerPort);
   public static final XboxController m_driverController2 = new XboxController(OperatorConstants.kDriverControllerPort2);
+  
   public double spdLimit = DriveConstants.spdLimitFast;
   public double turnLimit = DriveConstants.turnLimitFast;
+
+  //button board controller
+  public static final XboxController m_driverController3 = new XboxController(OperatorConstants.kDriverControllerPort3);
 
   public boolean fieldCentric = false;
 
@@ -321,6 +326,10 @@ public class RobotContainer {
 
     // new JoystickButton(m_driverController2, Button.kA.value)
     // .onTrue(m_robotDrive.zeroHeading());
+
+    // blinkin commands
+      new JoystickButton(m_driverController2, Button.kStart.value)
+        .onTrue(m_blinkin.Confetti());
 
   }
 

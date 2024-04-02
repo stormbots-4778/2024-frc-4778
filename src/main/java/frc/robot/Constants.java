@@ -30,6 +30,9 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kDriverControllerPort2 = 1;
+    //button board controller
+    public static final int kDriverControllerPort3 = 2;
+
   }
 
   public static final class DriveConstants {
