@@ -80,7 +80,7 @@ public class RobotPivotsSubsystem extends SubsystemBase {
 
     public void trackPivot() {
         if(IntakePivot.inSpeakerPosition){
-        double command = 0.157895 * (LauncherPivotSubsystem.launcherPivotEncoder.getPosition()) + 10;
+        double command = 0.157895 * (LauncherPivotSubsystem.launcherPivotEncoder.getPosition()) + 6;
         
         if (command < 0) {
             command = 0;

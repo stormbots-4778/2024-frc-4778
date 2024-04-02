@@ -168,6 +168,9 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+    
+    
+
 
     m_robotContainer.m_pivot.intakePos(IntakeConstants.kPivotAngleSpeaker);
     
@@ -190,7 +193,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    
+   SmartDashboard.putNumber("Climber", m_robotContainer.m_lift.LiftEncoder.getPosition());
+ 
 
   }
 

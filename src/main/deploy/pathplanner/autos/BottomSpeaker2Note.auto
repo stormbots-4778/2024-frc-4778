@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6913168112050516,
-      "y": 4.397837367103306
+      "x": 0.7792735585471178,
+      "y": 4.661707609129505
     },
     "rotation": -60.255118703057796
   },
@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "RotateBottom"
+          }
+        },
+        {
           "type": "sequential",
           "data": {
             "commands": [
@@ -19,12 +25,6 @@
                 "type": "named",
                 "data": {
                   "name": "Spin Launcher"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.25
                 }
               },
               {
@@ -74,7 +74,7 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -87,6 +87,12 @@
                 "type": "path",
                 "data": {
                   "pathName": "BottomNote-BottomSpeaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Intake"
                 }
               }
             ]

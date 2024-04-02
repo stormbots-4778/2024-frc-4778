@@ -89,8 +89,8 @@ public final class Constants {
 
     public static final double kDriveBaseRadius = Math.max(kWheelBase, kTrackWidth) / 2.0;
     public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-        new PIDConstants(4, 0, 0), // TODO: Tune translation PID config
-        new PIDConstants(2, 0, 0), // TODO: Tune rotation PID config
+        new PIDConstants(6, 0.2, 0.1), // TODO: Tune translation PID config
+        new PIDConstants(4, 0.1, 0), // TODO: Tune rotation PID config
         kMaxSpeedMetersPerSecond,
         kDriveBaseRadius,
         new ReplanningConfig());
@@ -160,12 +160,13 @@ public final class Constants {
 
     public static final double kLiftMotorSpeed = 0.5;
 
-    public static final double kStepDistance = 75;
-    public static final double kFullExtend = 760;
+   
+    public static final double kStepDistance = 20;
+    public static final double kFullExtend = 720;
     public static final double kFullRetract = 0;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
-    public static int kLiftMotorCurrentLimit = 2; // amps
+    public static int kLiftMotorCurrentLimit = 15; // amps
 
   }
 
@@ -211,7 +212,7 @@ public final class Constants {
     public static final double kPivotAngleAmp = 33;
     // public static final double kPivotAngleSpeaker = 10.0;
 
-    public static final double kPivotAngleSpeaker = 10.0;
+    public static final double kPivotAngleSpeaker = 9.0;
 
     public static final double kPivotAngleLow = 5.5;
 
@@ -233,7 +234,8 @@ public final class Constants {
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
-    public static final double kWheelDiameterMeters = 0.072;
+    // public static final double kWheelDiameterMeters = 0.072; <==== aluminum wheels
+    public static final double kWheelDiameterMeters = 0.0762;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
     // teeth on the bevel pinion

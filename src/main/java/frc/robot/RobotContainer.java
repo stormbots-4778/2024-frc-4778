@@ -136,7 +136,7 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Close Shoot", new
     // CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
     NamedCommands.registerCommand("Spin Launcher", new SpinLauncher(m_launcherSubsystem));
-    NamedCommands.registerCommand("Shoot", m_launcherSubsystem.shoot());
+    NamedCommands.registerCommand("Shoot", m_intake.outtake());
     NamedCommands.registerCommand("Intake", m_intake.intake());
     NamedCommands.registerCommand("Intake Pivot Position",
         m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake));
@@ -159,8 +159,6 @@ public class RobotContainer {
 
     // otherChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
-    // SmartDashboard.putNumber("IMU", m_robotDrive.m_gyro.getAngle());
 
   }
 
@@ -295,11 +293,11 @@ public class RobotContainer {
     // .onTrue(m_launcherSubsystem.stop())
     // .onFalse(m_intake.stopIntake());
 
-    // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
-    // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
+    new JoystickButton(m_driverController2, Button.kLeftBumper.value)
+    .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
 
-    // new JoystickButton(m_driverController2, Button.kRightBumper.value)
-    // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
+    new JoystickButton(m_driverController2, Button.kRightBumper.value)
+    .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
 
     // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
     // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
