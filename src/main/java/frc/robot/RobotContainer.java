@@ -326,7 +326,7 @@ public class RobotContainer {
     // .onTrue(m_robotDrive.zeroHeading());
 
     // blinkin commands
-      new JoystickButton(m_driverController2, Button.kStart.value)
+      new JoystickButton(m_driverController2, Button.kBack.value)
         .onTrue(m_blinkin.Confetti());
 
   }

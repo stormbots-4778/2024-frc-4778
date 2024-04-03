@@ -178,8 +178,8 @@ public final class Constants {
 
     public static final double intakeSpeed = 0.6;
     public static final double outtakeSpeed = -1.0;
-    public static final double shootSpeedTop = -0.35; // can shoot from 2ft away with ~4in
-    public static final double shootSpeedBottom = -0.55;
+    public static final double shootSpeedTop = -0.425; // can shoot from 2ft away with ~4in
+    public static final double shootSpeedBottom = -0.60;
 
     public static final double intakeKp = 0.04;
     public static final double intakeKi = 0;
