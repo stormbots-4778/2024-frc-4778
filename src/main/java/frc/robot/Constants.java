@@ -104,8 +104,8 @@ public final class Constants {
     public static final double shooterKi = 0;
     public static final double shooterKd = 0;
 
-    public static final double leftShootSpeed = 0.95;
-    public static final double rightShootSpeed = -0.95;
+    public static final double leftShootSpeed = 1.0;
+    public static final double rightShootSpeed = -1.0;
     public static IdleMode kShootingMotorIdleMode = IdleMode.kBrake;
     public static int kShootingMotorCurrentLimit = 50; // amps
 
@@ -178,8 +178,8 @@ public final class Constants {
 
     public static final double intakeSpeed = 0.6;
     public static final double outtakeSpeed = -1.0;
-    public static final double shootSpeedTop = -0.500; // can shoot from 2ft away with ~4in
-    public static final double shootSpeedBottom = -0.70;
+    public static final double shootSpeedTop = -0.35; // can shoot from 2ft away with ~4in
+    public static final double shootSpeedBottom = -0.55;
 
     public static final double intakeKp = 0.04;
     public static final double intakeKi = 0;
@@ -216,7 +216,7 @@ public final class Constants {
 
     public static final double kPivotAngleLow = 5.5;
 
-    public static final int kPivotMotorCurrentLimit = 30;
+    public static final int kPivotMotorCurrentLimit = 35;
   }
 
   public static final class ModuleConstants {

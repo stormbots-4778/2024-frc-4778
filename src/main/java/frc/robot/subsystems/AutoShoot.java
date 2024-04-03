@@ -50,8 +50,8 @@ public class AutoShoot extends SubsystemBase {
             double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
             double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
             double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-            double[] poseArray = NetworkTableInstance.getDefault().getTable("limelight")
-                    .getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
+            // double[] poseArray = NetworkTableInstance.getDefault().getTable("limelight")
+            //         .getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
             // double angleError = poseArray[5];
             double ySpeed = 0.0;
             double xSpeed = 0.0;
@@ -70,9 +70,9 @@ public class AutoShoot extends SubsystemBase {
 
             rotSpeed = (KpStrafe * (tx));
             // double yAngle = ((Math.pow(0.0895 * ty, 2)) - (3.8796 * ty) + 6.3136);
-             double yAngle = ((Math.pow(0.0895 * ty, 2)) - (3.8796 * ty) + 2.3136);
+            double yAngle = ((Math.pow(0.0198 * ty, 2)) - (2.6035 * ty) -5.2846);
 
-            double intakeAngle = 0.157895 * (yAngle) + 10;
+            double intakeAngle = 0.1625 * (yAngle) + 10;
 
             // ySpeed = -(KpStrafe * (tx + 4.7)); //tx = horizontal error, strafe direction
             // in robot coordinates

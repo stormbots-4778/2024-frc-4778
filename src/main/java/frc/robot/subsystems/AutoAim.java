@@ -36,17 +36,24 @@ public class AutoAim extends SubsystemBase {
 
     public Command AmpAlign() {
         return run(() -> {
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+            NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+            NetworkTableEntry pipeline = table.getEntry("pipeline");
+            pipeline.setNumber(0);
 
-            Limelight.AmpAlignServoPos(); // <===== turns limelight to amp side for alignment
 
             // check against 'tv' before aligning
-            double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-            double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-            double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-            double[] poseArray = NetworkTableInstance.getDefault().getTable("limelight")
-                    .getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
-            double angleError = poseArray[5];
+            double tv = table.getEntry("tv").getDouble(0);
+            double tx = table.getEntry("tx").getDouble(0);
+            double ty = table.getEntry("ty").getDouble(0);
+            double[] poseArray = table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
+            
+            double angleError = 0.0;
+            if (poseArray.length == 0) {
+                System.out.println("AmpAlign: Empty limelight pose array");
+            } else {
+                angleError = poseArray[5];
+            }
+            
             double ySpeed = 0.0;
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
@@ -64,7 +71,7 @@ public class AutoAim extends SubsystemBase {
 
             rotSpeed = (KpStrafe * (angleError + 2.5));
             ySpeed = -(KpStrafe * (tx + 4.7)); // tx = horizontal error, strafe direction in robot coordinates
-            xSpeed = (KpStrafe * (13 - ty));
+            xSpeed = (KpStrafe * (10 - ty));
             // }
 
             if (rotSpeed > 0.10) {
@@ -114,17 +121,24 @@ public class AutoAim extends SubsystemBase {
     public Command AmpAlignAdjustment() {
         double adjustValue;
         return run(() -> {
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+            NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+            NetworkTableEntry pipeline = table.getEntry("pipeline");
+            pipeline.setNumber(0);
 
-            Limelight.AmpAlignServoPos(); // <===== turns limelight to amp side for alignment
 
             // check against 'tv' before aligning
-            double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-            double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-            double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-            double[] poseArray = NetworkTableInstance.getDefault().getTable("limelight")
-                    .getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
-            double angleError = poseArray[5];
+            double tv = table.getEntry("tv").getDouble(0);
+            double tx = table.getEntry("tx").getDouble(0);
+            double ty = table.getEntry("ty").getDouble(0);
+            double[] poseArray = table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
+            
+            double angleError = 0.0;
+            if (poseArray.length == 0) {
+                System.out.println("AmpAlignAdjustment: Empty limelight pose array");
+            } else {
+                angleError = poseArray[5];
+            }
+
             double ySpeed = 0.0;
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
@@ -142,9 +156,9 @@ public class AutoAim extends SubsystemBase {
             // if (Math.abs(Math.toDegrees(yawCalculated)) > 1 || Math.abs(xError) > .25){
             // rot = MathUtil.clamp((kpTurn * yawCalculated) + .05, -0.25, 0.25);
 
-            rotSpeed = (KpStrafe * (angleError + 2.5));
+            rotSpeed = (KpStrafe * (angleError));
             ySpeed = -(KpStrafe * (tx + 4.7)); // tx = horizontal error, strafe direction in robot coordinates
-            xSpeed = (KpStrafe * (10 - ty)); // <==== changed TY offset to be closer for adjustment
+            xSpeed = (KpStrafe * (4 - ty)); // <==== changed TY offset to be closer for adjustment
             // }
 
             if (rotSpeed > 0.10) {

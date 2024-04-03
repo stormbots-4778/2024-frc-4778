@@ -218,7 +218,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kX.value)
 
         .whileTrue(m_autoaim.AmpAlign())
-        
+        .onTrue(m_limelight.AmpAlignServoPos())
         .onTrue(m_launcherSubsystem.stop())
         .onFalse(m_intake.stopIntake())
         .onFalse(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
@@ -274,7 +274,7 @@ public class RobotContainer {
         // .onTrue(m_robotPivot.trackLauncherPivot())
         .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
 
-    new JoystickButton(m_driverController, Button.kStart.value)
+    new JoystickButton(m_driverController2, Button.kStart.value)
         .onTrue(m_pivot.resetAxis())
         .onFalse(m_pivot.resetEncoder());
 
@@ -314,9 +314,9 @@ public class RobotContainer {
     new JoystickButton(m_driverController2, Button.kB.value)
         .onTrue(m_limelight.SpeakerAlignServoPos());
 
-    new JoystickButton(m_driverController2, Button.kX.value)
+    new JoystickButton(m_driverController, Button.kStart.value)
         .whileTrue(m_autoShoot.SpeakerAlign())
-        .onTrue(m_limelight.SpeakerAlignServoPos())
+        .whileTrue(m_limelight.SpeakerAlignServoPos())
         .onFalse(m_limelight.AmpAlignServoPos());
 
     // new JoystickButton(m_driverController2, Button.kLeftBumper.value)

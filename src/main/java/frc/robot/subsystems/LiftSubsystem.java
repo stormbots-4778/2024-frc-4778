@@ -133,4 +133,13 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
     return setLiftGoalCommand(Math.max(LiftConstants.kFullRetract, curGoal - LiftConstants.kStepDistance));
   }
 
+
+  public void liftPos(double liftPos) {
+    this.setGoal(liftPos);
+  }
+
+
+
+
+
 }
