@@ -20,7 +20,7 @@ public class BlinkinSubsystem extends SubsystemBase{
 
 public Command Confetti() {
   return run(() -> {
-    blinkin1.set(-0.87);
+    blinkin1.set(0);
   });
   
 }

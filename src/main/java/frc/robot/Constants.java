@@ -135,7 +135,7 @@ public final class Constants {
     //  public static final double kLauncherPivotAngleHigh = -5.0;
     // public static final double kLauncherPivotAngleLow = -57;
     // public static final double kLauncherPivotAngleLow = -106.875;
-    public static final double kLauncherPivotAngleLow = -33;
+    public static final double kLauncherPivotAngleLow = -30;
     public static IdleMode kLauncherPivotMotorIdleMode = IdleMode.kCoast;
     public static final int kLauncherPivotMotorCurrentLimit = 10;
 
@@ -166,7 +166,8 @@ public final class Constants {
     public static final double kFullRetract = 0;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
-    public static int kLiftMotorCurrentLimit = 15; // amps
+    public static int kLiftMotorCurrentLimit = 15;
+    public static int kLiftMotorZeroingCurrentLimit = 15; // amps
 
   }
 

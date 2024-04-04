@@ -38,22 +38,23 @@ public class AutoAim extends SubsystemBase {
         return run(() -> {
             NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
             NetworkTableEntry pipeline = table.getEntry("pipeline");
+            NetworkTableEntry ledMode = table.getEntry("LED Power");
             pipeline.setNumber(0);
-
-
+            ledMode.setNumber(100);
             // check against 'tv' before aligning
             double tv = table.getEntry("tv").getDouble(0);
             double tx = table.getEntry("tx").getDouble(0);
             double ty = table.getEntry("ty").getDouble(0);
+
             double[] poseArray = table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
-            
+
             double angleError = 0.0;
             if (poseArray.length == 0) {
                 System.out.println("AmpAlign: Empty limelight pose array");
             } else {
                 angleError = poseArray[5];
             }
-            
+
             double ySpeed = 0.0;
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
@@ -125,13 +126,12 @@ public class AutoAim extends SubsystemBase {
             NetworkTableEntry pipeline = table.getEntry("pipeline");
             pipeline.setNumber(0);
 
-
             // check against 'tv' before aligning
             double tv = table.getEntry("tv").getDouble(0);
             double tx = table.getEntry("tx").getDouble(0);
             double ty = table.getEntry("ty").getDouble(0);
             double[] poseArray = table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
-            
+
             double angleError = 0.0;
             if (poseArray.length == 0) {
                 System.out.println("AmpAlignAdjustment: Empty limelight pose array");
@@ -142,8 +142,6 @@ public class AutoAim extends SubsystemBase {
             double ySpeed = 0.0;
             double xSpeed = 0.0;
             double rotSpeed = 0.0;
-
-
 
             // Pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp);
 

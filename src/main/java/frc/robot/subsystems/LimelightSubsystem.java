@@ -17,7 +17,7 @@ public class LimelightSubsystem extends SubsystemBase {
     public NetworkTableEntry tx = table.getEntry("tx");
     public NetworkTableEntry ty = table.getEntry("ty");
     public NetworkTableEntry ta = table.getEntry("ta");
-
+    public NetworkTableEntry ledMode = table.getEntry("ledMode");
     Servo LimelightServo;
 
     public void periodic() {

@@ -59,289 +59,312 @@ import com.revrobotics.CANSparkMax;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  public final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem();
-  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  public final LiftSubsystem m_lift = new LiftSubsystem();
-  public final PivotSubsystem m_pivot = new PivotSubsystem();
-  public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
-  public final LimelightSubsystem m_limelight = new LimelightSubsystem();
-  public final LauncherPivotSubsystem m_launcherpivot = new LauncherPivotSubsystem();
-  public final BlinkinSubsystem m_blinkin = new BlinkinSubsystem();  
-  public final RobotPivotsSubsystem m_robotPivot = new RobotPivotsSubsystem(m_launcherpivot, m_pivot, true);
-  public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot);
-  public final AutoShoot m_autoShoot = new AutoShoot(m_limelight, m_robotDrive, m_intake, m_pivot, m_launcherSubsystem, m_launcherpivot);
+    // The robot's subsystems and commands are defined here...
+    public final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem();
+    public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+    public final LiftSubsystem m_lift = new LiftSubsystem();
+    public final PivotSubsystem m_pivot = new PivotSubsystem();
+    public final IntakeSubsystem m_intake = new IntakeSubsystem(m_launcherSubsystem, m_pivot);
+    public final LimelightSubsystem m_limelight = new LimelightSubsystem();
+    public final LauncherPivotSubsystem m_launcherpivot = new LauncherPivotSubsystem();
+    public final BlinkinSubsystem m_blinkin = new BlinkinSubsystem();
+    public final RobotPivotsSubsystem m_robotPivot = new RobotPivotsSubsystem(m_launcherpivot, m_pivot, true);
+    public final AutoAim m_autoaim = new AutoAim(m_limelight, m_robotDrive, m_intake, m_pivot);
+    public final AutoShoot m_autoShoot = new AutoShoot(m_limelight, m_robotDrive, m_intake, m_pivot,
+            m_launcherSubsystem, m_launcherpivot);
 
-  public boolean Centric = true;
+    public boolean Centric = true;
 
-  // public final LauncherPivotSubsystem m_launcherPivot = new
-  // LauncherPivotSubsystem();
-  // public final LauncherPivotSubsystem m_launcherPivot = new
-  // LauncherPivotSubsystem();
+    // public final LauncherPivotSubsystem m_launcherPivot = new
+    // LauncherPivotSubsystem();
+    // public final LauncherPivotSubsystem m_launcherPivot = new
+    // LauncherPivotSubsystem();
 
-  // public UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
-  // private UsbCamera camera;
+    // public UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
+    // private UsbCamera camera;
 
-  // BlinkIn
-  // public Spark blinkin = new Spark(1);
+    // BlinkIn
+    // public Spark blinkin = new Spark(1);
 
-  public SendableChooser<Command> autoChooser = new SendableChooser<>();
-  public SendableChooser<Command> otherChooser = new SendableChooser<>();
+    public SendableChooser<Command> autoChooser = new SendableChooser<>();
+    public SendableChooser<Command> otherChooser = new SendableChooser<>();
 
-  // Replace with CommandXboxController or CommandJoystick if needed
-  public static final XboxController m_driverController = new XboxController(OperatorConstants.kDriverControllerPort);
-  public static final XboxController m_driverController2 = new XboxController(OperatorConstants.kDriverControllerPort2);
-  
-  public double spdLimit = DriveConstants.spdLimitFast;
-  public double turnLimit = DriveConstants.turnLimitFast;
+    // Replace with CommandXboxController or CommandJoystick if needed
+    public static final XboxController m_driverController = new XboxController(OperatorConstants.kDriverControllerPort);
+    public static final XboxController m_driverController2 = new XboxController(
+            OperatorConstants.kDriverControllerPort2);
 
-  //button board controller
-  public static final XboxController m_driverController3 = new XboxController(OperatorConstants.kDriverControllerPort3);
+    public double spdLimit = DriveConstants.spdLimitFast;
+    public double turnLimit = DriveConstants.turnLimitFast;
 
-  public boolean fieldCentric = false;
+    // button board controller
+    public static final XboxController m_driverController3 = new XboxController(
+            OperatorConstants.kDriverControllerPort3);
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+    public boolean fieldCentric = false;
 
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
+    Trigger right_trigger = new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.1);
 
-    // camera = CameraServer.startAutomaticCapture();
-    // camera.setResolution(80, 60);
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
 
-    m_robotDrive.setDefaultCommand(
-        Commands.run(() -> {
-          m_robotDrive.drive(
-              -MathUtil.applyDeadband(
-                  Math.pow(m_driverController.getLeftY(), 2) * Math.signum(m_driverController.getLeftY()) * spdLimit,
-                  OIConstants.kDriveDeadband),
-              -MathUtil.applyDeadband(
-                  Math.pow(m_driverController.getLeftX(), 2) * Math.signum(m_driverController.getLeftX()) * spdLimit,
-                  OIConstants.kDriveDeadband),
-              -MathUtil.applyDeadband(
-                  Math.pow(m_driverController.getRightX(), 2) * Math.signum(m_driverController.getRightX()) * turnLimit,
-                  OIConstants.kDriveDeadband),
-              // Rate limit = true sets speed to 0. Why? This is something to fix.
-              true, false);
-        }, m_robotDrive));
+    public RobotContainer() {
+        // Configure the trigger bindings
+        configureBindings();
 
+        // camera = CameraServer.startAutomaticCapture();
+        // camera.setResolution(80, 60);
 
-   
-    
+        m_robotDrive.setDefaultCommand(
+                Commands.run(() -> {
+                    m_robotDrive.drive(
+                            -MathUtil.applyDeadband(
+                                    Math.pow(m_driverController.getLeftY(), 2)
+                                            * Math.signum(m_driverController.getLeftY()) * spdLimit,
+                                    OIConstants.kDriveDeadband),
+                            -MathUtil.applyDeadband(
+                                    Math.pow(m_driverController.getLeftX(), 2)
+                                            * Math.signum(m_driverController.getLeftX()) * spdLimit,
+                                    OIConstants.kDriveDeadband),
+                            -MathUtil.applyDeadband(
+                                    Math.pow(m_driverController.getRightX(), 2)
+                                            * Math.signum(m_driverController.getRightX()) * turnLimit,
+                                    OIConstants.kDriveDeadband),
+                            // Rate limit = true sets speed to 0. Why? This is something to fix.
+                            true, false);
+                }, m_robotDrive));
 
-    //
+        //
 
-    // NamedCommands.registerCommand("Close Shoot", new
-    // CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
-    NamedCommands.registerCommand("Spin Launcher", new SpinLauncher(m_launcherSubsystem));
-    NamedCommands.registerCommand("Shoot", m_intake.outtake());
-    NamedCommands.registerCommand("Intake", m_intake.intake());
-    NamedCommands.registerCommand("Intake Pivot Position",
-        m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake));
-    NamedCommands.registerCommand("Amp Position", m_intake.ampPosition());
-    NamedCommands.registerCommand("Amp Pivot Position", m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
-    NamedCommands.registerCommand("Turn On Shoot", m_launcherSubsystem.shoot());
-    NamedCommands.registerCommand("Turn Off Shoot", m_launcherSubsystem.stop());
-    NamedCommands.registerCommand("Speaker Position", m_intake.speakerPosition());
-    NamedCommands.registerCommand("Speaker Pivot Position",
-        m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
-    NamedCommands.registerCommand("Stop Intake", m_intake.stopIntake());
-    NamedCommands.registerCommand("Zero Yaw", m_robotDrive.ZeroHeading());
-    // NamedCommands.registerCommand("Speaker Shot",
-    // m_launcherPivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
+        // NamedCommands.registerCommand("Close Shoot", new
+        // CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
+        NamedCommands.registerCommand("Spin Launcher", new SpinLauncher(m_launcherSubsystem));
+        NamedCommands.registerCommand("Shoot", m_intake.outtake());
+        NamedCommands.registerCommand("Intake", m_intake.intake());
+        NamedCommands.registerCommand("Intake Pivot Position",
+                m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake));
+        NamedCommands.registerCommand("Amp Position", m_intake.ampPosition());
+        NamedCommands.registerCommand("Amp Pivot Position",
+                m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
+        NamedCommands.registerCommand("Turn On Shoot", m_launcherSubsystem.shoot());
+        NamedCommands.registerCommand("Turn Off Shoot", m_launcherSubsystem.stop());
+        NamedCommands.registerCommand("Speaker Position", m_intake.speakerPosition());
+        NamedCommands.registerCommand("Speaker Pivot Position",
+                m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
+        NamedCommands.registerCommand("Stop Intake", m_intake.stopIntake());
+        NamedCommands.registerCommand("Zero Yaw", m_robotDrive.ZeroHeading());
+        // NamedCommands.registerCommand("Speaker Shot",
+        // m_launcherPivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
 
-    autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = AutoBuilder.buildAutoChooser();
 
-    // autoChooser.addOption("MidSpeakerAuto", new MidSpeakerAuto(m_robotDrive,
-    // m_intake, m_launcherSubsystem));
+        // autoChooser.addOption("MidSpeakerAuto", new MidSpeakerAuto(m_robotDrive,
+        // m_intake, m_launcherSubsystem));
 
-    // otherChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+        // otherChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
-  }
+    }
 
-  // private void toggleFieldCentric(){
-  // fieldCentric = !fieldCentric;
-  // }
+    // private void toggleFieldCentric(){
+    // fieldCentric = !fieldCentric;
+    // }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be
-   * created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-   * an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link
-   * CommandXboxController
-   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandXboxController
-   * PS4} controllers or
-   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // new Trigger(m_exampleSubsystem::exampleCondition)
-    // .onTrue(new ExampleCommand(m_exampleSubsystem));
+    /**
+     * Use this method to define your trigger->command mappings. Triggers can be
+     * created via the
+     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+     * an arbitrary
+     * predicate, or via the named factories in {@link
+     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+     * {@link
+     * CommandXboxController
+     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandXboxController
+     * PS4} controllers or
+     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+     * joysticks}.
+     */
+    private void configureBindings() {
+        // // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+        // new Trigger(m_exampleSubsystem::exampleCondition)
+        // .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    // .whileTrue(new InstantCommand(
-    // ()->m_intake.stowPos(),
-    // m_intake));
+        // new JoystickButton(m_driverController, Button.kLeftBumper.value)
+        // .whileTrue(new InstantCommand(
+        // ()->m_intake.stowPos(),
+        // m_intake));
 
-    // new JoystickButton(m_driverController, Button.kRightBumper.value)
-    // .whileTrue(new InstantCommand(
-    // ()->m_intake.deployPos(),
-    // m_intake));
+        // new JoystickButton(m_driverController, Button.kRightBumper.value)
+        // .whileTrue(new InstantCommand(
+        // ()->m_intake.deployPos(),
+        // m_intake));
 
-    new JoystickButton(m_driverController, Button.kLeftBumper.value)
-        .whileTrue(Commands.run(() -> {
-          m_robotDrive.drive(
-              -MathUtil.applyDeadband(
-                  Math.pow(m_driverController.getLeftY(), 2) * Math.signum(m_driverController.getLeftY()) * spdLimit,
-                  OIConstants.kDriveDeadband),
-              -MathUtil.applyDeadband(
-                  Math.pow(m_driverController.getLeftX(), 2) * Math.signum(m_driverController.getLeftX()) * spdLimit,
-                  OIConstants.kDriveDeadband),
-              -MathUtil.applyDeadband(
-                  Math.pow(m_driverController.getRightX(), 2) * Math.signum(m_driverController.getRightX()) * turnLimit,
-                  OIConstants.kDriveDeadband),
-              // Rate limit = true sets speed to 0. Why? This is something to fix.
-              false, false);
-        }, m_robotDrive));
+        new JoystickButton(m_driverController, Button.kLeftBumper.value)
+                .whileTrue(Commands.run(() -> {
+                    m_robotDrive.drive(
+                            -MathUtil.applyDeadband(
+                                    Math.pow(m_driverController.getLeftY(), 2)
+                                            * Math.signum(m_driverController.getLeftY()) * spdLimit,
+                                    OIConstants.kDriveDeadband),
+                            -MathUtil.applyDeadband(
+                                    Math.pow(m_driverController.getLeftX(), 2)
+                                            * Math.signum(m_driverController.getLeftX()) * spdLimit,
+                                    OIConstants.kDriveDeadband),
+                            -MathUtil.applyDeadband(
+                                    Math.pow(m_driverController.getRightX(), 2)
+                                            * Math.signum(m_driverController.getRightX()) * turnLimit,
+                                    OIConstants.kDriveDeadband),
+                            // Rate limit = true sets speed to 0. Why? This is something to fix.
+                            false, false);
+                }, m_robotDrive));
 
-    new JoystickButton(m_driverController, Button.kB.value)
-        .onTrue(m_intake.outtake())
-        .onFalse(m_intake.stopIntake());
+        new JoystickButton(m_driverController, Button.kB.value)
+                .onTrue(m_intake.outtake())
+                .onFalse(m_intake.stopIntake());
 
-    new JoystickButton(m_driverController, Button.kX.value)
+        new JoystickButton(m_driverController, Button.kX.value)
 
-        .whileTrue(m_autoaim.AmpAlign())
-        .onTrue(m_limelight.AmpAlignServoPos())
-        .onTrue(m_launcherSubsystem.stop())
-        .onFalse(m_intake.stopIntake())
-        .onFalse(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
+                .whileTrue(m_autoaim.AmpAlign())
+                .onTrue(m_limelight.AmpAlignServoPos())
+                .onTrue(m_launcherSubsystem.stop())
+                .onFalse(m_intake.stopIntake())
+                .onFalse(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
 
+        new Trigger(() -> m_driverController.getLeftTriggerAxis() > 0.8)
+                .whileTrue(m_autoShoot.SpeakerAlign())
+                .whileTrue(m_limelight.SpeakerAlignServoPos())
+                .onFalse(m_limelight.AmpAlignServoPos());
 
+        new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.8)
+                .toggleOnTrue(m_pivot.notSpeakerPosition())
+                .onTrue(m_intake.intake())
+                .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
+                .onTrue(m_launcherSubsystem.stop())
+                .onFalse(m_intake.stopIntake());
 
+        new POVButton(m_driverController, 0)
+                .whileTrue(m_autoaim.AmpAlignAdjustment())
+                .onTrue(m_launcherSubsystem.stop());
 
-    new POVButton(m_driverController, 0)
-        .whileTrue(m_autoaim.AmpAlignAdjustment())
-        .onTrue(m_launcherSubsystem.stop());
+        new JoystickButton(m_driverController, Button.kA.value)
+                .toggleOnTrue(m_pivot.notSpeakerPosition())
+                .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
 
-    new JoystickButton(m_driverController, Button.kA.value)
-        .toggleOnTrue(m_pivot.notSpeakerPosition())
-        .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
+        // new JoystickButton(m_driverController, Button.kY.value)
+        // .toggleOnTrue(m_intake.intake())
+        // .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
+        // .onTrue(m_launcherSubsystem.stop())
 
-    // new JoystickButton(m_driverController, Button.kY.value)
-    // .toggleOnTrue(m_intake.intake())
-    // .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
-    // .onTrue(m_launcherSubsystem.stop())
+        // .onFalse(m_intake.stopIntake());
 
-    // .onFalse(m_intake.stopIntake());
-
-    new JoystickButton(m_driverController, Button.kY.value)
-        .toggleOnTrue(m_pivot.notSpeakerPosition())
-        .onTrue(m_intake.intake())
-        .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
+        // new JoystickButton(m_driverController, Button.kY.value)
+        // .toggleOnTrue(m_pivot.notSpeakerPosition())
+        // .onTrue(m_intake.intake())
+        // .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
+        // //
         // .toggleOnTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh))
-        .onTrue(m_launcherSubsystem.stop())
-        .onFalse(m_intake.stopIntake());
+        // .onTrue(m_launcherSubsystem.stop())
+        // .onFalse(m_intake.stopIntake());
 
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
-        .onTrue(m_launcherSubsystem.shoot())
-        .onFalse(m_intake.stopIntake())
-        .onFalse(m_launcherSubsystem.stop());
+        new JoystickButton(m_driverController, Button.kRightBumper.value)
+                .onTrue(m_launcherSubsystem.shoot())
+                .onTrue(m_intake.outtake())
+                .onFalse(m_intake.stopIntake())
+                .onFalse(m_launcherSubsystem.stop());
 
-    // new JoystickButton(m_driverController, Button.kLeftStick.value)
-    // .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleLow))
-    // .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow));
+        // new JoystickButton(m_driverController, Button.kLeftStick.value)
+        // .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleLow))
+        // .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow));
 
-    new JoystickButton(m_driverController, Button.kLeftStick.value)
-        .toggleOnTrue(m_pivot.speakerPosition())
-        .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow))
-        // .onTrue(m_robotPivot.trackLauncherPivot())
-        .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleLow));
+        new JoystickButton(m_driverController, Button.kLeftStick.value)
+                .toggleOnTrue(m_pivot.speakerPosition())
+                .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleLow))
+                // .onTrue(m_robotPivot.trackLauncherPivot())
+                .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleLow));
 
-    // new JoystickButton(m_driverController, Button.kRightStick.value)
-    // .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker))
-    // .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh));
+        // new JoystickButton(m_driverController, Button.kRightStick.value)
+        // .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker))
+        // .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh));
 
-    new JoystickButton(m_driverController, Button.kRightStick.value)
-        .toggleOnTrue(m_pivot.speakerPosition())
-        .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh))
-        // .onTrue(m_robotPivot.trackLauncherPivot())
-        .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
+        new JoystickButton(m_driverController, Button.kRightStick.value)
+                .toggleOnTrue(m_pivot.speakerPosition())
+                .onTrue(m_launcherpivot.setLauncherPivotGoalCommand(ShooterConstants.kLauncherPivotAngleHigh))
+                // .onTrue(m_robotPivot.trackLauncherPivot())
+                .onTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
 
-    new JoystickButton(m_driverController2, Button.kStart.value)
-        .onTrue(m_pivot.resetAxis())
-        .onFalse(m_pivot.resetEncoder());
+        new JoystickButton(m_driverController2, Button.kStart.value)
+                .onTrue(m_pivot.resetAxis())
+                .onFalse(m_pivot.resetEncoder());
 
-    // new JoystickButton(m_driverController.leftTrigger())
-    // .toggleOnTrue(m_intake.intake())
-    // .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
-    // .onTrue(m_launcherSubsystem.stop())
+        new Trigger(() -> m_driverController2.getRightTriggerAxis() > 0.8)
+                .onTrue(m_lift.resetAxis())
+                .onFalse(m_lift.resetEncoder());
 
-    // .onFalse(m_intake.stopIntake());
+        // new JoystickButton(m_driverController.leftTrigger())
+        // .toggleOnTrue(m_intake.intake())
+        // .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
+        // .onTrue(m_launcherSubsystem.stop())
 
-    // new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    // .toggleOnTrue(m_launcherSubsystem.shoot());
+        // .onFalse(m_intake.stopIntake());
 
-    // new JoystickButton(m_driverController, Button.kStart.value)
-    // .onTrue(m_intake.ampShoot())
-    // .onTrue(m_launcherSubsystem.stop())
-    // .onFalse(m_intake.stopIntake());
+        // new JoystickButton(m_driverController, Button.kLeftBumper.value)
+        // .toggleOnTrue(m_launcherSubsystem.shoot());
 
-    new JoystickButton(m_driverController2, Button.kLeftBumper.value)
-    .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
+        // new JoystickButton(m_driverController, Button.kStart.value)
+        // .onTrue(m_intake.ampShoot())
+        // .onTrue(m_launcherSubsystem.stop())
+        // .onFalse(m_intake.stopIntake());
 
-    new JoystickButton(m_driverController2, Button.kRightBumper.value)
-    .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
+        new JoystickButton(m_driverController2, Button.kLeftBumper.value)
+                .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
 
-    // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
-    // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
-    // new JoystickButton(m_driverController2, Button.kRightBumper.value)
-    // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
-    // new JoystickButton(m_driverController2, Button.kB.value)
-    // .whileTrue(m_autoaim.AmpAlign());
-    new JoystickButton(m_driverController2, Button.kY.value)
-        .onTrue(m_robotDrive.ZeroHeading());
+        new JoystickButton(m_driverController2, Button.kRightBumper.value)
+                .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
 
-    new JoystickButton(m_driverController2, Button.kA.value)
-        .onTrue(m_limelight.AmpAlignServoPos());
+        // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
+        // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
+        // new JoystickButton(m_driverController2, Button.kRightBumper.value)
+        // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
+        // new JoystickButton(m_driverController2, Button.kB.value)
+        // .whileTrue(m_autoaim.AmpAlign());
+        new JoystickButton(m_driverController2, Button.kY.value)
+                .onTrue(m_robotDrive.ZeroHeading());
 
-    new JoystickButton(m_driverController2, Button.kB.value)
-        .onTrue(m_limelight.SpeakerAlignServoPos());
+        new JoystickButton(m_driverController2, Button.kA.value)
+                .onTrue(m_limelight.AmpAlignServoPos());
 
-    new JoystickButton(m_driverController, Button.kStart.value)
-        .whileTrue(m_autoShoot.SpeakerAlign())
-        .whileTrue(m_limelight.SpeakerAlignServoPos())
-        .onFalse(m_limelight.AmpAlignServoPos());
+        new JoystickButton(m_driverController2, Button.kB.value)
+                .onTrue(m_limelight.SpeakerAlignServoPos());
 
-    // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
-    // .toggleOnTrue(m_lift.retractStep());
+        // new JoystickButton(m_driverController, Button.kStart.value)
+        //         .whileTrue(m_autoShoot.SpeakerAlign())
+        //         .whileTrue(m_limelight.SpeakerAlignServoPos())
+        //         .onFalse(m_limelight.AmpAlignServoPos());
 
-    // new JoystickButton(m_driverController2, Button.kA.value)
-    // .onTrue(m_robotDrive.zeroHeading());
+        // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
+        // .toggleOnTrue(m_lift.retractStep());
 
-    // blinkin commands
-      new JoystickButton(m_driverController2, Button.kBack.value)
-        .onTrue(m_blinkin.Confetti());
+        // new JoystickButton(m_driverController2, Button.kA.value)
+        // .onTrue(m_robotDrive.zeroHeading());
 
-  }
+        // blinkin commands
+        new JoystickButton(m_driverController2, Button.kBack.value)
+                .onTrue(m_blinkin.Confetti());
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
+    }
 
-    // An ExampleCommand will run in autonomous
-    // return autoChooser.getSelected();
-    return autoChooser.getSelected();
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
 
-  }
+        // An ExampleCommand will run in autonomous
+        // return autoChooser.getSelected();
+        return autoChooser.getSelected();
+
+    }
 
 }

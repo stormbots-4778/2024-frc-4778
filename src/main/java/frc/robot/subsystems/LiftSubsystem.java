@@ -23,7 +23,7 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
 
   public CANSparkMax LiftMotor;
   public final SparkPIDController LiftPIDController;
-  public  RelativeEncoder LiftEncoder;
+  public RelativeEncoder LiftEncoder;
 
   private double curGoal = 0.0;
 
@@ -133,13 +133,24 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
     return setLiftGoalCommand(Math.max(LiftConstants.kFullRetract, curGoal - LiftConstants.kStepDistance));
   }
 
-
   public void liftPos(double liftPos) {
     this.setGoal(liftPos);
   }
 
+  public Command resetAxis() {
+    return run(() -> {
+      LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorZeroingCurrentLimit);
+      LiftMotor.setVoltage(-1.0);
+    });
+  }
 
-
+  public Command resetEncoder() {
+    return runOnce(() -> {
+      LiftEncoder.setPosition(0.0);
+      this.setGoal(LiftConstants.kFullRetract);
+      LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
+    });
+  }
 
 
 }
