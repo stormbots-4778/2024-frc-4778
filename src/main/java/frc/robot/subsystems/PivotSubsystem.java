@@ -25,7 +25,7 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem {
 
     super(
         new TrapezoidProfile.Constraints(
-            200.0, 300.0),    // 100, 200
+            200.0, 200.0),    // 200, 300
         0.0);
 
     pivotMotor.restoreFactoryDefaults();

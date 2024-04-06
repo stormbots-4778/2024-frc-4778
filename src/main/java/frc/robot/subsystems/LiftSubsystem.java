@@ -82,7 +82,7 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
 
     super(
         new TrapezoidProfile.Constraints(
-            450.0, 1350.0),
+            500.0, 2000.0),
         0.0);
 
     LiftMotor = new CANSparkMax(LiftConstants.kLiftMotorCanId, MotorType.kBrushless);
@@ -114,8 +114,8 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
 
   @Override
   public void useState(TrapezoidProfile.State setpoint) {
-    if (!resetMode){
-    LiftPIDController.setReference(setpoint.position, ControlType.kPosition);
+    if (!resetMode) {
+      LiftPIDController.setReference(setpoint.position, ControlType.kPosition);
     }
   }
 
@@ -158,9 +158,5 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
       resetMode = false;
     });
   }
-
-
-
-
 
 }

@@ -135,6 +135,18 @@ public class RobotContainer {
                             true, false);
                 }, m_robotDrive));
 
+
+        m_blinkin.setDefaultCommand(
+                Commands.run(() -> {
+                    m_blinkin.runState();
+                }, m_blinkin));
+
+        
+
+        
+
+        
+
         //
 
         // NamedCommands.registerCommand("Close Shoot", new
@@ -230,16 +242,19 @@ public class RobotContainer {
                 .onTrue(m_limelight.AmpAlignServoPos())
                 .onTrue(m_launcherSubsystem.stop())
                 .onFalse(m_intake.stopIntake())
+                .onFalse(m_autoaim.stopLED())
                 .onFalse(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
 
         new Trigger(() -> m_driverController.getLeftTriggerAxis() > 0.8)
                 .whileTrue(m_autoShoot.SpeakerAlign())
                 .whileTrue(m_limelight.SpeakerAlignServoPos())
-                .onFalse(m_limelight.AmpAlignServoPos());
+                .onFalse(m_limelight.AmpAlignServoPos())
+                .onFalse(m_autoShoot.stopLED());
 
         new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.8)
                 .toggleOnTrue(m_pivot.notSpeakerPosition())
                 .onTrue(m_intake.intake())
+                .onTrue(m_blinkin.RedOrangeIntake())
                 .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
                 .onTrue(m_launcherSubsystem.stop())
                 .onFalse(m_intake.stopIntake());
@@ -287,6 +302,7 @@ public class RobotContainer {
         new JoystickButton(m_driverController, Button.kRightBumper.value)
                 .onTrue(m_launcherSubsystem.shoot())
                 .onTrue(m_intake.outtake())
+                .onTrue(m_blinkin.goldShoot())
                 .onFalse(m_intake.stopIntake())
                 .onFalse(m_launcherSubsystem.stop());
 
@@ -334,10 +350,12 @@ public class RobotContainer {
         .onFalse(m_intake.stopIntake());
 
         new JoystickButton(m_driverController2, Button.kLeftBumper.value)
-                .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
+                .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend))
+                .toggleOnTrue(m_blinkin.Rainbow());
 
         new JoystickButton(m_driverController2, Button.kRightBumper.value)
-                .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
+                .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract))
+                .toggleOnTrue(m_blinkin.Rainbow());
 
         // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
         // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
@@ -366,8 +384,7 @@ public class RobotContainer {
         // .onTrue(m_robotDrive.zeroHeading());
 
         // blinkin commands
-        new JoystickButton(m_driverController2, Button.kBack.value)
-                .onTrue(m_blinkin.Confetti());
+        
 
     }
 

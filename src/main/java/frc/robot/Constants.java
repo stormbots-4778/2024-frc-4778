@@ -177,7 +177,7 @@ public final class Constants {
     public static final int kTopRollerCanId = 21; //
     public static final int kIntakePivotCanId = 22; //
 
-    public static final double intakeSpeed = 0.6;
+    public static final double intakeSpeed = 0.75;
     public static final double outtakeSpeed = -1.0;
     public static final double shootSpeedTop = -0.425; // can shoot from 2ft away with ~4in
     public static double shootSpeedBottom = -0.63;

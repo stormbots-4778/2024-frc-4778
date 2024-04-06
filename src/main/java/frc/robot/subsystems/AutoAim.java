@@ -42,9 +42,10 @@ public class AutoAim extends SubsystemBase {
         return run(() -> {
             NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
             NetworkTableEntry pipeline = table.getEntry("pipeline");
-            NetworkTableEntry ledMode = table.getEntry("LED Power");
+            table.getEntry("ledMode").setNumber(3);
             pipeline.setNumber(0);
-            ledMode.setNumber(100);
+            
+            
             // check against 'tv' before aligning
             double tv = table.getEntry("tv").getDouble(0);
             double tx = table.getEntry("tx").getDouble(0);
@@ -113,11 +114,22 @@ public class AutoAim extends SubsystemBase {
                 // }, Intake);
             }
 
+
+
             // debug test
             System.out.printf("Rot, X, Y Speeds");
             System.out.printf("%f\n", rotSpeed);
             System.out.printf("%f\n", xSpeed);
             System.out.printf("%f\n", ySpeed);
+        });
+    }
+
+
+
+    public Command stopLED(){
+        return runOnce(() -> {
+            NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+            table.getEntry("ledMode").setNumber(1);
         });
     }
 
@@ -130,6 +142,7 @@ public class AutoAim extends SubsystemBase {
 
         });
     }
+
 
     public Command AmpAlignIncrease() {
 

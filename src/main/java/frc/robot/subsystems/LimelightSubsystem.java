@@ -18,7 +18,10 @@ public class LimelightSubsystem extends SubsystemBase {
     public NetworkTableEntry ty = table.getEntry("ty");
     public NetworkTableEntry ta = table.getEntry("ta");
     public NetworkTableEntry ledMode = table.getEntry("ledMode");
-    Servo LimelightServo;
+    public static Servo LimelightServo;
+    public static boolean isAmpAlignPos = true;
+
+    public static boolean isSpeakerAlignPos = false;
 
     public void periodic() {
         LimelightConstants.x = tx.getDouble(0.0);
@@ -39,16 +42,24 @@ public class LimelightSubsystem extends SubsystemBase {
     public Command AmpAlignServoPos() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
-            LimelightServo.set(1); // <======= value needs to be tuned
+            LimelightServo.set(1);
+            isAmpAlignPos = true;
+            isSpeakerAlignPos = false; // <======= value needs to be tuned
         });
     }
 
     public Command SpeakerAlignServoPos() {
         return runOnce(() -> {
             // 1. Run the intake motors in reverse
-            LimelightServo.set(0); // <======= value needs to be tuned
+            LimelightServo.set(0); 
+            isAmpAlignPos = false;
+            isSpeakerAlignPos = true;// <======= value needs to be tuned
             // LimelightServo.setPosition(0);
         });
+    }
+
+    public void ampServoPos(){
+        LimelightServo.set(1);
     }
 
 

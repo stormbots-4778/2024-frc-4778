@@ -53,6 +53,7 @@ public class AutoShoot extends SubsystemBase {
             double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
             double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
             double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+            NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
             // double[] poseArray = NetworkTableInstance.getDefault().getTable("limelight")
             // .getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
             // double angleError = poseArray[5];
@@ -152,8 +153,16 @@ public class AutoShoot extends SubsystemBase {
 
             System.out.printf("%f\n", yAngle);
             System.out.printf("%f\n", intakeAngle);
+            
         });
 
+    }
+
+    public Command stopLED(){
+        return runOnce(() -> {
+            NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+            table.getEntry("ledMode").setNumber(1);
+        });
     }
 
 

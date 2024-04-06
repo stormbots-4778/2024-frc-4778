@@ -167,6 +167,8 @@ public class Robot extends TimedRobot {
 
     }
 
+    m_robotContainer.m_limelight.ampServoPos();
+
     m_robotContainer.m_pivot.intakePos(IntakeConstants.kPivotAngleSpeaker);
 
 
@@ -194,7 +196,7 @@ public class Robot extends TimedRobot {
     
 
     
-    
+    m_robotContainer.m_limelight.ampServoPos();
 
 
     m_robotContainer.m_pivot.intakePos(IntakeConstants.kPivotAngleSpeaker);
