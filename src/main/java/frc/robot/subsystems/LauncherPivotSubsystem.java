@@ -68,4 +68,7 @@ public class LauncherPivotSubsystem extends TrapezoidProfileSubsystem {
         this.setGoal(pivotPos);
       }
 
+
+      
+
 }

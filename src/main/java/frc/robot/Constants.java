@@ -40,7 +40,7 @@ public final class Constants {
     // public static double turnLimitFast = .7;
 
     public static double spdLimitFast = 1.0;
-    public static double turnLimitFast = .85;
+    public static double turnLimitFast = 1.0;
 
     public static double spdLimitSlow = .25;
     public static double turnLimitSlow = .25;
@@ -166,8 +166,8 @@ public final class Constants {
     public static final double kFullRetract = 0;
 
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
-    public static int kLiftMotorCurrentLimit = 15;
-    public static int kLiftMotorZeroingCurrentLimit = 15; // amps
+    public static int kLiftMotorCurrentLimit = 40;
+    public static int kLiftMotorZeroingCurrentLimit = 9; // amps
 
   }
 
@@ -180,7 +180,7 @@ public final class Constants {
     public static final double intakeSpeed = 0.6;
     public static final double outtakeSpeed = -1.0;
     public static final double shootSpeedTop = -0.425; // can shoot from 2ft away with ~4in
-    public static final double shootSpeedBottom = -0.60;
+    public static double shootSpeedBottom = -0.63;
 
     public static final double intakeKp = 0.04;
     public static final double intakeKi = 0;

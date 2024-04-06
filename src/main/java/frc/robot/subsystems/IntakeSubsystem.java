@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.AutoAim;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.IntakeConstants;
@@ -133,7 +134,17 @@ public class IntakeSubsystem extends SubsystemBase {
         topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
         bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
         topRoller.set(IntakeConstants.shootSpeedTop);
-        bottomRoller.set(IntakeConstants.shootSpeedBottom);
+        bottomRoller.set(IntakeConstants.shootSpeedBottom + AutoAim.rollerSpeedAdjust);
+    }
+
+    public Command autoAmpShoots() {
+        return runOnce(() -> {
+        topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+        bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+        topRoller.set(IntakeConstants.shootSpeedTop);
+        bottomRoller.set(IntakeConstants.shootSpeedBottom + AutoAim.rollerSpeedAdjust);
+        });
+        
     }
 
     public Command ampPosition() {

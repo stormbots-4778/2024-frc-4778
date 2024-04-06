@@ -122,6 +122,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+    SmartDashboard.putNumber("IMU", gyro.getYaw().getValueAsDouble());
   }
 
   /**
@@ -325,5 +327,6 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+  
 
 }

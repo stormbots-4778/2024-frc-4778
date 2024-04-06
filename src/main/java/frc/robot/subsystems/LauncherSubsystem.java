@@ -41,6 +41,13 @@ public class LauncherSubsystem extends SubsystemBase {
         });
     }
 
+    public Command autoShooterSpeedAdjust (){
+        return runOnce(() -> {
+            leftShooter.set(ShooterConstants.leftShootSpeed * 0.8);
+            rightShooter.set(ShooterConstants.rightShootSpeed * 0.8);
+        });
+    }
+
     public Command stop() {
         return runOnce(() -> {
             leftShooter.set(0.0);

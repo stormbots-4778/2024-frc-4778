@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public class BlinkinSubsystem extends SubsystemBase{
     
-  Spark blinkin1;
-  Spark blinkin2;
+  public Spark blinkin1;
+  public Spark blinkin2;
 
   public BlinkinSubsystem() {
 		blinkin1 = new Spark(1);

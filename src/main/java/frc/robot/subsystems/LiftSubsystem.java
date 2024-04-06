@@ -26,6 +26,7 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
   public RelativeEncoder LiftEncoder;
 
   private double curGoal = 0.0;
+  private boolean resetMode = false;
 
   // public LiftSubsystem() {
   // LiftMotor = new CANSparkMax(LiftConstants.kLiftMotorCanId,
@@ -113,7 +114,9 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
 
   @Override
   public void useState(TrapezoidProfile.State setpoint) {
+    if (!resetMode){
     LiftPIDController.setReference(setpoint.position, ControlType.kPosition);
+    }
   }
 
   public Command setLiftGoalCommand(double liftPos) {
@@ -139,8 +142,10 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
 
   public Command resetAxis() {
     return run(() -> {
+      resetMode = true;
       LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorZeroingCurrentLimit);
-      LiftMotor.setVoltage(-1.0);
+      LiftPIDController.setReference(-1.0, ControlType.kCurrent);
+      System.out.println("Resetting climber");
     });
   }
 
@@ -149,8 +154,13 @@ public class LiftSubsystem extends TrapezoidProfileSubsystem {
       LiftEncoder.setPosition(0.0);
       this.setGoal(LiftConstants.kFullRetract);
       LiftMotor.setSmartCurrentLimit(LiftConstants.kLiftMotorCurrentLimit);
+      LiftPIDController.setReference(LiftConstants.kFullRetract, ControlType.kPosition);
+      resetMode = false;
     });
   }
+
+
+
 
 
 }

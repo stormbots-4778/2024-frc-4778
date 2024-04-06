@@ -31,6 +31,9 @@ public class AutoShoot extends SubsystemBase {
     public LauncherSubsystem Launcher;
     public LauncherPivotSubsystem LauncherPivot;
 
+    public double crosshairAdjust = 0;
+
+
     public AutoShoot(LimelightSubsystem Limelight, DriveSubsystem Drive, IntakeSubsystem Intake, PivotSubsystem Pivot,
             LauncherSubsystem Launcher, LauncherPivotSubsystem LauncherPivot) {
         this.Limelight = Limelight;
@@ -71,10 +74,10 @@ public class AutoShoot extends SubsystemBase {
 
             rotSpeed = (KpStrafe * (tx));
             // double yAngle = ((Math.pow(0.0895 * ty, 2)) - (3.8796 * ty) + 6.3136);
-            if ((ty >= -3.0) && (ty < 6.0)) {
-                yAngle = ((0.0198 * (Math.pow(ty, 2))) - (2.6035 * ty) - 5.2846);
+            if (((ty + crosshairAdjust) >= -3.0) && ((ty + crosshairAdjust) < 6.0)) {
+                yAngle = ((0.0198 * (Math.pow(ty + crosshairAdjust, 2))) - (2.6035 * (ty + crosshairAdjust)) - 5.2846);
             } else {
-                yAngle = ((-0.211 * (Math.pow(ty, 2))) + (2.47 * ty) - 27.4);
+                yAngle = ((-0.211 * (Math.pow(ty + crosshairAdjust, 2))) + (2.47 * (ty + crosshairAdjust)) - 27.4);
             }
 
             double intakeAngle = (0.15 * (yAngle)) + 10;
@@ -152,5 +155,27 @@ public class AutoShoot extends SubsystemBase {
         });
 
     }
+
+
+
+
+    public Command increaseCrosshairAdjust(){
+        return runOnce(() -> {
+            crosshairAdjust += 0.5;  //<================ tune this increment
+        });
+    }
+
+    public Command decreaseCrosshairAdjust(){
+        return runOnce(() -> {
+            crosshairAdjust -= 0.5;  //<================ tune this increment
+        });
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Speaker Align Crosshair Adjust", crosshairAdjust);
+    }
+
+    
 
 }

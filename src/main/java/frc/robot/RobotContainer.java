@@ -43,7 +43,7 @@ import frc.robot.commands.Autos;
 //import frc.robot.commands.CloseShoot;
 import frc.robot.commands.SpinLauncher;
 import edu.wpi.first.cameraserver.CameraServer;
-// import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.UsbCamera;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -80,8 +80,8 @@ public class RobotContainer {
     // public final LauncherPivotSubsystem m_launcherPivot = new
     // LauncherPivotSubsystem();
 
-    // public UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
-    // private UsbCamera camera;
+//     public UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
+//     private UsbCamera camera;
 
     // BlinkIn
     // public Spark blinkin = new Spark(1);
@@ -140,6 +140,7 @@ public class RobotContainer {
         // NamedCommands.registerCommand("Close Shoot", new
         // CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
         NamedCommands.registerCommand("Spin Launcher", new SpinLauncher(m_launcherSubsystem));
+        NamedCommands.registerCommand("Low Speed Spin Launcher", m_launcherSubsystem.autoShooterSpeedAdjust());
         NamedCommands.registerCommand("Shoot", m_intake.outtake());
         NamedCommands.registerCommand("Intake", m_intake.intake());
         NamedCommands.registerCommand("Intake Pivot Position",
@@ -244,8 +245,24 @@ public class RobotContainer {
                 .onFalse(m_intake.stopIntake());
 
         new POVButton(m_driverController, 0)
-                .whileTrue(m_autoaim.AmpAlignAdjustment())
-                .onTrue(m_launcherSubsystem.stop());
+                .toggleOnTrue(m_autoaim.AmpAlignIncrease());
+                
+
+        new POVButton(m_driverController, 180)
+                .toggleOnTrue(m_autoaim.AmpAlignDecrease());
+
+        new POVButton(m_driverController, 90)
+                .toggleOnTrue(m_autoaim.kickIncrease());
+
+        new POVButton(m_driverController2, 90)
+                .toggleOnTrue(m_autoShoot.decreaseCrosshairAdjust());
+
+        new POVButton(m_driverController, 270)
+                .toggleOnTrue(m_autoaim.kickDecrease());
+
+        new POVButton(m_driverController2, 270)
+                .toggleOnTrue(m_autoShoot.increaseCrosshairAdjust());
+                
 
         new JoystickButton(m_driverController, Button.kA.value)
                 .toggleOnTrue(m_pivot.notSpeakerPosition())
@@ -311,10 +328,10 @@ public class RobotContainer {
         // new JoystickButton(m_driverController, Button.kLeftBumper.value)
         // .toggleOnTrue(m_launcherSubsystem.shoot());
 
-        // new JoystickButton(m_driverController, Button.kStart.value)
-        // .onTrue(m_intake.ampShoot())
-        // .onTrue(m_launcherSubsystem.stop())
-        // .onFalse(m_intake.stopIntake());
+        new JoystickButton(m_driverController, Button.kStart.value)
+        .onTrue(m_intake.autoAmpShoots())
+        .onTrue(m_launcherSubsystem.stop())
+        .onFalse(m_intake.stopIntake());
 
         new JoystickButton(m_driverController2, Button.kLeftBumper.value)
                 .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
