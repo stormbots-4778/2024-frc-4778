@@ -18,6 +18,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.ModuleConstants;
 import frc.robot.Robot;
 import frc.robot.LimelightHelpers;
 import frc.utils.SwerveUtils;
@@ -38,7 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
   // public Pigeon2 m_gyro;
 
   // Create MAXSwerveModules
-  private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
+  public final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
       DriveConstants.kFrontLeftTurningCanId,
       DriveConstants.kFrontLeftChassisAngularOffset);
@@ -175,6 +176,20 @@ public class DriveSubsystem extends SubsystemBase {
         m_rearLeft.getPosition(),
         m_rearRight.getPosition()
     }, pose);
+  }
+
+  public void setSmartCurrentLimits(int limit) {
+    m_frontLeft.setDriveSmartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit / limit);
+    m_frontRight.setDriveSmartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit / limit);
+    m_rearLeft.setDriveSmartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit / limit);
+    m_rearRight.setDriveSmartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit / limit);
+  }
+
+  public void resetSmartCurrentLimits() {
+    m_frontLeft.resetDriveSmartCurrentLimit();
+    m_frontRight.resetDriveSmartCurrentLimit();
+    m_rearLeft.resetDriveSmartCurrentLimit();
+    m_rearRight.resetDriveSmartCurrentLimit();
   }
 
   /**

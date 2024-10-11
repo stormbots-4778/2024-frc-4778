@@ -20,6 +20,7 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem {
   private final SparkPIDController pivotPIDController;
   public static RelativeEncoder pivotEncoder;
   public boolean inSpeakerPosition = true;
+  public boolean isResetting = false;
 
   public PivotSubsystem() {
 
@@ -87,18 +88,25 @@ public class PivotSubsystem extends TrapezoidProfileSubsystem {
   public void intakePos(double pivotPos) {
     this.setGoal(pivotPos);
   }
-
   
 
   public Command resetAxis() {
     return run(() -> {
+      this.isResetting = true;
       pivotMotor.setVoltage(-0.2);
+      pivotPIDController.setP(0);
+      pivotPIDController.setI(0);
+      pivotPIDController.setD(0);
     });
   }
 
   public Command resetEncoder() {
     return runOnce(() -> {
       pivotEncoder.setPosition(0.0);
+      this.isResetting = false;
+      pivotPIDController.setP(IntakeConstants.kPivotP);
+      pivotPIDController.setI(IntakeConstants.kPivotI);
+      pivotPIDController.setD(IntakeConstants.kPivotD);
       this.setGoal(IntakeConstants.kPivotAngleSpeaker);
     });
   }

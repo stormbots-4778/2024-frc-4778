@@ -21,7 +21,7 @@ public class MAXSwerveModule {
   private final CANSparkMax m_drivingSparkMax;
   private final CANSparkMax m_turningSparkMax;
 
-  private final RelativeEncoder m_drivingEncoder;
+  public final RelativeEncoder m_drivingEncoder;
   private final AbsoluteEncoder m_turningEncoder;
 
   private final SparkPIDController m_drivingPIDController;
@@ -111,6 +111,14 @@ public class MAXSwerveModule {
     m_chassisAngularOffset = chassisAngularOffset;
     m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
     m_drivingEncoder.setPosition(0);
+  }
+
+  public void setDriveSmartCurrentLimit(int limit) {
+    m_drivingSparkMax.setSmartCurrentLimit(limit);
+  }
+
+  public void resetDriveSmartCurrentLimit() {
+    m_drivingSparkMax.setSmartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
   }
 
   /**

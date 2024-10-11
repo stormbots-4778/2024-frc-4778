@@ -50,6 +50,13 @@ public class BlinkinSubsystem extends SubsystemBase {
     });
   }
 
+  public Command greenIntake() {
+    return runOnce(() -> {
+      blinkin1.set(0.73);
+      blinkin2.set(0.73);
+    });
+  }
+
   public Command goldShoot() {
     return runOnce(() -> {
       blinkin1.set(0.67);

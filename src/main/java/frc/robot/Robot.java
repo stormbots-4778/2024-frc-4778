@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.Vector;
 //import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,6 +16,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.LauncherPivotSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 
 
@@ -94,6 +96,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Launcher Pivot Position", LauncherPivotSubsystem.launcherPivotEncoder.getPosition());
     SmartDashboard.putNumber("Intake Pivot Position", PivotSubsystem.pivotEncoder.getPosition());
+    SmartDashboard.putBoolean("Intake Note", m_robotContainer.m_intake.topRoller.getOutputCurrent() > 7? true : false);
+    SmartDashboard.putNumber("Intake Current", m_robotContainer.m_intake.topRoller.getOutputCurrent());
     
     // if (Timer.getFPGATimestamp() - currentTime > 1) {
     //   currentTime += 1;
@@ -208,21 +212,51 @@ public class Robot extends TimedRobot {
     // pidgey.setYaw(144, 0.1); // Set our yaw to 144 degrees and wait up to 100 ms for the setter to take affect
     // pidgey.getYaw().waitForUpdate(0.1); // And wait up to 100 ms for the position to take affect
     // System.out.println("Set the position to 144 degrees, we are currently at " + pidgey.getYaw()); // Use java's implicit toString operator
-
-
-
-
-
-
   }
+
+  // Temp
+  double currVelY = 0;
+  double currVelX = 0;
+
+  double lastVelY = 0;
+  double lastVelX = 0;
+
+  double accelY = 0;
+  double accelX = 0;
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
 
-   SmartDashboard.putNumber("Climber", m_robotContainer.m_lift.LiftEncoder.getPosition());
- 
+    currVelX = m_robotContainer.m_robotDrive.m_frontLeft.m_drivingEncoder.getVelocity();
+    currVelY = m_robotContainer.m_robotDrive.m_frontLeft.m_drivingEncoder.getVelocity();
+   
 
+    SmartDashboard.putNumber("Climber", m_robotContainer.m_lift.LiftEncoder.getPosition());
+
+    System.out.println("IMU Acceleration: " + m_robotContainer.m_robotDrive.gyro.getAccelerationX() + ", " + m_robotContainer.m_robotDrive.gyro.getAccelerationY());
+
+    // Calculate this for new accel
+    // wheel heading oriented from imu = imu - wheel heading
+
+    accelY = (m_robotContainer.m_robotDrive.m_frontLeft.m_drivingEncoder.getVelocity() - lastVelY) / 20;
+    accelX = (m_robotContainer.m_robotDrive.m_frontLeft.m_drivingEncoder.getVelocity() - lastVelX) / 20;
+
+    System.out.println("Wheels Acceleration: " + accelY);
+    System.out.println("Acceleration Difference: " + (accelY - m_robotContainer.m_robotDrive.gyro.getAccelerationY().getValue()));
+
+    lastVelX = currVelX;
+    lastVelY = currVelY;
+
+    double diff = accelY - m_robotContainer.m_robotDrive.gyro.getAccelerationY().getValue();
+
+    if(Math.abs(diff) > 0.05) {
+      m_robotContainer.m_robotDrive.setSmartCurrentLimits(20);
+    } else {
+      m_robotContainer.m_robotDrive.resetSmartCurrentLimits();
+    }
+
+    SmartDashboard.putBoolean("Slipping", Math.abs(diff) > 0.05);
   }
 
   @Override

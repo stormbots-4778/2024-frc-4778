@@ -84,6 +84,8 @@ public class IntakeSubsystem extends SubsystemBase {
     // State machine
     public Command intake() {
         return new InstantCommand(() -> {
+
+            System.out.println(topRoller.getOutputCurrent());
             // 1. Move the pivot to the intake position
             // pivotPIDController.setReference(IntakeConstants.kPivotAngleIntake,
             // ControlType.kPosition);
@@ -97,7 +99,7 @@ public class IntakeSubsystem extends SubsystemBase {
             bottomRoller.set(IntakeConstants.intakeSpeed);
 
             pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake);
-            ;
+            
             // 3. Stop the launcher if it is running
             launcherSubsystem.stop();
         }, this, launcherSubsystem);

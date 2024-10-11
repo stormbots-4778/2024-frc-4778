@@ -254,7 +254,7 @@ public class RobotContainer {
         new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.8)
                 .toggleOnTrue(m_pivot.notSpeakerPosition())
                 .onTrue(m_intake.intake())
-                .onTrue(m_blinkin.RedOrangeIntake())
+                .onTrue(m_intake.topRoller.getOutputCurrent() > 80? m_blinkin.greenIntake() : m_blinkin.RedOrangeIntake())
                 .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
                 .onTrue(m_launcherSubsystem.stop())
                 .onFalse(m_intake.stopIntake());
@@ -283,10 +283,9 @@ public class RobotContainer {
                 .toggleOnTrue(m_pivot.notSpeakerPosition())
                 .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
 
-        // new JoystickButton(m_driverController, Button.kY.value)
-        // .toggleOnTrue(m_intake.intake())
-        // .toggleOnTrue(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake))
-        // .onTrue(m_launcherSubsystem.stop())
+        new JoystickButton(m_driverController, Button.kY.value)
+                .onTrue(m_pivot.resetAxis())
+                .toggleOnFalse(m_pivot.resetEncoder());
 
         // .onFalse(m_intake.stopIntake());
 
@@ -384,8 +383,6 @@ public class RobotContainer {
         // .onTrue(m_robotDrive.zeroHeading());
 
         // blinkin commands
-        
-
     }
 
     /**

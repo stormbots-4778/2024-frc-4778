@@ -39,11 +39,11 @@ public final class Constants {
     // public static double spdLimitFast = .9; <======== Competition values
     // public static double turnLimitFast = .7;
 
-    public static double spdLimitFast = 1.0;
-    public static double turnLimitFast = 1.0;
+    public static double spdLimitFast = .3;
+    public static double turnLimitFast = .3;
 
-    public static double spdLimitSlow = .25;
-    public static double turnLimitSlow = .25;
+    public static double spdLimitSlow = .15;
+    public static double turnLimitSlow = .15;
 
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
@@ -187,7 +187,7 @@ public final class Constants {
     public static final double intakeKd = 0;
 
     public static IdleMode kIntakeMotorIdleMode = IdleMode.kCoast;
-    public static int kIntakeMotorCurrentLimit = 30; // amps
+    public static int kIntakeMotorCurrentLimit = 10; // amps
 
     // Intake/outtake times
     public static final double outtakeTime = 3.0;
