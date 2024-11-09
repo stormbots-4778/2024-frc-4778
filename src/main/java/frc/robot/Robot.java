@@ -4,16 +4,25 @@
 
 package frc.robot;
 
+import java.util.concurrent.CountDownLatch;
+
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.Vector;
 //import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ModuleConstants;
 import frc.robot.subsystems.LauncherPivotSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -76,7 +85,7 @@ public class Robot extends TimedRobot {
   /* User can change the configs if they want, or leave it empty for factory-default */
 
   
-
+    Shuffleboard.getTab("Competition").add("Gyro", m_robotContainer.m_robotDrive.gyro);
   }
 
   /**
@@ -94,17 +103,23 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    SmartDashboard.putNumber("Launcher Pivot Position", LauncherPivotSubsystem.launcherPivotEncoder.getPosition());
-    SmartDashboard.putNumber("Intake Pivot Position", PivotSubsystem.pivotEncoder.getPosition());
-    SmartDashboard.putBoolean("Intake Note", m_robotContainer.m_intake.topRoller.getOutputCurrent() > 7? true : false);
+    SmartDashboard.putNumber("Launcher", LauncherPivotSubsystem.launcherPivotEncoder.getPosition());
+    SmartDashboard.putNumber("Intake", PivotSubsystem.pivotEncoder.getPosition());
+    SmartDashboard.putBoolean("Intake Note", m_robotContainer.m_intake.topRoller.getOutputCurrent() > 12? true : false);
     SmartDashboard.putNumber("Intake Current", m_robotContainer.m_intake.topRoller.getOutputCurrent());
+    SmartDashboard.putString("Pivot Position", 
+      PivotSubsystem.pivotEncoder.getPosition() <= 15 ? 
+        "Speaker" : PivotSubsystem.pivotEncoder.getPosition() <= 50? "Amp" : "Intake");
+    SmartDashboard.putNumber("Climber Position", LiftSubsystem.LiftEncoder.getPosition());
+    // Shuffleboard.getTab("Competition").add("Gyro", m_robotContainer.m_robotDrive.gyro);
+    
     
     // if (Timer.getFPGATimestamp() - currentTime > 1) {
     //   currentTime += 1;
 
       /**
        * getYaw automatically calls refresh(), no need to manually refresh.
-       * 
+       *  
        * StatusSignalValues also have the toString method implemented, to provide
        * a useful print of the signal.
        */
@@ -137,13 +152,6 @@ public class Robot extends TimedRobot {
       // System.out.println();
     }
     
-
-
-
-
-
-
-  
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -215,48 +223,22 @@ public class Robot extends TimedRobot {
   }
 
   // Temp
-  double currVelY = 0;
-  double currVelX = 0;
+  double wCurrAccel = 0;
 
-  double lastVelY = 0;
-  double lastVelX = 0;
 
-  double accelY = 0;
-  double accelX = 0;
+  double wLastAccel = 0;
+
+  double gCurrAccel = 0;
+
+  double gLastAccel = 0;
+
+  double gAccelX = 0;
+  double gAccelY = 0;
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-
-    currVelX = m_robotContainer.m_robotDrive.m_frontLeft.m_drivingEncoder.getVelocity();
-    currVelY = m_robotContainer.m_robotDrive.m_frontLeft.m_drivingEncoder.getVelocity();
    
-
-    SmartDashboard.putNumber("Climber", m_robotContainer.m_lift.LiftEncoder.getPosition());
-
-    System.out.println("IMU Acceleration: " + m_robotContainer.m_robotDrive.gyro.getAccelerationX() + ", " + m_robotContainer.m_robotDrive.gyro.getAccelerationY());
-
-    // Calculate this for new accel
-    // wheel heading oriented from imu = imu - wheel heading
-
-    accelY = (m_robotContainer.m_robotDrive.m_frontLeft.m_drivingEncoder.getVelocity() - lastVelY) / 20;
-    accelX = (m_robotContainer.m_robotDrive.m_frontLeft.m_drivingEncoder.getVelocity() - lastVelX) / 20;
-
-    System.out.println("Wheels Acceleration: " + accelY);
-    System.out.println("Acceleration Difference: " + (accelY - m_robotContainer.m_robotDrive.gyro.getAccelerationY().getValue()));
-
-    lastVelX = currVelX;
-    lastVelY = currVelY;
-
-    double diff = accelY - m_robotContainer.m_robotDrive.gyro.getAccelerationY().getValue();
-
-    if(Math.abs(diff) > 0.05) {
-      m_robotContainer.m_robotDrive.setSmartCurrentLimits(20);
-    } else {
-      m_robotContainer.m_robotDrive.resetSmartCurrentLimits();
-    }
-
-    SmartDashboard.putBoolean("Slipping", Math.abs(diff) > 0.05);
   }
 
   @Override

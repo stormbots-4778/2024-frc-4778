@@ -18,7 +18,7 @@ import frc.robot.Constants.LimelightConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final LauncherSubsystem launcherSubsystem;
-    private final PivotSubsystem pivotSubsystem;
+    public final PivotSubsystem pivotSubsystem;
 
     public final CANSparkMax topRoller;
     private final SparkPIDController topRollerPIDController;
@@ -92,14 +92,14 @@ public class IntakeSubsystem extends SubsystemBase {
             // this is now moved to the pivot subsystem
 
             // 2. Run the intake motors until a note is loaded
-            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 4);
-            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 4);
+            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 6);
+            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit / 6);
             topRoller.set(IntakeConstants.intakeSpeed);
 
             bottomRoller.set(IntakeConstants.intakeSpeed);
 
             pivotSubsystem.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake);
-            
+
             // 3. Stop the launcher if it is running
             launcherSubsystem.stop();
         }, this, launcherSubsystem);
@@ -132,21 +132,23 @@ public class IntakeSubsystem extends SubsystemBase {
         });
     }
 
-    public void autoAmpShoot() {
-        topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
-        bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
-        topRoller.set(IntakeConstants.shootSpeedTop);
-        bottomRoller.set(IntakeConstants.shootSpeedBottom + AutoAim.rollerSpeedAdjust);
+    public Command autoAmpShoot() {
+        return new InstantCommand(() -> {
+            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+            topRoller.set(IntakeConstants.shootSpeedTop);
+            bottomRoller.set(IntakeConstants.shootSpeedBottom + AutoAim.rollerSpeedAdjust);
+        });
     }
 
     public Command autoAmpShoots() {
         return runOnce(() -> {
-        topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
-        bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
-        topRoller.set(IntakeConstants.shootSpeedTop);
-        bottomRoller.set(IntakeConstants.shootSpeedBottom + AutoAim.rollerSpeedAdjust);
+            topRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+            bottomRoller.setSmartCurrentLimit(IntakeConstants.kIntakeMotorCurrentLimit);
+            topRoller.set(IntakeConstants.shootSpeedTop);
+            bottomRoller.set(IntakeConstants.shootSpeedBottom + AutoAim.rollerSpeedAdjust);
         });
-        
+
     }
 
     public Command ampPosition() {
@@ -169,8 +171,6 @@ public class IntakeSubsystem extends SubsystemBase {
             // launcherSubsystem.shoot();
         });
     }
-
-
 
     public Command stopIntake() {
         return runOnce(() -> {

@@ -32,12 +32,11 @@ public final class Constants {
     public static final int kDriverControllerPort2 = 1;
     //button board controller
     public static final int kDriverControllerPort3 = 2;
-
   }
 
   public static final class DriveConstants {
-    // public static double spdLimitFast = .9; <======== Competition values
-    // public static double turnLimitFast = .7;
+    // public static double spdLimitFast = .9; //<======== Competition values
+    // public static double turnLimitFast = .9;
 
     public static double spdLimitFast = .3;
     public static double turnLimitFast = .3;
@@ -168,7 +167,6 @@ public final class Constants {
     public static IdleMode kLiftMotorIdleMode = IdleMode.kBrake;
     public static int kLiftMotorCurrentLimit = 40;
     public static int kLiftMotorZeroingCurrentLimit = 9; // amps
-
   }
 
   public static final class IntakeConstants {
@@ -179,15 +177,15 @@ public final class Constants {
 
     public static final double intakeSpeed = 0.75;
     public static final double outtakeSpeed = -1.0;
-    public static final double shootSpeedTop = -0.425; // can shoot from 2ft away with ~4in
-    public static double shootSpeedBottom = -0.63;
+    public static final double shootSpeedTop = -0.48   ; // top -0.525
+    public static double shootSpeedBottom = -0.675; // top -0.73
 
     public static final double intakeKp = 0.04;
     public static final double intakeKi = 0;
     public static final double intakeKd = 0;
 
     public static IdleMode kIntakeMotorIdleMode = IdleMode.kCoast;
-    public static int kIntakeMotorCurrentLimit = 10; // amps
+    public static int kIntakeMotorCurrentLimit = 30; // amps
 
     // Intake/outtake times
     public static final double outtakeTime = 3.0;

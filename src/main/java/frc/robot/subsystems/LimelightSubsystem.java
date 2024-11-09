@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.LimelightConstants;
@@ -23,6 +24,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
     public static boolean isSpeakerAlignPos = false;
 
+    public boolean autoScan = false;
+    public boolean last = false;
+
     public void periodic() {
         LimelightConstants.x = tx.getDouble(0.0);
         LimelightConstants.y = ty.getDouble(0.0);
@@ -37,6 +41,13 @@ public class LimelightSubsystem extends SubsystemBase {
 
     public LimelightSubsystem() {
         LimelightServo = new Servo(0); // <======= change this number
+    }
+
+    public Command toggleScan() {
+        return new InstantCommand(() -> {
+            autoScan = !autoScan;
+            last = true;
+        });
     }
 
     public Command AmpAlignServoPos() {

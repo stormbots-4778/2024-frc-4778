@@ -4,10 +4,18 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.DriveConstants;
@@ -34,7 +42,9 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -42,6 +52,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos;
 //import frc.robot.commands.CloseShoot;
 import frc.robot.commands.SpinLauncher;
+import frc.robot.commands.autonomous.TestAutoCommand;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -105,7 +116,9 @@ public class RobotContainer {
 
     Trigger right_trigger = new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.1);
 
-    /**
+    boolean found = false;
+
+    /** `
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
 
@@ -141,13 +154,33 @@ public class RobotContainer {
                     m_blinkin.runState();
                 }, m_blinkin));
 
-        
 
-        
 
-        
+        // m_limelight.setDefaultCommand(
+        //         Commands.run(() -> {
+        //             NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
-        //
+        //             if (m_limelight.autoScan) {
+        //                 NetworkTableEntry pipeline = table.getEntry("pipeline");
+        //                 table.getEntry("ledMode").setNumber(3);
+        //                 pipeline.setNumber(0);
+        
+        //                 double[] poseArray = table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
+
+        //                 if(poseArray.length != 0) {
+        //                         if(table.getEntry("tv").getDouble(0) != 0) {
+        //                                 CommandScheduler.getInstance().schedule(m_intake.outtake());
+                                       
+        //                                 System.out.println("FOUND TAG");
+        //                         } else {
+        //                                 CommandScheduler.getInstance().schedule(m_intake.stopIntake());
+        //                         }
+        //                 }
+        //             } else {
+        //                 table.getEntry("ledMode").setNumber(1);
+        //                 CommandScheduler.getInstance().schedule(m_intake.stopIntake());
+        //             }
+        //         }, m_limelight, m_intake));
 
         // NamedCommands.registerCommand("Close Shoot", new
         // CloseShoot(m_launcherSubsystem, m_intake).withTimeout(2));
@@ -157,9 +190,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", m_intake.intake());
         NamedCommands.registerCommand("Intake Pivot Position",
                 m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleIntake));
-        NamedCommands.registerCommand("Amp Position", m_intake.ampPosition());
-        NamedCommands.registerCommand("Amp Pivot Position",
-                m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
+        NamedCommands.registerCommand("Amp Position", m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleAmp));
+        NamedCommands.registerCommand("Amp Shoot", m_intake.ampShoot());
         NamedCommands.registerCommand("Turn On Shoot", m_launcherSubsystem.shoot());
         NamedCommands.registerCommand("Turn Off Shoot", m_launcherSubsystem.stop());
         NamedCommands.registerCommand("Speaker Position", m_intake.speakerPosition());
@@ -167,10 +199,14 @@ public class RobotContainer {
                 m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
         NamedCommands.registerCommand("Stop Intake", m_intake.stopIntake());
         NamedCommands.registerCommand("Zero Yaw", m_robotDrive.ZeroHeading());
+
+        NamedCommands.registerCommand("Toggle Limelight", m_limelight.toggleScan());
+        NamedCommands.registerCommand("Test Auto Command", new TestAutoCommand(m_robotDrive, m_pivot, m_intake, m_autoaim));
         // NamedCommands.registerCommand("Speaker Shot",
         // m_launcherPivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
 
         autoChooser = AutoBuilder.buildAutoChooser();
+
 
         // autoChooser.addOption("MidSpeakerAuto", new MidSpeakerAuto(m_robotDrive,
         // m_intake, m_launcherSubsystem));
@@ -237,13 +273,11 @@ public class RobotContainer {
                 .onFalse(m_intake.stopIntake());
 
         new JoystickButton(m_driverController, Button.kX.value)
-
                 .whileTrue(m_autoaim.AmpAlign())
                 .onTrue(m_limelight.AmpAlignServoPos())
                 .onTrue(m_launcherSubsystem.stop())
                 .onFalse(m_intake.stopIntake())
-                .onFalse(m_autoaim.stopLED())
-                .onFalse(m_pivot.setPivotGoalCommand(IntakeConstants.kPivotAngleSpeaker));
+                .onFalse(m_autoaim.stopLED());
 
         new Trigger(() -> m_driverController.getLeftTriggerAxis() > 0.8)
                 .whileTrue(m_autoShoot.SpeakerAlign())
@@ -356,10 +390,10 @@ public class RobotContainer {
                 .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract))
                 .toggleOnTrue(m_blinkin.Rainbow());
 
-        // new JoystickButton(m_driverController2, Button.kLeftBumper.value)
-        // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
-        // new JoystickButton(m_driverController2, Button.kRightBumper.value)
-        // .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
+        // new JoystickButton(m_driverController, Button.kLeftBumper.value)
+        //  .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullExtend));
+        //  new JoystickButton(m_driverController, Button.kRightBumper.value)
+        //  .toggleOnTrue(m_lift.setLiftGoalCommand(LiftConstants.kFullRetract));
         // new JoystickButton(m_driverController2, Button.kB.value)
         // .whileTrue(m_autoaim.AmpAlign());
         new JoystickButton(m_driverController2, Button.kY.value)
